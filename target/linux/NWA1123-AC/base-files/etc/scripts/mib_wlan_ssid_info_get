@@ -1,0 +1,83 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to get the wlanSSIDInfo. 
+##
+## mib_wlan_ssid_info
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+COUNTER=1
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ "${OID}" = "1" ]; then
+    AP_PRO_NAME=`cfg -v AP_PRO_NAME_${INDEX}`
+    echo $AP_PRO_NAME
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    AP_SSID=`cfg -v AP_SSID_${INDEX}`
+    echo $AP_SSID
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    AP_SEC_PROFILE=`cfg -v AP_SEC_PROFILE_${INDEX}`
+    echo $AP_SEC_PROFILE
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    AP_RAD_PROFILE=`cfg -v AP_RAD_PROFILE_${INDEX}`
+    echo $AP_RAD_PROFILE
+    exit 0
+elif [ "${OID}" = "5" ]; then
+    AP_MAC_PROFILE=`cfg -v AP_MAC_PROFILE_${INDEX}`
+    echo $AP_MAC_PROFILE
+    exit 0
+elif [ "${OID}" = "6" ]; then
+    AP_QOS=`cfg -v AP_QOS${INDEX}`
+    if [ "$AP_QOS" = "None" ]; then
+        AP_QOS=255
+    elif [ "$AP_QOS" = "WMM_BESTEFFORT" ]; then
+        AP_QOS=0
+    elif [ "$AP_QOS" = "WMM_BACKGROUND" ]; then
+        AP_QOS=1
+    elif [ "$AP_QOS" = "WMM_VIDEO" ]; then
+        AP_QOS=2
+    elif [ "$AP_QOS" = "WMM_VOICE" ]; then
+        AP_QOS=3
+    elif [ "$AP_QOS" = "WMM" ]; then
+        AP_QOS=4
+    fi
+    echo $AP_QOS
+    exit 0
+elif [ "${OID}" = "7" ]; then
+    AP_STA_NUM=`cfg -v AP_STA_NUM_${INDEX}`
+    echo $AP_STA_NUM
+    exit 0
+elif [ "${OID}" = "8" ]; then
+    AP_HIDESSID=`cfg -v AP_HIDESSID_${INDEX}`
+    echo $AP_HIDESSID
+    exit 0
+elif [ "${OID}" = "9" ]; then
+    AP_IBSS=`cfg -v AP_IBSS_${INDEX}`
+    if [ "$AP_IBSS" = "0" ]; then
+        AP_IBSS=1
+    elif [ "$AP_IBSS" = "1" ]; then
+        AP_IBSS=2
+    fi
+    echo $AP_IBSS
+    exit 0
+fi
+
+exit 0

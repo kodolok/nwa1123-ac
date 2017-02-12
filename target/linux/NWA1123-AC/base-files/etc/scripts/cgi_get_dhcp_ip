@@ -1,0 +1,81 @@
+#!/bin/sh
+####################################################################
+# SYSTEM script
+#
+# This script is used to set the IP address and DNS f the interface.
+#
+# cgi_get_dhcp_ip
+#
+#  
+#
+###################################################################
+
+export MGMT_IF=`get_mgmt_if`
+SYS_NAME=`cfg -v SYS_NAME`
+
+if [ "$MGMT_IF" = "" ]; then
+	exit 1
+fi
+
+if [ -f "/tmp/udhcpc_on" ]; then
+	fg="1"
+fi
+
+AP_STARTMODE_1=`cfg -v AP_STARTMODE_1`
+AP_STARTMODE_2=`cfg -v AP_STARTMODE_2`
+
+if [ "$AP_STARTMODE_1" = "client" ]; then
+	wifi_if="ath0"
+	mode=1
+elif [ "$AP_STARTMODE_2" = "client" ]; then
+	wifi_if="ath8"
+	mode=1
+fi
+
+if [ "X$fg" != "X1" ]; then
+    if [ "$mode" = "1" ]; then		    	
+        echo "1" > /tmp/udhcpc_on
+        killall -q udhcpc
+	
+        brctl delif br0 $wifi_if
+        echo "1" > /tmp/udhcpc_fg
+			  
+        /sbin/udhcpc -b -i $wifi_if -h $SYS_NAME &
+  
+        fg=`cat /tmp/udhcpc_fg`
+        cont=0
+        while [ "$fg" = "1" -a $cont -lt 10 ]
+        do
+              sleep 1
+              fg=`cat /tmp/udhcpc_fg`
+              cont=$(($cont+1))
+              #echo "getting dhcp ip ...."
+        done
+  
+        if [ "$cont" = "10" ]; then
+            echo "Fail to get ip address"
+            killall -q udhcpc
+            ifconfig ath0 0.0.0.0
+            brctl addif br0 $wifi_if
+            /sbin/udhcpc -b -i $MGMT_IF -h $SYS_NAME &
+        else
+            echo "Success to get ip address"
+            get_ip=`ifconfig $wifi_if | grep "inet addr:" | awk '{print $2}' | awk -F ":" '{print $2}'`
+      
+            if [ "X" != "X$get_ip" ]; then
+                ifconfig br0 down
+                ifconfig br0 $get_ip up
+            fi
+            ifconfig $wifi_if 0.0.0.0
+            brctl addif br0 $wifi_if
+
+            #gateway setting
+            IPGW=`cat /tmp/resolv.conf|cut -d ' ' -f2`
+            route add default gw $IPGW dev $MGMT_IF
+        fi
+        rm -f /tmp/udhcpc_on
+    else
+        killall -q udhcpc
+        /sbin/udhcpc -b -i $MGMT_IF -h $SYS_NAME &
+    fi
+fi

@@ -1,0 +1,270 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanRadioEntry. 
+##
+## mib_wlan_radio_entry
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+STA_NUM_1=0
+STA_NUM_2=0
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ "${OID}" = "1" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Current Channel
+        CH_STR_1=`iwlist ath0 channel 2> /dev/null | grep 'Current Frequency'`
+        CCH_STR_1=`expr "$CH_STR_1" : '.*Channel \(.*\))'`
+        if [ -z "$CCH_STR_1" ]; then
+            CCH_STR_1=0
+        fi
+        echo "$CCH_STR_1"
+    elif [ "${INDEX}" = "2" ]; then
+        CH_STR_2=`iwlist ath8 channel 2> /dev/null | grep 'Current Frequency'`
+        CCH_STR_2=`expr "$CH_STR_2" : '.*Channel \(.*\))'`
+        if [ -z "$CCH_STR_2" ]; then
+            CCH_STR_2=0
+        fi
+        echo "$CCH_STR_2"
+    fi
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Station Count
+        if [ -e /etc/scripts/mib_wlan_station_entry ]
+        then
+            STA_NUM_1=`sh /etc/scripts/mib_wlan_station_entry 2`
+        else
+            STA_NUM_1=0
+        fi
+        echo "$STA_NUM_1"
+    elif [ "${INDEX}" = "2" ]; then
+        if [ -e /etc/scripts/mib_wlan_station_entry ]
+        then
+            STA_NUM_2=`sh /etc/scripts/mib_wlan_station_entry 3`
+        else
+            STA_NUM_2=0
+        fi
+        echo "$STA_NUM_2"
+    fi
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Channel List
+        CH_LIST_1=`iwlist ath0 channel 2> /dev/null | egrep 'Channel .* : 2' | awk '{printf "%d ", $2}'`
+        if [ -z "$CH_LIST_1" ]; then
+            CH_LIST_1="unknown"
+        fi
+        echo "$CH_LIST_1"
+    elif [ "${INDEX}" = "2" ]; then
+        #CH_LIST_2=`iwlist ath8 channel 2> /dev/null | egrep 'Channel .* : 5' | awk '{printf "%d ", $2}'`
+		CHWIDTH_STR_2=`cfg -v AP_CHWIDTH_2`
+		CH_LIST_2=`sh /etc/scripts/sys_get_channel5g_list $CHWIDTH_STR_2 | sed 's/,/ /g' | sed 's/\[//g' | sed 's/\]//g' | sed 's/\"//g'`
+        if [ -z "$CH_LIST_2" ]; then
+            CH_LIST_2="unknown"
+        fi
+        echo "$CH_LIST_2"
+    fi
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Supported Rate
+        Support_RATE_1=`iwlist ath0 rate 2> /dev/null | egrep '.[ ][0-9].* Mb/s' | awk '{printf "%s " $1}'`
+        if [ -z "$Support_RATE_1" ]; then
+            Support_RATE_1="unknown"
+        fi
+        echo "$Support_RATE_1"
+    elif [ "${INDEX}" = "2" ]; then
+        Support_RATE_2=`iwlist ath8 rate 2> /dev/null | egrep '.[ ][0-9].* Mb/s' | awk '{printf "%s " $1}'`
+        if [ -z "$Support_RATE_2" ]; then
+            Support_RATE_2="unknown"
+        fi
+        echo "$Support_RATE_2"
+    fi
+    exit 0
+elif [ "${OID}" = "5" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## WLAN mode
+        CHMODE_STR_1=`cfg -v AP_CHMODE_1`
+        N_STATE_1=`cfg -v PUREN_1`
+        if [ "${CHMODE_STR_1}" = "11G" ]; then
+            WLAN_MODE_1=0
+        elif [ "${CHMODE_STR_1}" = "11NGHT" ]; then
+            if [ "${N_STATE_1}" = "1" ]; then
+                WLAN_MODE_1=9
+            else
+                WLAN_MODE_1=8
+            fi
+        fi
+        echo "$WLAN_MODE_1"
+    elif [ "${INDEX}" = "2" ]; then
+        CHMODE_STR_2=`cfg -v AP_CHMODE_2`
+        N_STATE_2=`cfg -v PUREN_2`
+        if [ "${CHMODE_STR_2}" = "11A" ]; then
+            WLAN_MODE_2=1
+        elif [ "${CHMODE_STR_2}" = "11NAHT" ]; then
+            if [ "${N_STATE_2}" = "1" ]; then
+                WLAN_MODE_2=9
+            else
+                WLAN_MODE_2=10
+            fi
+        elif [ "${CHMODE_STR_2}" = "11ACVHT" ]; then
+			WLAN_MODE_2=11
+        fi
+        echo "$WLAN_MODE_2"
+    fi
+    exit 0
+elif [ "${OID}" = "6" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Channel
+        PRI_CH_1=`cfg -v AP_PRIMARY_CH_1`
+        if [ "${PRI_CH_1}" = "11ng" ]; then
+            WLAN_CH_1=0
+        else
+            WLAN_CH_1=${PRI_CH_1}
+        fi
+        echo "$WLAN_CH_1"
+    elif [ "${INDEX}" = "2" ]; then
+        PRI_CH_2=`cfg -v AP_PRIMARY_CH_2`
+        if [ "${PRI_CH_2}" = "11na" ]; then
+            WLAN_CH_2=0
+        else
+            WLAN_CH_2=${PRI_CH_2}
+        fi
+        echo "$WLAN_CH_2"
+    fi
+    exit 0
+elif [ "${OID}" = "7" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## TX-power
+        TXPWR_STR_1=`cfg -v TXP_LEVEL_1`
+        if [ "${TXPWR_STR_1}" = "0" ]; then
+            PWR_STR_1="0"
+        elif [ "${TXPWR_STR_1}" = "3" ]; then
+            PWR_STR_1="1"
+        elif [ "${TXPWR_STR_1}" = "6" ]; then
+            PWR_STR_1="2"
+        elif [ "${TXPWR_STR_1}" = "9" ]; then
+            PWR_STR_1="3"
+        else
+            PWR_STR_1="4"
+        fi
+        echo "$PWR_STR_1"
+    elif [ "${INDEX}" = "2" ]; then
+        TXPWR_STR_2=`cfg -v TXP_LEVEL_2`
+        if [ "${TXPWR_STR_2}" = "0" ]; then
+            PWR_STR_2="0"
+        elif [ "${TXPWR_STR_2}" = "3" ]; then
+            PWR_STR_2="1"
+        elif [ "${TXPWR_STR_2}" = "6" ]; then
+            PWR_STR_2="2"
+        elif [ "${TXPWR_STR_2}" = "9" ]; then
+            PWR_STR_2="3"
+        else
+            PWR_STR_2="4"
+        fi
+        echo "$PWR_STR_2"
+    fi
+    exit 0
+elif [ "${OID}" = "8" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Radio-Activate
+        RAD_STR_1=`cfg -v WLAN_UP_1`
+        if [ "${RAD_STR_1}" = "0" ]; then
+            RAD_STR_1=2
+        fi
+        echo "$RAD_STR_1"
+    elif [ "${INDEX}" = "2" ]; then
+        RAD_STR_2=`cfg -v WLAN_UP_2`
+        if [ "${RAD_STR_2}" = "0" ]; then
+            RAD_STR_2=2
+        fi
+        echo "$RAD_STR_2"
+    fi
+    exit 0
+elif [ "${OID}" = "9" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Operation-Mode
+        OPER_MODE_STR_1=`cfg -v AP_STARTMODE_1`
+        if [ "${OPER_MODE_STR_1}" = "mbssid" ]; then
+            OPER_MODE_1=0
+        elif [ "${OPER_MODE_STR_1}" = "client" ]; then
+            OPER_MODE_1=1
+        elif [ "${OPER_MODE_STR_1}" = "repeater" ]; then
+            OPER_MODE_1=5
+        elif [ "${OPER_MODE_STR_1}" = "root-mbssid" ]; then
+            OPER_MODE_1=9
+        else
+            OPER_MODE_1=8
+        fi
+        echo "$OPER_MODE_1"
+    elif [ "${INDEX}" = "2" ]; then
+        OPER_MODE_STR_2=`cfg -v AP_STARTMODE_2`
+        if [ "${OPER_MODE_STR_2}" = "mbssid" ]; then
+            OPER_MODE_2=0
+        elif [ "${OPER_MODE_STR_2}" = "client" ]; then
+            OPER_MODE_2=1
+        elif [ "${OPER_MODE_STR_2}" = "repeater" ]; then
+            OPER_MODE_2=5
+        elif [ "${OPER_MODE_STR_2}" = "root-mbssid" ]; then
+            OPER_MODE_2=9
+        else
+            OPER_MODE_2=8
+        fi
+        echo "$OPER_MODE_2"
+    fi
+    exit 0
+elif [ "${OID}" = "10" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        ## Channel-Width
+        CHWIDTH_STR_1=`cfg -v AP_CHWIDTH_1`
+        if [ "${CHWIDTH_STR_1}" = "20" ]; then
+            CHWIDTH_1=0
+        elif [ "${CHWIDTH_STR_1}" = "40" ]; then
+            CHWIDTH_1=1
+        else
+            CHWIDTH_1=2
+        fi
+        echo "$CHWIDTH_1"
+    elif [ "${INDEX}" = "2" ]; then
+        CHWIDTH_STR_2=`cfg -v AP_CHWIDTH_2`
+        if [ "${CHWIDTH_STR_2}" = "20" ]; then
+            CHWIDTH_2=0
+        elif [ "${CHWIDTH_STR_2}" = "40" ]; then
+            CHWIDTH_2=1
+        else
+            CHWIDTH_2=2
+        fi
+        echo "$CHWIDTH_2"
+    fi
+    exit 0
+fi
+
+## Profile-Index
+#PROFIDX_STR_1=`cfg -v STA_AP_PROFILE_1`
+#PROFIDX_STR_2=`cfg -v STA_AP_PROFILE_2`
+
+exit 0
+
+
+
+
+
+
+
+

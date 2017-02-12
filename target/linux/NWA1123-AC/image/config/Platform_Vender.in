@@ -1,0 +1,4 @@
+config PLATFORM_VENDER_QCA
+	bool "Qualcomm Atheros"
+	help
+		Qualcomm Atheros Solution

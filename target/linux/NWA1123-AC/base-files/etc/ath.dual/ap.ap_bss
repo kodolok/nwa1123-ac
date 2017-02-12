@@ -1,0 +1,20 @@
+interface=~$1~
+#bridge=~!AP_BRNAME#~
+~eDOT1Q_VLAN:1~bridge=br~~AP_VLAN#~
+~eDOT1Q_VLAN:0~bridge=br0
+logger_syslog=-1
+logger_syslog_level=2
+logger_stdout=-1
+logger_stdout_level=2
+dump_file=/tmp/hostapd.dump
+ctrl_interface=/var/run/hostapd
+ctrl_interface_group=0
+ssid=~~AP_SSID#~
+
+max_num_sta=~~AP_STA_NUM#~
+#ap_max_inactivity=30
+supported_rates=10 20 55 110 60 90 120 180 240 360 480 540
+basic_rates=10 20 55 110
+
+auth_algs=1
+

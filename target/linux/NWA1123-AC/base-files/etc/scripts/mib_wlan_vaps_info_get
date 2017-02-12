@@ -1,0 +1,155 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to get the wlanVAPsInfo. 
+##
+## mib_wlan_vaps_info
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+COUNTER=1
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ ${INDEX} -le 8 ] && [ ${INDEX} -ge 1 ]; then
+    vaps_status=`cfg -v VAP_LIST_1`
+    my_vaps_status=`echo "$vaps_status" | sed 's/,/ /g'`
+elif [ ${INDEX} -le 16 ] && [ ${INDEX} -ge 9 ]; then
+    INDEX=`expr $INDEX - 8`
+    vaps_status=`cfg -v VAP_LIST_2`
+    my_vaps_status=`echo "$vaps_status" | sed 's/,/ /g'`
+fi
+
+case $INDEX in
+    1)
+        VALUE=`echo $my_vaps_status | awk '{print $1}'`
+        ;;
+    2)
+        VALUE=`echo $my_vaps_status | awk '{print $2}'`
+        ;;
+    3)
+        VALUE=`echo $my_vaps_status | awk '{print $3}'`
+        ;;
+    4)
+        VALUE=`echo $my_vaps_status | awk '{print $4}'`
+        ;;
+    5)
+        VALUE=`echo $my_vaps_status | awk '{print $5}'`
+        ;;
+    6)
+        VALUE=`echo $my_vaps_status | awk '{print $6}'`
+        ;;
+    7)
+        VALUE=`echo $my_vaps_status | awk '{print $7}'`
+        ;;
+    8)
+        VALUE=`echo $my_vaps_status | awk '{print $8}'`
+        ;;
+    *)
+        exit 255
+        ;;
+esac
+
+TMP_VALUE=`echo "$VALUE" | cut -c 1-1`
+
+if [ "${OID}" = "1" ]; then
+    if [ "$TMP_VALUE" != "_" ]; then
+        AP_ACTIVATE=1
+    else
+        AP_ACTIVATE=2
+    fi
+    echo $AP_ACTIVATE
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    if [ "$TMP_VALUE" != "_" ]; then
+        AP_PROFILE_INDEX=${TMP_VALUE}
+    else
+        TMP_VALUE=`echo "$VALUE" | cut -c 2-2`
+        AP_PROFILE_INDEX=${TMP_VALUE}
+    fi
+    echo $AP_PROFILE_INDEX
+    exit 0
+#### VLAN Tag ####
+elif [ "${OID}" = "3" ]; then
+
+    #     AP_VLANTag=`cfg -v DOT1Q_VLAN`
+    #     if [ "$AP_VLANTag" = "1" ];then
+    #         ##enable
+    #         vlantag_status=1
+    #     else
+    #         vlantag_status=2
+    #     fi
+
+    # echo $vlantag_status
+
+    if [ "$TMP_VALUE" != "_" ]; then
+        ITER_AP_VLAN="AP_NATIVE_VLAN_${TMP_VALUE}"
+        AP_VLAN_TAG=`cfg -v $ITER_AP_VLAN`
+    else
+        TMP_VALUE=`echo "$VALUE" | cut -c 2-2`
+        ITER_AP_VLAN="AP_NATIVE_VLAN_${TMP_VALUE}"
+        AP_VLAN_TAG=`cfg -v $ITER_AP_VLAN`
+    fi
+    echo $AP_VLAN_TAG
+
+    exit 0
+
+elif [ "${OID}" = "4" ]; then
+    if [ "$TMP_VALUE" != "_" ]; then
+        ITER_AP_VLAN="AP_VLAN_${TMP_VALUE}"
+        AP_VLAN=`cfg -v $ITER_AP_VLAN`
+    else
+        TMP_VALUE=`echo "$VALUE" | cut -c 2-2`
+        ITER_AP_VLAN="AP_VLAN_${TMP_VALUE}"
+        AP_VLAN=`cfg -v $ITER_AP_VLAN`
+    fi
+    echo $AP_VLAN
+    exit 0
+
+elif [ "${OID}" = "5" ]; then
+    if [ "$TMP_VALUE" != "_" ]; then
+        ITER_AP_VLAN="AP_QOS_${TMP_VALUE}"
+        ap_qos=`cfg -v $ITER_AP_VLAN`
+    else
+        TMP_VALUE=`echo "$VALUE" | cut -c 2-2`
+        ITER_AP_VLAN="AP_QOS_${TMP_VALUE}"
+        ap_qos=`cfg -v $ITER_AP_VLAN`
+    fi
+    if [ "$ap_qos" = "WMM" ]; then
+        qos_status=1
+    elif [ "$ap_qos" = "WMM_VOICE" ]; then
+        qos_status=2
+    elif [  "$ap_qos" = "WMM_VIDEO" ]; then
+        qos_status=3
+    elif [  "$ap_qos" = "WMM_BACKGROUND" ]; then
+        qos_status=4
+    elif [  "$ap_qos" = "WMM_BESTEFFORT" ]; then
+        qos_status=5
+    else
+        qos_status=255
+    fi
+    
+    echo $qos_status
+    exit 0
+elif [ "${OID}" = "6" ]; then
+    index=$(($TMP_VALUE - 1))
+    sta_count=`sh /etc/scripts/sys_get_vapstacount ${index}`
+    echo $sta_count 
+    exit 0
+fi
+
+
+exit 0

@@ -1,0 +1,138 @@
+#!/bin/sh
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+STA_NUM_1=0
+STA_NUM_2=0
+GOT_START_BRACE=""
+GOT_END_BRACE=""
+BANNER=""
+ATHEROS_RSSI_MAX=60
+RSSI_THRESHOLD=50
+COUNTER=1
+FLAG=0
+#get our config in /tmp/.apcfg
+TZ=`cfg -v TZ`
+# export TZ to the sytem environment. If we don't do this, Shell may use different TZ setting.
+export TZ=$TZ
+
+#cat iwconfig.log | sh get_vap_ssid.sh > /tmp/.iwconfig.log
+#cat dev.log | sh read_dev.sh >> temp.$$
+
+# output the AP info of each VAP to a temp file
+iwconfig 2>/dev/null | get_vap_ssid.sh > /tmp/.iwconfig.log
+
+#echo "Start to Procss Output of iwconfig"
+
+# process each line in iwconfig.log file
+while read line
+do
+
+#     STA_NUM=$(($LINE_NUM+1))
+#    echo "got #"$LINE_NUM" : "$line
+
+     VAP_NAME=`echo "$line" | cut -d ',' -f 1`
+     SSID=`echo "$line" | cut -d ',' -f 2`
+
+     if [ ! "$VAP_NAME" ] || [ ! "$SSID" ]
+     then
+         #echo "Cannot get vap and ssid @ association_list.sh"
+         continue
+     fi
+
+
+     wlanconfig ${VAP_NAME} list sta > /tmp/.${VAP_NAME}.wlanconfig.log
+
+     BANNER=""
+     ADDR=""
+     RSSI=0
+     SIGNALSTR=0
+
+     while read str
+     do
+     
+         BANNER=`echo $str | grep 'ADDR'`
+         if [ "$BANNER" ]
+         then
+             continue
+         fi
+
+         ADDR=`echo $str | awk '{print $1}'`
+
+         ASSOCIATION=`echo $str | awk '{print $3}'`
+
+         RSSI=`echo $str | awk '{print $6}'`
+
+         if [ $RSSI ]
+         then
+             if [ $RSSI -gt $RSSI_THRESHOLD ]
+             then
+                 SIGNALSTR=100
+             elif [ $RSSI -gt 0 ]
+             then
+                 SIGNALSTR=$(($RSSI*100/$RSSI_THRESHOLD))
+             fi
+         fi
+
+         if [ "$ADDR" ] && [ "$SSID" ] && [ "$ASSOCIATION" ] && [ "$SIGNALSTR" ]
+         then
+             if [ "${VAP_NAME}" = "ath0" ]
+             then
+                STA_NUM_1=$(($STA_NUM_1+1))
+             elif [ "${VAP_NAME}" = "ath8" ]
+             then
+                STA_NUM_2=$(($STA_NUM_2+1))
+             fi
+             if [ "${OID}" = "1" ] && [ "${INDEX}" = "${COUNTER}" ]; then
+                echo "$ADDR"
+                FLAG=1
+                break 2
+             elif [ "${OID}" = "2" ] && [ "${INDEX}" = "${COUNTER}" ]; then
+                echo "$SSID"
+                FLAG=1
+                break 2
+             elif [ "${OID}" = "3" ] && [ "${INDEX}" = "${COUNTER}" ]; then
+                ASSOCIATION=`echo $ASSOCIATION | cut -c 12-19`
+                echo "$ASSOCIATION"
+                FLAG=1
+                break 2
+             elif [ "${OID}" = "4" ] && [ "${INDEX}" = "${COUNTER}" ]; then
+                echo "$SIGNALSTR"
+                FLAG=1
+                break 2
+             fi
+         fi
+         
+         COUNTER=`expr $COUNTER + 1`
+
+     done < /tmp/.${VAP_NAME}.wlanconfig.log
+     
+     rm -f /tmp/.${VAP_NAME}.wlanconfig.log
+
+done < /tmp/.iwconfig.log
+
+if [ "${FLAG}" = "1" ]
+then
+    rm -f /tmp/.${VAP_NAME}.wlanconfig.log
+fi
+rm -f /tmp/.iwconfig.log
+if [ "${OID}" = "5" ]
+then
+    echo "$STA_NUM_1"
+fi
+if [ "${OID}" = "6" ]
+then
+    echo "$STA_NUM_2"
+fi
+
+exit 0

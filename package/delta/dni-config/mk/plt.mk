@@ -1,0 +1,17 @@
+
+include $(TOPDIR)/target/linux/$(PRODUCT_MODEL_NAME)/dni-config.mk
+
+define Build/DniPltConfig
+	echo "" >> ${PKG_BUILD_DIR}/dniconfig.h
+	echo "/* Product Information */" >> ${PKG_BUILD_DIR}/dniconfig.h
+	$(call Build/$(PRODUCT_MODEL_NAME))
+	$(call Build/DniConfig,CONFIG_NOR_FLASH,__CONFIG_NOR_FLASH__,,)
+	$(call Build/DniConfig,CONFIG_NAND_FLASH,__CONFIG_NAND_FLASH__,,)
+	$(call Build/DniConfig,TARGET_BRIDGE_IFNAME,__CONFIG_BRIDGE_IFNAME__,TARGET_BRIDGE_IFNAME,$(CONFIG_TARGET_BRIDGE_IFNAME),string)
+	$(call Build/DniConfig,TARGET_LAN_PROTO_MODE,__CONFIG_LAN_PROTO_MODE__,TARGET_LAN_PROTO_MODE,$(CONFIG_TARGET_LAN_PROTO_MODE),string)
+	$(call Build/DniConfig,TARGET_LAN_IFNAME,__CONFIG_LAN_IFNAME__,TARGET_LAN_IFNAME,$(CONFIG_TARGET_LAN_IFNAME),string)
+	$(call Build/DniConfig,TARGET_WAN_IFNAME,__CONFIG_WAN_IFNAME__,TARGET_WAN_IFNAME,$(CONFIG_TARGET_WAN_IFNAME),string)
+	$(call Build/DniConfig,TARGET_WLAN_2G_IFNAME,__CONFIG_WLAN_2G_IFNAME__,TARGET_WLAN_2G_IFNAME,$(CONFIG_TARGET_WLAN_2G_IFNAME),string)
+	$(call Build/DniConfig,TARGET_WLAN_5G_IFNAME,__CONFIG_WLAN_5G_IFNAME__,TARGET_WLAN_5G_IFNAME,$(CONFIG_TARGET_WLAN_5G_IFNAME),string)
+	echo "#define DNI_PATCH 1" >> ${PKG_BUILD_DIR}/dniconfig.h
+endef

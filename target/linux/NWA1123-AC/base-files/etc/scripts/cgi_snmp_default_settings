@@ -1,0 +1,302 @@
+#!/bin/sh
+# Create by Eric Chen
+
+SNMP_VERSION=`cfg -v SNMP_VERSION`
+MGMT_SNMP_PORT=`cfg -v MGMT_SNMP_PORT`
+
+SNMP_conf='/usr/local/etc/snmp/snmpd.conf'
+TMP_file="/tmp/tmp.$$"
+
+if [ -f /var/net-snmp/snmpd.conf ]
+then
+    SNMPUser_conf='/var/net-snmp/snmpd.conf'
+    sed "s/^.*usmUser.*//" $SNMPUser_conf > $TMP_file
+    mv -f $TMP_file $SNMPUser_conf
+fi
+
+sed "15,15s/^.*agentAddress.*/agentAddress udp:0.0.0.0:${MGMT_SNMP_PORT}/" $SNMP_conf > $TMP_file
+mv -f $TMP_file $SNMP_conf
+
+if [ "$SNMP_VERSION" = "2" ]
+then
+    SNMP_RO_USER=`cfg -v SNMP_RO_USER`
+    SNMP_RW_USER=`cfg -v SNMP_RW_USER`
+    SNMP_TRAP_IP=`cfg -v SNMP_TRAP_IP`
+    SNMP_TRAP_USER=`cfg -v SNMP_TRAP_USER`
+    SNMPV3_ADMIN_NAME=`cfg -v SNMPV3_ADMIN_NAME`
+    SNMPV3_ADMIN_TYPE=`cfg -v SNMPV3_ADMIN_TYPE`
+    SNMPV3_ADMIN_AUTH=`cfg -v SNMPV3_ADMIN_AUTH`
+    SNMPV3_ADMIN_PRIV=`cfg -v SNMPV3_ADMIN_PRIV`
+    SNMPV3_USER_NAME=`cfg -v SNMPV3_USER_NAME`
+    SNMPV3_USER_TYPE=`cfg -v SNMPV3_USER_TYPE`
+    SNMPV3_USER_AUTH=`cfg -v SNMPV3_USER_AUTH`
+    SNMPV3_USER_PRIV=`cfg -v SNMPV3_USER_PRIV`
+    
+    sed "s/^.*rocommunity.*/rocommunity ${SNMP_RO_USER} default -V systemonly/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    sed "s/^.*rwcommunity.*/rwcommunity ${SNMP_RW_USER} default -V systemonly/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    sed "s/^.*trapsink.*/trapsink ${SNMP_TRAP_IP} ${SNMP_TRAP_USER}/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    sed "s/^.*trap2sink.*/trap2sink ${SNMP_TRAP_IP} ${SNMP_TRAP_USER}/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    
+    if [ "$SNMPV3_ADMIN_AUTH" != "None" ] && [ "$SNMPV3_ADMIN_PRIV" != "None" ]
+    then
+        if [ "$SNMPV3_ADMIN_TYPE" = "ReadAndWrite" ]
+        then
+            sed "64,64s/^.*rwuser.*/rwuser ${SNMPV3_ADMIN_NAME} priv -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "61,61s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        else
+            sed "61,61s/^.*rouser.*/rouser ${SNMPV3_ADMIN_NAME} priv -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "64,64s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        fi
+    elif [ "$SNMPV3_ADMIN_AUTH" != "None" ] && [ "$SNMPV3_ADMIN_PRIV" = "None" ]
+    then
+        if [ "$SNMPV3_ADMIN_TYPE" = "ReadAndWrite" ]
+        then
+            sed "64,64s/^.*rwuser.*/rwuser ${SNMPV3_ADMIN_NAME} auth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "61,61s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        else
+            sed "61,61s/^.*rouser.*/rouser ${SNMPV3_ADMIN_NAME} auth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "64,64s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        fi
+    elif [ "$SNMPV3_ADMIN_AUTH" = "None" ] 
+    then
+        if [ "$SNMPV3_ADMIN_TYPE" = "ReadAndWrite" ]
+        then
+            sed "64,64s/^.*rwuser.*/rwuser ${SNMPV3_ADMIN_NAME} noauth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "61,61s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        else
+            sed "61,61s/^.*rouser.*/rouser ${SNMPV3_ADMIN_NAME} noauth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "64,64s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        fi
+    fi
+    
+    if [ "$SNMPV3_USER_AUTH" != "None" ] && [ "$SNMPV3_USER_PRIV" != "None" ]
+    then
+        if [ "$SNMPV3_USER_TYPE" = "ReadAndWrite" ]
+        then
+            sed "65,65s/^.*rwuser.*/rwuser ${SNMPV3_USER_NAME} priv -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "60,60s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        else
+            sed "60,60s/^.*rouser.*/rouser ${SNMPV3_USER_NAME} priv -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "65,65s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        fi
+    elif [ "$SNMPV3_USER_AUTH" != "None" ] && [ "$SNMPV3_USER_PRIV" = "None" ]
+    then
+        if [ "$SNMPV3_USER_TYPE" = "ReadAndWrite" ]
+        then
+            sed "65,65s/^.*rwuser.*/rwuser ${SNMPV3_USER_NAME} auth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "60,60s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        else
+            sed "60,60s/^.*rouser.*/rouser ${SNMPV3_USER_NAME} auth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "65,65s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        fi
+    elif [ "$SNMPV3_USER_AUTH" = "None" ]
+    then
+        if [ "$SNMPV3_USER_TYPE" = "ReadAndWrite" ]
+        then
+            sed "65,65s/^.*rwuser.*/rwuser ${SNMPV3_USER_NAME} noauth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "60,60s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        else
+            sed "60,60s/^.*rouser.*/rouser ${SNMPV3_USER_NAME} noauth -V systemdisabled/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            sed "65,65s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+        fi
+    fi
+    
+    rm -rf /tmp/snmpd.conf 
+    ln -sf $SNMP_conf /tmp/snmpd.conf
+    if [ -f /sbin/snmpd ]; then
+        snmpd
+    fi
+    acl_setrule
+    exit 0
+    
+elif [ "$SNMP_VERSION" = "3" ]
+then
+    SNMP_RO_USER=`cfg -v SNMP_RO_USER`
+    SNMP_RW_USER=`cfg -v SNMP_RW_USER`
+    SNMP_TRAP_IP=`cfg -v SNMP_TRAP_IP`
+    SNMP_TRAP_USER=`cfg -v SNMP_TRAP_USER`
+    SNMPV3_ADMIN=`cfg -v SNMPV3_ADMIN`
+    SNMPV3_USER=`cfg -v SNMPV3_USER`
+    
+    #####################
+    #set v2 values
+    #####################
+    sed "s/^.*rocommunity.*/rocommunity ${SNMP_RO_USER} default -V systemonly/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    sed "s/^.*rwcommunity.*/rwcommunity ${SNMP_RW_USER} default -V systemonly/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    sed "s/^.*trapsink.*/trapsink ${SNMP_TRAP_IP} ${SNMP_TRAP_USER}/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    sed "s/^.*trap2sink.*/trap2sink ${SNMP_TRAP_IP} ${SNMP_TRAP_USER}/" $SNMP_conf > $TMP_file
+    mv -f $TMP_file $SNMP_conf
+    
+    #####################
+    #set v3 values
+    #####################
+    if [ "$SNMPV3_ADMIN" = "Enabled" ]
+    then
+        SNMPV3_ADMIN_NAME=`cfg -v SNMPV3_ADMIN_NAME`
+        SNMPV3_ADMIN_AUTH=`cfg -v SNMPV3_ADMIN_AUTH`
+        SNMPV3_ADMIN_PASSWORD=`cfg -v SNMPV3_ADMIN_PASSWORD`
+        SNMPV3_ADMIN_PRIV=`cfg -v SNMPV3_ADMIN_PRIV`
+        SNMPV3_ADMIN_TYPE=`cfg -v SNMPV3_ADMIN_TYPE`
+        
+        if [ "$SNMPV3_ADMIN_AUTH" != "None" ] && [ "$SNMPV3_ADMIN_PRIV" != "None" ]
+        then
+            sed "31,31s/^.*createUser.*/createUser ${SNMPV3_ADMIN_NAME} ${SNMPV3_ADMIN_AUTH} ${SNMPV3_ADMIN_PASSWORD} ${SNMPV3_ADMIN_PRIV}/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            
+            if [ "$SNMPV3_ADMIN_TYPE" = "ReadAndWrite" ]
+            then
+                sed "64,64s/^.*rwuser.*/rwuser ${SNMPV3_ADMIN_NAME} priv -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "61,61s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            else
+                sed "61,61s/^.*rouser.*/rouser ${SNMPV3_ADMIN_NAME} priv -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "64,64s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            fi
+        elif [ "$SNMPV3_ADMIN_AUTH" != "None" ] && [ "$SNMPV3_ADMIN_PRIV" = "None" ]
+        then
+            sed "31,31s/^.*createUser.*/createUser ${SNMPV3_ADMIN_NAME} ${SNMPV3_ADMIN_AUTH} ${SNMPV3_ADMIN_PASSWORD}/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            
+            if [ "$SNMPV3_ADMIN_TYPE" = "ReadAndWrite" ]
+            then
+                sed "64,64s/^.*rwuser.*/rwuser ${SNMPV3_ADMIN_NAME} auth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "61,61s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            else
+                sed "61,61s/^.*rouser.*/rouser ${SNMPV3_ADMIN_NAME} auth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "64,64s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            fi
+        elif [ "$SNMPV3_ADMIN_AUTH" = "None" ] 
+        then
+            sed "31,31s/^.*createUser.*/createUser ${SNMPV3_ADMIN_NAME}/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            
+            if [ "$SNMPV3_ADMIN_TYPE" = "ReadAndWrite" ]
+            then
+                sed "64,64s/^.*rwuser.*/rwuser ${SNMPV3_ADMIN_NAME} noauth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "61,61s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            else
+                sed "61,61s/^.*rouser.*/rouser ${SNMPV3_ADMIN_NAME} noauth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "64,64s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            fi
+        fi
+    else
+        sed "31,31s/^createUser/#createUser/g" $SNMP_conf > $TMP_file
+        mv -f $TMP_file $SNMP_conf
+    fi
+    
+    if [ "$SNMPV3_USER" = "Enabled" ]
+    then
+        SNMPV3_USER_NAME=`cfg -v SNMPV3_USER_NAME`
+        SNMPV3_USER_AUTH=`cfg -v SNMPV3_USER_AUTH`
+        SNMPV3_USER_PASSWORD=`cfg -v SNMPV3_USER_PASSWORD`
+        SNMPV3_USER_PRIV=`cfg -v SNMPV3_USER_PRIV`
+        SNMPV3_USER_TYPE=`cfg -v SNMPV3_USER_TYPE`
+        
+        if [ "$SNMPV3_USER_AUTH" != "None" ] && [ "$SNMPV3_USER_PRIV" != "None" ]
+        then
+            sed "30,30s/^.*createUser.*/createUser ${SNMPV3_USER_NAME} ${SNMPV3_USER_AUTH} ${SNMPV3_USER_PASSWORD} ${SNMPV3_USER_PRIV}/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            
+            if [ "$SNMPV3_USER_TYPE" = "ReadAndWrite" ]
+            then
+                sed "65,65s/^.*rwuser.*/rwuser ${SNMPV3_USER_NAME} priv -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "60,60s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            else
+                sed "60,60s/^.*rouser.*/rouser ${SNMPV3_USER_NAME} priv -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "65,65s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            fi
+        elif [ "$SNMPV3_USER_AUTH" != "None" ] && [ "$SNMPV3_USER_PRIV" = "None" ]
+        then
+            sed "30,30s/^.*createUser.*/createUser ${SNMPV3_USER_NAME} ${SNMPV3_USER_AUTH} ${SNMPV3_USER_PASSWORD}/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            
+            if [ "$SNMPV3_USER_TYPE" = "ReadAndWrite" ]
+            then
+                sed "65,65s/^.*rwuser.*/rwuser ${SNMPV3_USER_NAME} auth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "60,60s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            else
+                sed "60,60s/^.*rouser.*/rouser ${SNMPV3_USER_NAME} auth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "65,65s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            fi
+        elif [ "$SNMPV3_USER_AUTH" = "None" ]
+        then
+            sed "30,30s/^.*createUser.*/createUser ${SNMPV3_USER_NAME}/" $SNMP_conf > $TMP_file
+            mv -f $TMP_file $SNMP_conf
+            
+            if [ "$SNMPV3_USER_TYPE" = "ReadAndWrite" ]
+            then
+                sed "65,65s/^.*rwuser.*/rwuser ${SNMPV3_USER_NAME} noauth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "60,60s/^rouser/#rouser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            else
+                sed "60,60s/^.*rouser.*/rouser ${SNMPV3_USER_NAME} noauth -V systemonly/" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+                sed "65,65s/^rwuser/#rwuser/g" $SNMP_conf > $TMP_file
+                mv -f $TMP_file $SNMP_conf
+            fi
+        fi
+    else
+        sed "30,30s/^createUser/#createUser/g" $SNMP_conf > $TMP_file
+        mv -f $TMP_file $SNMP_conf
+    fi
+    
+    rm -rf /tmp/snmpd.conf 
+    ln -sf $SNMP_conf /tmp/snmpd.conf
+    if [ -f /sbin/snmpd ]; then
+        snmpd
+    fi
+    acl_setrule
+    exit 0
+fi
+

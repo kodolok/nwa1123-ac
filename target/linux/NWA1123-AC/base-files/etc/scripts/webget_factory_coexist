@@ -1,0 +1,3 @@
+#!/bin/sh
+INFO="`iwpriv ath0 get_disablecoext`"
+echo `echo "$INFO" | cut -d : -f 2` 

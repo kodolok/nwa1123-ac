@@ -1,0 +1,20 @@
+#!/bin/sh
+
+INTF=eth0
+## Get LAN info
+ethreg --p_st -i eth0 -p 0
+SPEED_STR=`dmesg | grep -i "Speed:" | tail -1 | awk '{printf "%s" $2}'`
+if [ "$SPEED_STR" = "1000Mbps" ]; then 
+    RATE_STR="1000000000"
+elif [ "$SPEED_STR" = "100Mbps" ]; then
+    RATE_STR="100000000"
+elif [ "$SPEED_STR" = "10Mbps" ]; then
+    RATE_STR="10000000"
+else
+    RATE_STR="0"
+fi
+
+echo -n $RATE_STR
+
+exit 0
+

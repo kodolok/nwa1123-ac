@@ -1,0 +1,39 @@
+#!/bin/sh
+#########################################################################
+##  VSFTPD Configuration
+##  This file used to modify ftp listen port (21) for vsftpd daemon
+#########################################################################
+
+. /etc/ath/apcfg
+
+##
+# modify /etc/vsftpd.conf
+##
+    new_vsftpd_conf=/tmp/vsftp.conf.tmp
+    sed /listen_port/d /tmp/vsftpd.conf > $new_vsftpd_conf
+    echo listen_port=${MGMT_FTP_PORT:=21} >> $new_vsftpd_conf
+    mv -f $new_vsftpd_conf /tmp/vsftpd.conf
+    unset new_vsftpd_conf
+
+##
+# kill current processing
+##
+    killall -q vsftpd
+
+##
+# restart vsftpd daemon
+##
+    if [ -f /sbin/vsftpd ]
+    then
+        /sbin/vsftpd &
+    fi
+
+##
+# set ACL rules
+##
+    if [ -f /etc/scripts/acl_setrule ]
+    then
+        sh /etc/scripts/acl_setrule
+    fi
+
+exit 0

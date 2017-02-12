@@ -1,0 +1,19 @@
+#!/bin/sh 
+#
+#delete log file
+#
+LOG_FILE=/var/log/messages
+WEB_LOG_FILE=/var/log/log-messages
+
+if [ -s $LOG_FILE ]
+then
+rm -f $LOG_FILE
+fi
+
+if [ -s $WEB_LOG_FILE ]
+then
+rm -f $WEB_LOG_FILE
+fi
+
+touch $LOG_FILE
+touch $WEB_LOG_FILE

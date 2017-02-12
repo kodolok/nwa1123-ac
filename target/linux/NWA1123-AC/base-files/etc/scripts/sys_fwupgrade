@@ -1,0 +1,141 @@
+#!/bin/sh
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+#########################################################################
+##  F/W upgrade
+##  This file used to F/W upgrade
+#########################################################################
+
+if [ ! -n "$1" ]
+then
+    echo "Please input the F/W image file name.."
+    exit 1
+fi
+
+updatename=`echo $1 | grep firmware\.bin`
+
+if [ "x$updatename" = "x" ]; then
+	cut -d \( -f 2 /etc/firmware_info > /tmp/tmp_fw_info
+	MODEL_STRING=`cut -d . -f 1 /tmp/tmp_fw_info`
+
+	if [ "x$MODEL_STRING" != "x" ]; then
+		if [ -f "/tmp/filenameStr" ]; then
+			updatename=`cat /tmp/filenameStr | grep $MODEL_STRING`
+			rm /tmp/filenameStr
+			if [ "x$updatename" = "x" ]; then
+				echo "Web: Project name Failed!" > /dev/console
+				exit 1
+			fi
+		else
+			updatename=`echo $1 | grep $MODEL_STRING`
+			if [ "x$updatename" = "x" ]; then
+				echo "FTP: Project name Failed!" > /dev/console
+				rm $1
+				exit 2
+			fi
+		fi
+	fi
+fi
+
+#verify md5
+FILE_NAME=$1
+set -- `ls -l "${FILE_NAME}"`
+FILE_LENGTH=$5
+CRC_OFFSET=`expr ${FILE_LENGTH} - 16`
+CAL_CKSUM=`head -c ${CRC_OFFSET} ${FILE_NAME} | md5sum | cut -d ' ' -f 1`
+FW_CKSUM=`tail -c 16 ${FILE_NAME} | hexdump -e '4/1 "%02x"'`
+echo "CAL_CKSUM: " "$CAL_CKSUM" > /dev/console
+echo "FW_CKSUM: " "$FW_CKSUM" > /dev/console
+
+if [ $CAL_CKSUM = $FW_CKSUM ]; then
+	echo "Verify MD5 OK!" > /dev/console
+else
+       	echo "Verify MD5 Failed!" > /dev/console
+		
+		upgrade_flag=0
+		for i in 1 2 3 4 5;
+		do
+			check_FW_checksum="bypass_FW_check_$i"
+			eval check_FW_checksum=\$$check_FW_checksum
+			
+			if [ "x$check_FW_checksum" = "x$FW_CKSUM" ]; then
+				upgrade_flag=1
+			fi
+		done
+		
+		if [ "x$upgrade_flag" != "x1" ]; then
+			exit 1
+		else
+			echo "Verify bypass checksum OK!" > /dev/console
+		fi
+fi
+
+
+killall sys_check_ramfs
+cd /tmp/upload
+tar -jxv -f ${FILE_NAME}
+
+if [ -f /tmp/upload/mi124_f1e-jffs2 -a -f /tmp/upload/vmlinux_mi124_f1e.lzma.uImage ]
+then
+    sys_led_system fw &
+    apdown
+
+    killall net_monitor
+    sys_led_alert wifi stop
+    sys_led_alert uplink stop
+    killall zdpd
+    killall mini_httpd
+    killall vsftpd
+    killall telnetd
+    killall ftp_fwupgrade
+    killall sys_check_ramfs
+    killall watchdogd
+    killall snmpd
+    killall syslogd
+    killall crond
+    killall sys_resetbutton
+    killall lldpd
+    killall udhcpc
+
+    mknod /tmp/mtdblock8 b 31 8
+    
+    KVER=`uname -r | cut -f 1 -d '-'`
+    MODULE_PATH=/lib/modules/$KVER
+    insmod $MODULE_PATH/mtdram.ko total_size=8192 erase_size=64
+    dd if=/dev/mtdblock2 of=/tmp/mtdblock8 
+    mkdir /tmp/root_fs
+    mount -t squashfs /tmp/mtdblock8 /tmp/root_fs
+	MOUNT_FLAG=$?
+	if [ "x$MOUNT_FLAG" != "x0" ]; then
+		echo "--->FW upgrade error (mtdblock8)" > /dev/console
+		reboot
+		mm 0xb806001c 0x01000000
+	fi
+
+    mount -o bind /tmp/upload /tmp/root_fs/tmp
+	MOUNT_FLAG=$?
+	if [ "x$MOUNT_FLAG" != "x0" ]; then
+		echo "--->FW upgrade error (upload)" > /dev/console
+		reboot
+		mm 0xb806001c 0x01000000
+	fi
+
+    cd /tmp/root_fs 
+    mkdir old-root
+    pivot_root . old-root
+    mount -t proc none /proc
+    chroot . /bin/sh /etc/scripts/sys_write_image &
+    exit 0
+else
+    # Starting checking ramfs daemon
+    if [ -f /etc/scripts/sys_check_ramfs ]
+    then
+        /etc/scripts/sys_check_ramfs &
+    fi
+
+    echo "****** please check the upload file  ******"
+    exit 2
+fi

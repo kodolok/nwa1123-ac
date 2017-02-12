@@ -1,0 +1,8 @@
+
+if PACKAGE_kmod-qca-enet
+
+config SUPPORT_SSDK_BIN
+	bool
+	default n
+
+endif

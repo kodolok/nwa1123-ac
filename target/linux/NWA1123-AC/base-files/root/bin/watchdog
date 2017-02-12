@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+
+if [ ! "$1" ];then
+    echo "Invalid command..."
+    exit 0
+fi
+
+if [ "$1" = "interval" ];then
+    if [ ! "$2" ];then
+        echo "Please input interval.."
+        exit 0
+    else
+        killall -q watchdogd
+        watchdogd -i $2&
+    fi
+else
+    if [ "$1" = "status" ];then
+        killall -q watchdogd
+        watchdogd -s&
+    fi
+fi
+exit 0

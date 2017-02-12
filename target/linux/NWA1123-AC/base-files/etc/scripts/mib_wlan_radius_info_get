@@ -1,0 +1,160 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanRadiusInfo. 
+##
+## mib_wlan_radius_info
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ "${OID}" = "1" ]; then
+    RAD_NAME=`cfg -v RAD_PRO_NAME_${INDEX}`
+    echo $RAD_NAME
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    PRI_SERVER_ACTIVE=`cfg -v RAD_AUTH_PRI_SERVER_${INDEX}`
+    if [ "$PRI_SERVER_ACTIVE" = "Active" ]
+    then
+        PRI_SERVER_ACTIVE=1
+    else
+        PRI_SERVER_ACTIVE=2
+    fi
+    echo $PRI_SERVER_ACTIVE
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    PRI_SERVER_IP=`cfg -v RAD_AUTH_PRI_SERVER_IP_${INDEX}`
+    if [ "$PRI_SERVER_IP" = "" ]
+    then
+        PRI_SERVER_IP="0.0.0.0"
+    fi
+    echo $PRI_SERVER_IP
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    PRI_SERVER_PORT=`cfg -v RAD_AUTH_PRI_SERVER_PORT_${INDEX}`
+    echo $PRI_SERVER_PORT
+    exit 0
+elif [ "${OID}" = "5" ]; then
+    PRI_SERVER_SECRET=`cfg -v RAD_AUTH_PRI_SERVER_SECRET_${INDEX}`
+    echo $PRI_SERVER_SECRET
+    exit 0
+elif [ "${OID}" = "6" ]; then
+    ACCT_PRI_SERVER_ACTIVE=`cfg -v RAD_ACCT_PRI_SERVER_${INDEX}`
+    if [ "$ACCT_PRI_SERVER_ACTIVE" = "Active" ]
+    then
+        ACCT_PRI_SERVER_ACTIVE=1
+    else
+        ACCT_PRI_SERVER_ACTIVE=2
+    fi
+    echo $ACCT_PRI_SERVER_ACTIVE
+    exit 0
+elif [ "${OID}" = "7" ]; then
+    ACCT_PRI_SERVER_IP=`cfg -v RAD_ACCT_PRI_SERVER_IP_${INDEX}`
+    if [ "$ACCT_PRI_SERVER_IP" = "" ]
+    then
+        ACCT_PRI_SERVER_IP="0.0.0.0"
+    fi
+    echo $ACCT_PRI_SERVER_IP
+    exit 0
+elif [ "${OID}" = "8" ]; then
+    ACCT_PRI_SERVER_PORT=`cfg -v RAD_ACCT_PRI_SERVER_PORT_${INDEX}`
+    if [ "$ACCT_PRI_SERVER_PORT" = "" ]
+    then
+        ACCT_PRI_SERVER_PORT="unknown"
+    fi
+    echo $ACCT_PRI_SERVER_PORT
+    exit 0
+elif [ "${OID}" = "9" ]; then
+    ACCT_PRI_SERVER_SECRET=`cfg -v RAD_ACCT_PRI_SERVER_SECRET_${INDEX}`
+    if [ "$ACCT_PRI_SERVER_SECRET" = "" ]
+    then
+        ACCT_PRI_SERVER_SECRET="unknown"
+    fi
+    echo $ACCT_PRI_SERVER_SECRET
+    exit 0
+elif [ "${OID}" = "10" ]; then
+    SEC_SERVER_ACTIVE=`cfg -v RAD_AUTH_SEC_SERVER_${INDEX}`
+    if [ "$SEC_SERVER_ACTIVE" = "Active" ]
+    then
+        SEC_SERVER_ACTIVE=1
+    else
+        SEC_SERVER_ACTIVE=2
+    fi
+    echo $SEC_SERVER_ACTIVE
+    exit 0
+elif [ "${OID}" = "11" ]; then
+    SEC_SERVER_IP=`cfg -v RAD_AUTH_SEC_SERVER_IP_${INDEX}`
+    if [ "$SEC_SERVER_IP" = "" ]
+    then
+        SEC_SERVER_IP="0.0.0.0"
+    fi
+    echo $SEC_SERVER_IP
+    exit 0
+elif [ "${OID}" = "12" ]; then
+    SEC_SERVER_PORT=`cfg -v RAD_AUTH_SEC_SERVER_PORT_${INDEX}`
+    if [ "$SEC_SERVER_PORT" = "" ]
+    then
+        SEC_SERVER_PORT="unknown"
+    fi
+    echo $SEC_SERVER_PORT
+    exit 0
+elif [ "${OID}" = "13" ]; then
+    SEC_SERVER_SECRET=`cfg -v RAD_AUTH_SEC_SERVER_SECRET_${INDEX}`
+    if [ "$SEC_SERVER_SECRET" = "" ]
+    then
+        SEC_SERVER_SECRET="unknown"
+    fi
+    echo $SEC_SERVER_SECRET
+    exit 0
+elif [ "${OID}" = "14" ]; then
+    ACCT_SEC_SERVER_ACTIVE=`cfg -v RAD_ACCT_SEC_SERVER_${INDEX}`
+    if [ "$ACCT_SEC_SERVER_ACTIVE" = "Active" ]
+    then
+        ACCT_SEC_SERVER_ACTIVE=1
+    else
+        ACCT_SEC_SERVER_ACTIVE=2
+    fi
+    echo $ACCT_SEC_SERVER_ACTIVE
+    exit 0
+elif [ "${OID}" = "15" ]; then
+    ACCT_SEC_SERVER_IP=`cfg -v RAD_ACCT_SEC_SERVER_IP_${INDEX}`
+    if [ "$ACCT_SEC_SERVER_IP" = "" ]
+    then
+        ACCT_SEC_SERVER_IP="0.0.0.0"
+    fi
+    echo $ACCT_SEC_SERVER_IP
+    exit 0
+elif [ "${OID}" = "16" ]; then
+    ACCT_SEC_SERVER_PORT=`cfg -v RAD_ACCT_SEC_SERVER_PORT_${INDEX}`
+    if [ "$ACCT_SEC_SERVER_PORT" = "" ]
+    then
+        ACCT_SEC_SERVER_PORT="unknown"
+    fi
+    echo $ACCT_SEC_SERVER_PORT
+    exit 0
+elif [ "${OID}" = "17" ]; then
+    ACCT_SEC_SERVER_SECRET=`cfg -v RAD_ACCT_SEC_SERVER_SECRET_${INDEX}`
+    if [ "$ACCT_SEC_SERVER_SECRET" = "" ]
+    then
+        ACCT_SEC_SERVER_SECRET="unknown"
+    fi
+    echo $ACCT_SEC_SERVER_SECRET
+    exit 0
+fi
+
+exit 0

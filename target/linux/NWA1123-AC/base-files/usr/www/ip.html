@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript" src="../js/uimake.js"></script>
+  <script type="text/javascript">
+    var opMode2dot4g = "~~AP_STARTMODE_1~";
+    var opMode5g = "~~AP_STARTMODE_2~";
+    function redirectTo() {
+      var newIp = NN_val(NN_getById("AP_IPADDR"));
+      if (newIp != "~~AP_IPADDR~") {
+        forceLogout();
+        if (location.protocol == "http:")
+          top.location.href = location.protocol + "//" + newIp + ":~~MGMT_HTTP_PORT~"; 
+        else 
+          top.location.href = location.protocol + "//" + newIp + ":~~MGMT_HTTPS_PORT~"; 
+      }
+    }
+    function init() {
+      checkWanMode();
+      NN_val(NN_getById("cDOT1Q_VLAN"), NN_val(NN_getById("DOT1Q_VLAN")));
+      NN_val(NN_getById("cNATIVE_VLAN"), !(~~MGMT_VLAN~));
+      checkDot1QVlanStatus();
+      if (opMode2dot4g != "mbssid" && opMode5g != "mbssid") {
+        NN_disableByClass("c_vlan");
+      }
+    }
+    function checkWanMode() {
+      var retVal = NN_val(NN_getByName("WAN_MODE"));
+      if (retVal == 'static') {
+        NN_enableByClass("c_manualipv4");
+      } else {
+        NN_disableByClass("c_manualipv4");
+      }
+    }
+    function checkDot1QVlanStatus() {
+      var isChecked = NN_val(NN_getById("cDOT1Q_VLAN"));
+      NN_val(NN_getById("DOT1Q_VLAN"), ((isChecked == true) ? 1 : 0));
+      if (isChecked == true) {
+        NN_enableByClass("c_nativevlan");
+        checkNativeVlan();
+      } else {
+        NN_disableByClass("c_nativevlan");
+        NN_disableByClass("c_managevlanid");
+      }
+    }
+    function checkNativeVlan() {
+      var isChecked = NN_val(NN_getById("cNATIVE_VLAN"));
+      NN_val(NN_getById("MGMT_VLAN"), ((isChecked == true) ? 0 : 1));
+      if (isChecked == true) {
+        NN_disableByClass("c_managevlanid");
+      } else {
+        NN_enableByClass("c_managevlanid");
+      }
+    }
+    function formSubmit() {
+      var retVal = true;
+      var el;
+      if (!validate(NN_getById("AP_IPADDR"), V_IP)) retVal = false;
+      if (!validate(NN_getById("AP_NETMASK"), V_MASK)) retVal = false;  
+      el = NN_getById("IPGW");
+      if (NN_val(el) != "") {
+        if (!validate(el, V_IP)) retVal = false;
+      } else {
+        NN_removeClass(el, 'invalidinput');
+      }
+      el = NN_getById("IPV6_ADDR");
+      if (NN_val(el) != "") {
+        if (!validate(el, V_IPV6WITHPREFIX)) retVal = false;
+      } else {
+        NN_removeClass(el, 'invalidinput');
+      }
+      el = NN_getById("PRIDNS");
+      if (NN_val(el) != "") {
+        if (!validate(el, V_IP)) retVal = false;
+      } else {
+        NN_removeClass(el, 'invalidinput');
+      }
+      el = NN_getById("SECDNS");
+      if (NN_val(el) != "") {
+        if (!validate(el, V_IP)) retVal = false;
+      } else {
+        NN_removeClass(el, 'invalidinput');
+      }
+      if (retVal == true) {
+        setTimeout("redirectTo();", 2 * 1000);
+      }
+
+      // vlan
+      if (opMode2dot4g === "mbssid" || opMode5g === "mbssid") {
+        if (NN_val(NN_getById("cDOT1Q_VLAN")) == true) {
+          if (NN_val(NN_getById("cNATIVE_VLAN")) != true) {
+            if (!validate(NN_getById("MGMT_VLAN_ID"), V_INT, 1, 4094)) return false;
+          }
+        }
+      }
+      
+      return retVal;
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="IP"><span>IP</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post" onsubmit="return formSubmit();">
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data">
+        <div class="undownLineTitle">
+          IPv4 Address Assignment
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table"><input type="radio" name="WAN_MODE" value="dhcp" ~cWAN_MODE:dhcp~ onclick="checkWanMode();" />Obtain IP Address Automatically</li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table"><input type="radio" name="WAN_MODE" value="static" ~cWAN_MODE:static~ onclick="checkWanMode();" />Use Fixed IP Address</li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">IP Address :</li>
+            <li class="right_table"><input type="text" maxlength="15" size="15" name="AP_IPADDR" id="AP_IPADDR" value="~~AP_IPADDR~" class="c_manualipv4" /></li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Subnet Mask :</li>
+            <li class="right_table"><input type="text" maxlength="15" size="15" name="AP_NETMASK" id="AP_NETMASK" value="~~AP_NETMASK~" class="c_manualipv4" /></li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Gateway IP Address :</li>
+            <li class="right_table"><input type="text" maxlength="15" size="15" name="IPGW" id="IPGW" value="~~IPGW~" class="c_manualipv4" /></li>
+          </ul>
+        </div><br class="clearfloat" />
+        <div class="undownLineTitle">
+          IPv6 Address Assignment
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">
+              IPv6 Address Auto-configuration Mode:
+            </li>
+            <li class="right_table">
+              <select name="IPV6_AUTO">
+                <option value="none" ~sIPV6_AUTO:none~>Disabled</option>
+                <option value="stateful" ~sIPV6_AUTO:stateful~>Stateful</option>
+                <option value="stateless" ~sIPV6_AUTO:stateless~>Stateless</option>
+              </select>
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">IPv6 Address/Prefix Length:</li>
+            <li class="right_table"><input type="text" name="IPV6_ADDR" id="IPV6_ADDR" value="~~IPV6_ADDR~" maxlength="43" size="43" class="c_manualipv6" /></li>
+          </ul>
+        </div><br class="clearfloat" />
+        <div class="undownLineTitle">
+          System DNS Servers
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Primary DNS Server :</li>
+            <li class="right_table"><input type="text" maxlength="15" size="15" name="PRIDNS" id="PRIDNS" value="~~PRIDNS~" /></li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Secondary DNS Server :</li>
+            <li class="right_table"><input type="text" maxlength="15" size="15" name="SECDNS" id="SECDNS" value="~~SECDNS~" /></li>
+          </ul>
+        </div><br class="clearfloat" />
+        <div class="undownLineTitle">
+          VLAN Settings
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">802.1Q VLAN:</li>
+            <li class="right_table">
+              <input type="checkbox" id="cDOT1Q_VLAN" value="1" class="c_vlan" onclick="checkDot1QVlanStatus();" />
+              <input type="hidden" name="DOT1Q_VLAN" id="DOT1Q_VLAN" value="~~DOT1Q_VLAN~" /> Enabled
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Management VLAN ID :</li>
+            <li class="right_table"><input maxlength="4" size="4" name="MGMT_VLAN_ID" id="MGMT_VLAN_ID" value="~~MGMT_VLAN_ID~" class="c_managevlanid c_vlan" />(1-4094)</li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">As Native VLAN:</li>
+            <li class="right_table">
+              <input type="checkbox" id="cNATIVE_VLAN" value="1" class="c_nativevlan c_vlan" onclick="checkNativeVlan();" />
+              <input type="hidden" name="MGMT_VLAN" id="MGMT_VLAN" value="~~MGMT_VLAN~" /> Enabled
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="table_button">
+        <center>
+          <input name="COMMIT" value="Apply" type="submit" class="table_button_l" />
+          <input name="cancel" value="Cancel" type="button" onclick="document.location.replace('ip');" class="table_button_r" />
+          <input type="hidden" name="EXECUTE" value="ip" />
+        </center>
+      </div>
+    </div>
+  </form>
+</body>
+</html>

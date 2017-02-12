@@ -1,0 +1,7 @@
+#!/bin/sh
+INFO="`webget_intf_info WLAN`"
+str1="`echo "$INFO" | cut -d , -f 4`"
+str2="`echo "$str1" | cut -d : -f 2`"
+str3="`echo "$str2" | sed 's/\"//g'`"
+str4="`echo "$str3" | sed 's/}//g'`"
+echo $str4

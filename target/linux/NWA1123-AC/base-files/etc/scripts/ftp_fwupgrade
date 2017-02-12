@@ -1,0 +1,61 @@
+#!/bin/sh
+#########################################################################
+##  FTP F/W upgrade
+##  This file used to F/W upgrade
+#########################################################################
+
+while [ 1 ]; do
+    if [ -f /var/log/vsftpd.log ]
+    then
+        if [ ! -f /tmp/apcfg ]
+        then
+            rm -f /tmp/upload/current.cfg
+            sh /etc/scripts/sys_export_conf /tmp/upload/current.cfg
+            cp /tmp/.apcfg /tmp/apcfg
+        fi
+        if [ ! -f /tmp/upload/current.cfg ]
+        then
+            sh /etc/scripts/sys_export_conf /tmp/upload/current.cfg
+        else
+            if [ /tmp/.apcfg -nt /tmp/apcfg ]
+            then
+                rm -f /tmp/upload/current.cfg
+                sh /etc/scripts/sys_export_conf /tmp/upload/current.cfg
+                cp /tmp/.apcfg /tmp/apcfg
+            fi
+        fi
+        grep ".bin" /var/log/vsftpd.log > /tmp/ftpfw.tmp
+        set -- `ls -l /tmp/ftpfw.tmp`
+        if [ $5 -gt 0 ]
+        then
+            IMAGE_NAME=`cat /tmp/ftpfw.tmp | cut -d \" -f 4`
+            if [ -f /tmp/upload/$IMAGE_NAME ]
+            then
+                echo "The device will upgrade F/W, please NOT turn power OFF.." > /dev/console
+				cp /var/log/vsftpd.log /tmp/ftp_vsftpd
+				cp /tmp/ftpfw.tmp /tmp/ftp_ftpfw
+				echo " " > /var/log/vsftpd.log
+                #rm -f /var/log/vsftpd.log
+                rm -f /tmp/ftpfw.tmp
+                sh /etc/scripts/sys_fwupgrade /tmp/upload/$IMAGE_NAME
+            fi
+        fi
+        grep ".cfg" /var/log/vsftpd.log | grep "OK" > /tmp/ftpconfig.tmp
+        set -- `ls -l /tmp/ftpconfig.tmp`
+        if [ $5 -gt 0 ]
+        then
+            grep ".cfg" /var/log/vsftpd.log | grep "OK UPLOAD" > /tmp/ftpconfig.tmp
+            CONFIG_NAME=`cat /tmp/ftpconfig.tmp | cut -d \" -f 4`
+            if [ -f /tmp/upload/$CONFIG_NAME ]
+            then
+                rm -f /var/log/vsftpd.log
+                rm -f /tmp/ftpconfig.tmp
+                sh /etc/scripts/sys_import_conf /tmp/upload/$CONFIG_NAME
+                reboot
+            fi
+        fi
+    fi
+    sleep 5
+done
+exit 0
+

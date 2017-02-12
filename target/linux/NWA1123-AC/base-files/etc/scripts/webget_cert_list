@@ -1,0 +1,16 @@
+#!/bin/sh
+
+ls -1 /tmp/certs > /tmp/cert.$$
+
+echo -n "["
+
+while read line
+do
+    if [ "$line" != "" ]; then
+        echo -n "\"$line\","
+    fi
+done < /tmp/cert.$$
+
+echo -n "\"\"]"
+
+rm /tmp/cert.$$

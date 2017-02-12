@@ -1,0 +1,12 @@
+#!/bin/sh
+#########################################################################
+##  get eth0 and wifi0 MAC
+##  This file used to get eth0 and wifi0 MAC
+#########################################################################
+
+dd if=/dev/mtdblock1 of=/tmp/boot-env bs=64k count=1
+ETH0MAC=`cat /tmp/boot-env | grep 'eth0mac'`
+echo $ETH0MAC
+WIFI0MAC=`cat /tmp/boot-env | grep 'wifi0mac'`
+echo $WIFI0MAC
+exit 0

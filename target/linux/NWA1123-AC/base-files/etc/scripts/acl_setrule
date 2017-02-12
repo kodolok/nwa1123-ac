@@ -1,0 +1,847 @@
+#!/bin/sh
+#########################################################################
+##  System Management Configuration
+#########################################################################
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+KVER=`uname -r | cut -f 1 -d '-'`
+MODULE_PATH=/lib/modules/$KVER
+
+ACLCFG="/tmp/.aclcfg"
+
+# insert module
+module_x_ip_eb_tables iptables enable
+
+iptables -F
+ip6tables -F
+#rmmod xt_physdev
+rm -f $ACLCFG
+touch $ACLCFG
+
+if [ "$MGMT_FTP_ACCESS" = "0" ] && [ "$MGMT_TELNET_ACCESS" = "0" ] && [ "$MGMT_WWW_ACCESS" = "0" ] && [ "$MGMT_SNMP_ACCESS" = "0" ]; then
+    # remove module
+    module_x_ip_eb_tables iptables disable
+fi
+
+MGMT_IF=`get_mgmt_if`
+ACL4_STR=`ifconfig $MGMT_IF | grep 'inet addr'`
+ACL4_DIP=`expr "$ACL4_STR" : '.*inet addr:\([0-9\.]*\)'`
+ACL6_STR=`ifconfig $MGMT_IF | grep 'inet6 addr'`
+ACL6_DIP=`echo $ACL6_STR | awk -v RS=$ '{print $3}' | cut -d"/" -f1`
+
+##
+## acladdrule
+##
+
+acladdrule() {
+    ACL_CMD=iptables
+
+	if [ "x$3" != "x0.0.0.0" ]; then
+		setrule $1 $2 $3 $4 $5 $6
+	fi
+}
+
+acl6addrule() {
+    ACL_CMD=ip6tables
+
+	if [ "x$3" != "x0:0:0:0:0:0:0:0" ]; then
+		setrule $1 $2 $3 $4 $5 $6
+	fi
+}
+
+setrule() {
+    AIF=$1
+    ASMAC=$2
+    ASIP=$3
+    ADIP=$4
+    APROT=$5
+    ADPORT=$6
+
+    ## 
+    ## Insert the module of physical device matched
+    ##
+
+    #insmod $MODULE_PATH/xt_physdev.ko
+    
+    ##
+    ## Accept rule
+    ##
+
+    IF_STR=`expr "$AIF" : '\([br]*\)'`
+
+    if [ "$ASMAC" != "0" -a "$ASIP" != "0" ]; then
+        if [ "$IF_STR" = "br" -o "$MGMT_IF" = "eth0" ]; then
+            $ACL_CMD -A INPUT -i $AIF -m mac --mac-source $ASMAC -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -i $AIF -m mac --mac-source $ASMAC -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        else
+            $ACL_CMD -A INPUT -m physdev --physdev-in $AIF -m mac --mac-source $ASMAC -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -m physdev --physdev-in $AIF -m mac --mac-source $ASMAC -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        fi
+    elif [ "$ASMAC" != "0" -a "$ASIP" = "0" ]; then
+        if [ "$IF_STR" = "br" -o "$MGMT_IF" = "eth0" ]; then
+            $ACL_CMD -A INPUT -i $AIF -m mac --mac-source $ASMAC -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -i $AIF -m mac --mac-source $ASMAC -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        else
+            $ACL_CMD -A INPUT -m physdev --physdev-in $AIF -m mac --mac-source $ASMAC -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -m physdev --physdev-in $AIF -m mac --mac-source $ASMAC -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        fi
+    elif [ "$ASMAC" = "0" -a "$ASIP" != "0" ]; then
+        if [ "$IF_STR" = "br" -o "$MGMT_IF" = "eth0" ]; then
+            $ACL_CMD -A INPUT -i $AIF -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -i $AIF -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        else
+            $ACL_CMD -A INPUT -m physdev --physdev-in $AIF -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -m physdev --physdev-in $AIF -s $ASIP -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        fi
+    elif [ "$ASMAC" = "0" -a "$ASIP" = "0" ]; then
+        if [ "$IF_STR" = "br" -o "$MGMT_IF" = "eth0" ]; then
+            $ACL_CMD -A INPUT -i $AIF -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -i $AIF -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        else
+            $ACL_CMD -A INPUT -m physdev --physdev-in $AIF -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT
+            echo "$ACL_CMD -A INPUT -m physdev --physdev-in $AIF -d $ADIP -p $APROT --dport $ADPORT -j ACCEPT" >> $ACLCFG
+        fi
+    fi
+
+    ##
+    ## Drop rule
+    ##
+
+    # $ACL_CMD -A INPUT -d $ADIP -p $APROT --dport $ADPORT -j DROP
+    # echo "$ACL_CMD -A INPUT -d $ADIP -p $APROT --dport $ADPORT -j DROP" >> $ACLCFG
+}
+
+
+_IFS="$IFS"
+IFS=','
+
+if [ "$DOT1Q_VLAN" = "1" -a "$MGMT_VLAN" = "1" ]; then
+    ETH_IF="eth0.$MGMT_VLAN_ID"
+elif [ "$DOT1Q_VLAN" = "1" -a "$MGMT_VLAN" = "0" ]; then
+    ETH_IF="eth0.0"	
+else
+    ETH_IF="eth0"
+fi
+
+if [ "$MGMT_FTP_ACCESS" != "0" ]; then
+    if [ "$MGMT_FTP_MAC_SEL" = "1" ]; then
+        ACL_SMAC="$MGMT_FTP_MAC"
+    else
+        ACL_SMAC="0"
+    fi
+
+    if [ "$MGMT_FTP_IP_SEL" = "1" ]; then
+        ACL4_SIP="$MGMT_FTP_IP"
+        ACL6_SIP="$MGMT_FTP_IPV6"
+    else
+        ACL4_SIP="0"
+        ACL6_SIP="0"
+    fi
+
+    ACL_DPORT=$MGMT_FTP_PORT
+
+    if [ "$MGMT_FTP_ACCESS" = "1" ]; then
+        ACL_IF=$ETH_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+    elif [ "$MGMT_FTP_ACCESS" = "2" ]; then
+        if [ "${AP_STARTMODE_1}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=1
+        else
+            VAP_NUM=0
+        fi
+
+        for i in $VAP_LIST_1;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    
+                    fi  
+						
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+
+        if [ "${AP_STARTMODE_2}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=9
+        else
+            VAP_NUM=8
+        fi
+
+        for i in $VAP_LIST_2;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    fi
+				elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+						
+					else	
+						# native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+					
+                    fi					
+					
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+    elif [ "$MGMT_FTP_ACCESS" = "3" ]; then
+        ACL_IF=$MGMT_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT        
+    else
+        echo "Unknown Interface!"
+    fi
+    iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+fi
+
+if [ "$MGMT_TELNET_ACCESS" != "0" ]; then
+    if [ "$MGMT_TELNET_MAC_SEL" = "1" ]; then
+        ACL_SMAC="$MGMT_TELNET_MAC"
+    else
+        ACL_SMAC="0"
+    fi
+
+    if [ "$MGMT_TELNET_IP_SEL" = "1" ]; then
+        ACL4_SIP="$MGMT_TELNET_IP"
+        ACL6_SIP="$MGMT_TELNET_IPV6"
+    else
+        ACL4_SIP="0"
+        ACL6_SIP="0"
+    fi
+
+    ACL_DPORT=$MGMT_TELNET_PORT
+
+    if [ "$MGMT_TELNET_ACCESS" = "1" ]; then
+        ACL_IF=$ETH_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+    elif [ "$MGMT_TELNET_ACCESS" = "2" ]; then
+        if [ "${AP_STARTMODE_1}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=1
+        else
+            VAP_NUM=0
+        fi
+
+        for i in $VAP_LIST_1;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    
+                    fi  
+
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+
+        if [ "${AP_STARTMODE_2}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=9
+        else
+            VAP_NUM=8
+        fi
+
+        for i in $VAP_LIST_2;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+                        
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    
+                    fi  
+
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+    elif [ "$MGMT_TELNET_ACCESS" = "3" ]; then
+        ACL_IF=$MGMT_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+    else
+        echo "Unknown Interface!"
+    fi
+
+    iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+fi
+
+if [ "$MGMT_WWW_ACCESS" != "0" ]; then
+    if [ "$MGMT_WWW_MAC_SEL" = "1" ]; then
+        ACL_SMAC="$MGMT_WWW_MAC"
+    else
+        ACL_SMAC="0"
+    fi
+
+    if [ "$MGMT_WWW_IP_SEL" = "1" ]; then
+        ACL4_SIP="$MGMT_WWW_IP"
+        ACL6_SIP="$MGMT_WWW_IPV6"
+    else
+        ACL4_SIP="0"
+        ACL6_SIP="0"
+    fi
+
+    ACL_DPORT=$MGMT_HTTP_PORT
+    ACL_DPORT_2=$MGMT_HTTPS_PORT
+
+    if [ "$MGMT_WWW_ACCESS" = "1" ]; then
+        ACL_IF=$ETH_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+        
+        # set for ipv6
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+    elif [ "$MGMT_WWW_ACCESS" = "2" ]; then
+        if [ "${AP_STARTMODE_1}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=1
+        else
+            VAP_NUM=0
+        fi
+
+        for i in $VAP_LIST_1;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                        # set for ipv6
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+                    fi  
+
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                # set for ipv6
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+
+        if [ "${AP_STARTMODE_2}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=9
+        else
+            VAP_NUM=8
+        fi
+
+        for i in $VAP_LIST_2;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                        # set for ipv6
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+                    fi  
+
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+
+                # set for ipv6
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+                acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+    elif [ "$MGMT_WWW_ACCESS" = "3" ]; then
+        ACL_IF=$MGMT_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT_2
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT_2
+        
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT_2
+        acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT_2
+    else
+        echo "Unknown Interface!"
+    fi
+
+    iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+
+    iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT_2 -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT_2 -j DROP" >> $ACLCFG
+    iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT_2 -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT_2 -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT_2 -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p tcp --dport $ACL_DPORT_2 -j DROP" >> $ACLCFG
+    ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT_2 -j DROP
+    echo "ip6tables -A INPUT -d $ACL6_DIP -p udp --dport $ACL_DPORT_2 -j DROP" >> $ACLCFG
+fi
+
+if [ "$MGMT_SNMP_ACCESS" != "0" ]; then
+    if [ "$MGMT_SNMP_MAC_SEL" = "1" ]; then
+        ACL_SMAC="$MGMT_SNMP_MAC"
+    else
+        ACL_SMAC="0"
+    fi
+
+    if [ "$MGMT_SNMP_IP_SEL" = "1" ]; then
+        ACL4_SIP="$MGMT_SNMP_IP"
+    else
+        ACL4_SIP="0"
+    fi
+
+    ACL_DPORT=$MGMT_SNMP_PORT
+
+    if [ "$MGMT_SNMP_ACCESS" = "1" ]; then
+        ACL_IF=$ETH_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+    elif [ "$MGMT_SNMP_ACCESS" = "2" ]; then
+        if [ "${AP_STARTMODE_1}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=1
+        else
+            VAP_NUM=0
+        fi
+
+        for i in $VAP_LIST_1;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    
+                    fi  
+
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+
+        if [ "${AP_STARTMODE_2}" = "root-mbssid" ]; then
+            ## WDS Root VAP has been actived
+            VAP_NUM=9
+        else
+            VAP_NUM=8
+        fi
+
+        for i in $VAP_LIST_2;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+
+            ITER_VLAN="AP_VLAN_$i"
+            eval ITER_VLAN=\$$ITER_VLAN
+
+            if [ "${DOT1Q_VLAN}" = "1" ]; then
+                if [ "$MGMT_VLAN" = "1" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+                    fi
+                elif [ "$MGMT_VLAN" = "0" ]; then
+                    if [ "$MGMT_VLAN_ID" = "$ITER_VLAN" ]; then
+                        ACL_IF="ath$VAP_NUM"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                        
+                    else    
+                        # native vlan enable(0) and ( wifi vlan id != native vlan id )
+                        ACL_IF="ath$VAP_NUM.$ITER_VLAN"
+
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP tcp $ACL_DPORT
+                        ##acl6addrule $ACL_IF $ACL_SMAC $ACL6_SIP $ACL6_DIP udp $ACL_DPORT
+                    
+                    fi  
+                                            
+                fi
+            else
+                ACL_IF="ath$VAP_NUM"
+
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+                acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+            fi
+
+            VAP_NUM=$(($VAP_NUM+1))
+        done
+    elif [ "$MGMT_SNMP_ACCESS" = "3" ]; then
+        ACL_IF=$MGMT_IF
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP tcp $ACL_DPORT
+        acladdrule $ACL_IF $ACL_SMAC $ACL4_SIP $ACL4_DIP udp $ACL_DPORT
+    else
+        echo "Unknown Interface!"
+    fi
+
+    iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p tcp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+    iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP
+    echo "iptables -A INPUT -d $ACL4_DIP -p udp --dport $ACL_DPORT -j DROP" >> $ACLCFG
+fi
+
+IFS="$_IFS"
+
+exit 0

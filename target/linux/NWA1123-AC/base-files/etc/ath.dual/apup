@@ -1,0 +1,189 @@
+#!/bin/sh
+apup_exit()
+{
+    # release the lock 
+    rm -f /tmp/lock.apup
+    exit $1
+}
+
+#####################################################################################
+##
+## "main" procedure
+##
+
+if [ -f /tmp/lock.apup ]; then
+    echo "Another apup script is running."
+    exit
+else
+    echo $$ > /tmp/lock.apup
+fi
+
+MODLIST=`lsmod | cut -f1,0 -d" " | grep ath_hal `
+
+if [ "${MODLIST}" = "ath_hal" ]; then
+    echo "AP is already up"
+    apup_exit
+fi
+
+##
+## Bring in the default environmental variables
+##
+
+. /etc/ath/apcfg
+
+WAN_IF=${WAN_IF:=eth0}
+LAN_IF=${LAN_IF:=eth1}
+
+HOSTAPD_VER=`hostapd -v 2>&1|grep hostapd|cut -f2 -d' '`
+if [ "${BEACON_INT}" = "" ]; then
+    BEACON_INT=100
+fi
+##
+## For safety, delete all /tmp nodes we may re-create
+##
+
+rm -rf /tmp/br*
+rm -rf /tmp/bc*
+rm -rf /tmp/ap*
+rm -rf /tmp/sta*
+rm -rf /tmp/sup*
+rm -rf /tmp/top*
+
+##
+## Determine the number of radios installed
+##
+
+NUMRADIO_AHB=${NUMRADIO_AHB:=1}
+NUMRADIO_PCI=`grep -c 168c /proc/bus/pci/devices`
+NUMRADIO=`expr ${NUMRADIO_PCI} + ${NUMRADIO_AHB}`
+
+##
+## Make sure the number is 1 or 2.  Any other is invalid
+##
+
+if [ $NUMRADIO -gt 2 -o $NUMRADIO -lt 1 ]; then
+    echo "INVALID CONFIGURATION, RADIO NOT INSTALLED"
+    exit 255
+fi
+
+##
+## Start by Radio
+##
+if [ "$WLAN_UP_1" = "1" ]; then
+    radiostart 0
+fi
+if [ "$WLAN_UP_2" = "1" ]; then
+    radiostart 1
+fi
+
+##
+## Setting interfaces
+##
+export MGMT_IF=`get_mgmt_if`
+
+if [ "$WLAN_UP_1" != "1" -a "$WLAN_UP_2" != "1" ]; then
+    sh /etc/scripts/vlan_setvlan
+    sh /etc/scripts/acl_setrule
+fi
+
+## Use MAC address of eth0
+ETH_MAC=`get_if_hwaddr eth0`
+ifconfig $MGMT_IF hw ether $ETH_MAC
+ifconfig $MGMT_IF ${AP_IPADDR} netmask ${AP_NETMASK} up
+
+##
+## Check the WAN mode.  check for DHCP client, else
+## simply set the address
+##
+WAN_MODE=`cfg -v WAN_MODE`
+if [ "${WAN_MODE}" = "dhcp" ]; then
+    ##
+    ## Run the DHCP client on this interface
+    ##
+
+    ifconfig $MGMT_IF $IPADDRESS $NETMASK up
+    cgi_get_dhcp_ip "cgi_ipv4_settings"
+else
+    ##
+    ## Static IP address
+    ##
+		if [ -n "$IPGW" ]; then
+			route add default gw $IPGW dev $MGMT_IF
+		else
+			route del -net 0.0.0.0 netmask 0.0.0.0 dev $MGMT_IF
+		fi
+
+		arping -U -c 1 -I $MGMT_IF $AP_IPADDR
+fi
+
+##
+## IPV6 Setting
+##
+if [ "${IPV6_AUTO}" = "none" ]; then
+    echo "0" > /proc/sys/net/ipv6/conf/$MGMT_IF/accept_ra
+    ifconfig $MGMT_IF | awk '/Global/ { cmd="ifconfig $MGMT_IF del " $3; system(cmd) }'
+else
+    echo "1" > /proc/sys/net/ipv6/conf/$MGMT_IF/accept_ra
+    ifconfig $MGMT_IF | awk '/Global/ { cmd="ifconfig $MGMT_IF del " $3; system(cmd) }'
+fi
+
+if [ "${IPV6_AUTO}" = "stateful" ]; then
+    ##
+    ## modify /etc/dhcp6c.conf
+    ##
+    new_dhcp6c_conf=/tmp/dhcp6c.conf.tmp
+    echo interface $MGMT_IF { > $new_dhcp6c_conf
+    sed /interface/d /etc/dhcp6c.conf >> $new_dhcp6c_conf
+    mv -f $new_dhcp6c_conf /tmp/dhcp6c.conf
+    unset new_dhcp6c_conf
+
+    ##
+    ## Run the DHCPV6 client on this interface
+    ##
+
+    /sbin/dhcp6c -c /tmp/dhcp6c.conf $MGMT_IF
+fi
+
+if [ -n "$IPV6_ADDR" ]
+then
+    ifconfig $MGMT_IF add $IPV6_ADDR
+    cfg -a OLD_IPV6_ADDR=$IPV6_ADDR
+fi
+
+# Workaround for early version of driver
+# Wait for the scanning of ACS
+IN_PROGRESS=1
+TIMEOUT=0
+while [ $IN_PROGRESS = 1 ]
+do
+    if [ $((TIMEOUT++)) -gt 10 ]; then
+        break;
+    fi
+    IN_PROGRESS=`iwpriv ath8 get_acs_state | cut -d ':' -f 2`
+    sleep 1
+done
+
+##
+## Now, make the topology file
+##
+
+if [ "$WLAN_UP_1" = "1" ]; then
+    makeTopology 0
+fi
+if [ "$WLAN_UP_2" = "1" ]; then
+    makeTopology 1
+fi
+
+if [ "$LED_CTRL_STATUS" = "1" ]; then
+    # green led off
+    mm 0xb804000c 0x00001000
+fi
+
+##
+## Disable DCS
+##
+iwpriv wifi0 dcs_enable 0
+iwpriv wifi1 dcs_enable 0
+
+# release the lock 
+rm -f /tmp/lock.apup

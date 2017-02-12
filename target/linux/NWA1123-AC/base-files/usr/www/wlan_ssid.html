@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <title>.::Welcome to the Web-Based Configurator::.</title>
+    <link href="css/expert.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/baseJS.js" ></script>
+    <script type="text/javascript" src="js/uimake.js" ></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+      var secprofile_name = {
+        "0":"Disabled",
+        "1":"~~SEC_PRO_NAME_1~", /* secProfile1 */
+        "2":"~~SEC_PRO_NAME_2~", /* secProfile2 */
+        "3":"~~SEC_PRO_NAME_3~", /* secProfile3 */
+        "4":"~~SEC_PRO_NAME_4~", /* secProfile4 */
+        "5":"~~SEC_PRO_NAME_5~", /* secProfile5 */
+        "6":"~~SEC_PRO_NAME_6~", /* secProfile6 */
+        "7":"~~SEC_PRO_NAME_7~", /* secProfile7 */
+        "8":"~~SEC_PRO_NAME_8~"  /* secProfile8 */
+      };
+      var macprofile_name = {
+        "0":"Disabled",
+        "1":"~~MAC_PRO_NAME_1~", /* macProfile1 */
+        "2":"~~MAC_PRO_NAME_2~", /* macProfile2 */
+        "3":"~~MAC_PRO_NAME_3~", /* macProfile3 */
+        "4":"~~MAC_PRO_NAME_4~", /* macProfile4 */
+        "5":"~~MAC_PRO_NAME_5~", /* macProfile5 */
+        "6":"~~MAC_PRO_NAME_6~", /* macProfile6 */
+        "7":"~~MAC_PRO_NAME_7~", /* macProfile7 */
+        "8":"~~MAC_PRO_NAME_8~"  /* macProfile8 */
+      };
+      var ssid = {
+        "ssid_profile_1": {
+          "secprof":"~~AP_SEC_PROFILE_1~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_1~"  /* 0-8 */
+          },
+        "ssid_profile_2": {
+          "secprof":"~~AP_SEC_PROFILE_2~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_2~"  /* 0-8 */
+          },
+        "ssid_profile_3": {
+          "secprof":"~~AP_SEC_PROFILE_3~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_3~"  /* 0-8 */
+          },
+        "ssid_profile_4": {
+          "secprof":"~~AP_SEC_PROFILE_4~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_4~"  /* 0-8 */
+          },
+        "ssid_profile_5": {
+          "secprof":"~~AP_SEC_PROFILE_5~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_5~"  /* 0-8 */
+          },
+        "ssid_profile_6": {
+          "secprof":"~~AP_SEC_PROFILE_6~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_6~"  /* 0-8 */
+          },
+        "ssid_profile_7": {
+          "secprof":"~~AP_SEC_PROFILE_7~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_7~"  /* 0-8 */
+          },
+        "ssid_profile_8": {
+          "secprof":"~~AP_SEC_PROFILE_8~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_8~"  /* 0-8 */
+          },
+        "ssid_profile_9": {
+          "secprof":"~~AP_SEC_PROFILE_9~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_9~"  /* 0-8 */
+          },
+        "ssid_profile_10": {
+          "secprof":"~~AP_SEC_PROFILE_10~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_10~"  /* 0-8 */
+          },
+        "ssid_profile_11": {
+          "secprof":"~~AP_SEC_PROFILE_11~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_11~"  /* 0-8 */
+          },
+        "ssid_profile_12": {
+          "secprof":"~~AP_SEC_PROFILE_12~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_12~"  /* 0-8 */
+          },
+        "ssid_profile_13": {
+          "secprof":"~~AP_SEC_PROFILE_13~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_13~"  /* 0-8 */
+          },
+        "ssid_profile_14": {
+          "secprof":"~~AP_SEC_PROFILE_14~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_14~"  /* 0-8 */
+          },
+        "ssid_profile_15": {
+          "secprof":"~~AP_SEC_PROFILE_15~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_15~"  /* 0-8 */
+          },
+        "ssid_profile_16": {
+          "secprof":"~~AP_SEC_PROFILE_16~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_16~"  /* 0-8 */
+          },
+        "ssid_profile_17": {
+          "secprof":"~~AP_SEC_PROFILE_17~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_17~"  /* 0-8 */
+          },
+        "ssid_profile_18": {
+          "secprof":"~~AP_SEC_PROFILE_18~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_18~"  /* 0-8 */
+          },
+        "ssid_profile_19": {
+          "secprof":"~~AP_SEC_PROFILE_19~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_19~"  /* 0-8 */
+          },
+        "ssid_profile_20": {
+          "secprof":"~~AP_SEC_PROFILE_20~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_20~"  /* 0-8 */
+          },
+        "ssid_profile_21": {
+          "secprof":"~~AP_SEC_PROFILE_21~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_21~"  /* 0-8 */
+          },
+        "ssid_profile_22": {
+          "secprof":"~~AP_SEC_PROFILE_22~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_22~"  /* 0-8 */
+          },
+        "ssid_profile_23": {
+          "secprof":"~~AP_SEC_PROFILE_23~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_23~"  /* 0-8 */
+          },
+        "ssid_profile_24": {
+          "secprof":"~~AP_SEC_PROFILE_24~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_24~"  /* 0-8 */
+          },
+        "ssid_profile_25": {
+          "secprof":"~~AP_SEC_PROFILE_25~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_25~"  /* 0-8 */
+          },
+        "ssid_profile_26": {
+          "secprof":"~~AP_SEC_PROFILE_26~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_26~"  /* 0-8 */
+          },
+        "ssid_profile_27": {
+          "secprof":"~~AP_SEC_PROFILE_27~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_27~"  /* 0-8 */
+          },
+        "ssid_profile_28": {
+          "secprof":"~~AP_SEC_PROFILE_28~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_28~"  /* 0-8 */
+          },
+        "ssid_profile_29": {
+          "secprof":"~~AP_SEC_PROFILE_29~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_29~"  /* 0-8 */
+          },
+        "ssid_profile_30": {
+          "secprof":"~~AP_SEC_PROFILE_30~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_30~"  /* 0-8 */
+          },
+        "ssid_profile_31": {
+          "secprof":"~~AP_SEC_PROFILE_31~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_31~"  /* 0-8 */
+          },
+        "ssid_profile_32": {
+          "secprof":"~~AP_SEC_PROFILE_32~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_32~"  /* 0-8 */
+          },
+        "ssid_profile_33": {
+          "secprof":"~~AP_SEC_PROFILE_33~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_33~"  /* 0-8 */
+          },
+        "ssid_profile_34": {
+          "secprof":"~~AP_SEC_PROFILE_34~", /* 0-8 */
+          "macprof":"~~AP_MAC_PROFILE_34~"  /* 0-8 */
+          }
+        };
+        
+    function init() {
+        for (i=1; i<=34; i++)
+        {
+            var sec_idx = ssid["ssid_profile_"+i].secprof;
+            var mac_idx = ssid["ssid_profile_"+i].macprof;
+
+            var secProf = NN_getById("secProf_"+i);
+            var macProf = NN_getById("macProf_"+i);
+            
+            NN_val(secProf,secprofile_name[sec_idx]);
+            NN_val(macProf,macprofile_name[mac_idx]);
+        }
+        $('td.chkSpc').contents().filter(function() {
+          return this.nodeType == 3;
+        }).each(function() {
+          this.data = this.data.replace(/ /g, '\u00a0');
+        });
+    }
+    </script>
+  </head>
+  <body onload="init();">
+    <div class="topgraph"></div>
+    <div id="tabs">
+      <ul>
+		    <li><a href="wlan_2dot4g" title="Wireless Settings - 2.4G"><span>Wireless Settings - 2.4G</span></a></li>
+		    <li><a href="wlan_5g" title="Wireless Settings - 5G"><span>Wireless Settings - 5G</span></a></li>
+        <li class="hightline"><a title="SSID"><span>SSID</span></a></li>
+        <li><a href="wlan_security" title="Security"><span>Security</span></a></li>
+        <li><a href="wlan_radius" title="RADIUS"><span>RADIUS</span></a></li>
+        <li><a href="wlan_l2iso" title="Layer-2 Isolation"><span>Layer-2 Isolation</span></a></li>
+        <li><a href="wlan_mf" title="MAC Filter"><span>MAC Filter</span></a></li>
+      </ul>
+      <br class="clearfloat" />
+    </div>
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data" style="margin-bottom: 40px;">
+        <div class="undownLineTitle">Profile Settings</div>
+        <div class="tableframe" >
+          <table width="100%" cellpadding="0" cellspacing="0" >
+            <tr class="top_font" align="center" >
+              <td width="35">#</td>
+              <td>Profile Name</td>
+              <td>SSID</td>
+              <td>Security</td>
+              <td>QoS</td>
+              <td>MAC Filter</td>
+              <td width="100" >Edit</td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>1</td><td class="chkSpc">~~AP_PRO_NAME_1~</td><td class="chkSpc">~~AP_SSID_1~</td><td id="secProf_1"></td><td>~~AP_QOS_1~</td><td id="macProf_1"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=1" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>2</td><td class="chkSpc">~~AP_PRO_NAME_2~</td><td class="chkSpc">~~AP_SSID_2~</td><td id="secProf_2"></td><td>~~AP_QOS_2~</td><td id="macProf_2"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=2" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>3</td><td class="chkSpc">~~AP_PRO_NAME_3~</td><td class="chkSpc">~~AP_SSID_3~</td><td id="secProf_3"></td><td>~~AP_QOS_3~</td><td id="macProf_3"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=3" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>4</td><td class="chkSpc">~~AP_PRO_NAME_4~</td><td class="chkSpc">~~AP_SSID_4~</td><td id="secProf_4"></td><td>~~AP_QOS_4~</td><td id="macProf_4"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=4" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>5</td><td class="chkSpc">~~AP_PRO_NAME_5~</td><td class="chkSpc">~~AP_SSID_5~</td><td id="secProf_5"></td><td>~~AP_QOS_5~</td><td id="macProf_5"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=5" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>6</td><td class="chkSpc">~~AP_PRO_NAME_6~</td><td class="chkSpc">~~AP_SSID_6~</td><td id="secProf_6"></td><td>~~AP_QOS_6~</td><td id="macProf_6"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=6" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>7</td><td class="chkSpc">~~AP_PRO_NAME_7~</td><td class="chkSpc">~~AP_SSID_7~</td><td id="secProf_7"></td><td>~~AP_QOS_7~</td><td id="macProf_7"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=7" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>8</td><td class="chkSpc">~~AP_PRO_NAME_8~</td><td class="chkSpc">~~AP_SSID_8~</td><td id="secProf_8"></td><td>~~AP_QOS_8~</td><td id="macProf_8"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=8" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>9</td><td class="chkSpc">~~AP_PRO_NAME_9~</td><td class="chkSpc">~~AP_SSID_9~</td><td id="secProf_9"></td><td>~~AP_QOS_9~</td><td id="macProf_9"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=9" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>10</td><td class="chkSpc">~~AP_PRO_NAME_10~</td><td class="chkSpc">~~AP_SSID_10~</td><td id="secProf_10"></td><td>~~AP_QOS_10~</td><td id="macProf_10"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=10" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>11</td><td class="chkSpc">~~AP_PRO_NAME_11~</td><td class="chkSpc">~~AP_SSID_11~</td><td id="secProf_11"></td><td>~~AP_QOS_11~</td><td id="macProf_11"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=11" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>12</td><td class="chkSpc">~~AP_PRO_NAME_12~</td><td class="chkSpc">~~AP_SSID_12~</td><td id="secProf_12"></td><td>~~AP_QOS_12~</td><td id="macProf_12"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=12" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>13</td><td class="chkSpc">~~AP_PRO_NAME_13~</td><td class="chkSpc">~~AP_SSID_13~</td><td id="secProf_13"></td><td>~~AP_QOS_13~</td><td id="macProf_13"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=13" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>14</td><td class="chkSpc">~~AP_PRO_NAME_14~</td><td class="chkSpc">~~AP_SSID_14~</td><td id="secProf_14"></td><td>~~AP_QOS_14~</td><td id="macProf_14"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=14" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>15</td><td class="chkSpc">~~AP_PRO_NAME_15~</td><td class="chkSpc">~~AP_SSID_15~</td><td id="secProf_15"></td><td>~~AP_QOS_15~</td><td id="macProf_15"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=15" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>16</td><td class="chkSpc">~~AP_PRO_NAME_16~</td><td class="chkSpc">~~AP_SSID_16~</td><td id="secProf_16"></td><td>~~AP_QOS_16~</td><td id="macProf_16"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=16" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>17</td><td class="chkSpc">~~AP_PRO_NAME_17~</td><td class="chkSpc">~~AP_SSID_17~</td><td id="secProf_17"></td><td>~~AP_QOS_17~</td><td id="macProf_17"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=17" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>18</td><td class="chkSpc">~~AP_PRO_NAME_18~</td><td class="chkSpc">~~AP_SSID_18~</td><td id="secProf_18"></td><td>~~AP_QOS_18~</td><td id="macProf_18"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=18" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>19</td><td class="chkSpc">~~AP_PRO_NAME_19~</td><td class="chkSpc">~~AP_SSID_19~</td><td id="secProf_19"></td><td>~~AP_QOS_19~</td><td id="macProf_19"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=19" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>20</td><td class="chkSpc">~~AP_PRO_NAME_20~</td><td class="chkSpc">~~AP_SSID_20~</td><td id="secProf_20"></td><td>~~AP_QOS_20~</td><td id="macProf_20"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=20" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>21</td><td class="chkSpc">~~AP_PRO_NAME_21~</td><td class="chkSpc">~~AP_SSID_21~</td><td id="secProf_21"></td><td>~~AP_QOS_21~</td><td id="macProf_21"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=21" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>22</td><td class="chkSpc">~~AP_PRO_NAME_22~</td><td class="chkSpc">~~AP_SSID_22~</td><td id="secProf_22"></td><td>~~AP_QOS_22~</td><td id="macProf_22"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=22" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>23</td><td class="chkSpc">~~AP_PRO_NAME_23~</td><td class="chkSpc">~~AP_SSID_23~</td><td id="secProf_23"></td><td>~~AP_QOS_23~</td><td id="macProf_23"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=23" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>24</td><td class="chkSpc">~~AP_PRO_NAME_24~</td><td class="chkSpc">~~AP_SSID_24~</td><td id="secProf_24"></td><td>~~AP_QOS_24~</td><td id="macProf_24"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=24" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>25</td><td class="chkSpc">~~AP_PRO_NAME_25~</td><td class="chkSpc">~~AP_SSID_25~</td><td id="secProf_25"></td><td>~~AP_QOS_25~</td><td id="macProf_25"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=25" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>26</td><td class="chkSpc">~~AP_PRO_NAME_26~</td><td class="chkSpc">~~AP_SSID_26~</td><td id="secProf_26"></td><td>~~AP_QOS_26~</td><td id="macProf_26"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=26" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>27</td><td class="chkSpc">~~AP_PRO_NAME_27~</td><td class="chkSpc">~~AP_SSID_27~</td><td id="secProf_27"></td><td>~~AP_QOS_27~</td><td id="macProf_27"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=27" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>28</td><td class="chkSpc">~~AP_PRO_NAME_28~</td><td class="chkSpc">~~AP_SSID_28~</td><td id="secProf_28"></td><td>~~AP_QOS_28~</td><td id="macProf_28"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=28" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>29</td><td class="chkSpc">~~AP_PRO_NAME_29~</td><td class="chkSpc">~~AP_SSID_29~</td><td id="secProf_29"></td><td>~~AP_QOS_29~</td><td id="macProf_29"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=29" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>30</td><td class="chkSpc">~~AP_PRO_NAME_30~</td><td class="chkSpc">~~AP_SSID_30~</td><td id="secProf_30"></td><td>~~AP_QOS_30~</td><td id="macProf_30"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=30" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>31</td><td class="chkSpc">~~AP_PRO_NAME_31~</td><td class="chkSpc">~~AP_SSID_31~</td><td id="secProf_31"></td><td>~~AP_QOS_31~</td><td id="macProf_31"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=31" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>32</td><td class="chkSpc">~~AP_PRO_NAME_32~</td><td class="chkSpc">~~AP_SSID_32~</td><td id="secProf_32"></td><td>~~AP_QOS_32~</td><td id="macProf_32"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=32" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+          </table>
+        </div>
+        <div class="undownLineTitle">Profile Settings for Client Mode</div>
+        <div class="tableframe" >
+          <table width="100%" cellpadding="0" cellspacing="0" >
+            <tr class="top_font" align="center" >
+              <td width="35">#</td>
+              <td>Profile Name</td>
+              <td>SSID</td>
+              <td>Security</td>
+              <td>QoS</td>
+              <td>MAC Filter</td>
+              <td width="100" >Edit</td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>2.4G</td><td class="chkSpc">~~AP_PRO_NAME_33~</td><td class="chkSpc">~~AP_SSID_33~</td><td id="secProf_33"></td><td>~~AP_QOS_33~</td><td id="macProf_33"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=33" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>5G</td><td class="chkSpc">~~AP_PRO_NAME_34~</td><td class="chkSpc">~~AP_SSID_34~</td><td id="secProf_34"></td><td>~~AP_QOS_34~</td><td id="macProf_34"></td>
+              <td>&nbsp;<a href="wlan_ssid_modify?INDEX=34" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>

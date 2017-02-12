@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+cfg -x
+reboot
+

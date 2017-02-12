@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    function redirectTo() {
+        forceLogout();
+        if (location.protocol == "http:")
+          top.location.href = location.protocol + "//" + location.hostname + ":" + NN_val(NN_getById("MGMT_HTTP_PORT")); 
+        else 
+          top.location.href = location.protocol + "//" + location.hostname + ":" + NN_val(NN_getById("MGMT_HTTPS_PORT")); 
+    }
+    function formSubmit() {
+      var retVal = true;
+	  var portArray = ["~~MGMT_TELNET_PORT~", "~~MGMT_SNMP_PORT~", "~~MGMT_FTP_PORT~", "~~LOG_PORT~"];
+	 
+      if (NN_val(NN_getById("MGMT_HTTP_PORT")) == NN_val(NN_getById("MGMT_HTTPS_PORT"))) {
+        NN_addClass(NN_getById("MGMT_HTTP_PORT"), "invalidinput");
+        NN_addClass(NN_getById("MGMT_HTTPS_PORT"), "invalidinput");
+        retVal = false;
+      } else if (retVal){
+	    if (!validate(NN_getById("MGMT_HTTP_PORT"), V_DUPLICATE_PORT, 0, portArray)) retVal = false;
+	    if (!validate(NN_getById("MGMT_HTTPS_PORT"), V_DUPLICATE_PORT, 0, portArray)) retVal = false;
+	  } else {
+        if (!validate(NN_getById("MGMT_HTTP_PORT"), V_INT, 1, 65535)) retVal = false;
+        if (!validate(NN_getById("MGMT_HTTPS_PORT"), V_INT, 1, 65535)) retVal = false;
+      }
+	  if (NN_getByName("MGMT_WWW_IP_SEL")[1].checked)	  
+			if (!validate(NN_getById("MGMT_WWW_IP"), V_IP, NN_getById("MGMT_WWW_IPV6"))) retVal = false;	  
+	  if (NN_getByName("MGMT_WWW_IP_SEL")[0].checked)
+			NN_removeClass(NN_getById("MGMT_WWW_IP"), "invalidinput");
+      if (!validate(NN_getById("MGMT_WWW_IPV6"), V_IPV6)) retVal = false;
+      if (!validate(NN_getById("MGMT_WWW_MAC"), V_MAC)) retVal = false;
+      if (retVal == true) {
+        setTimeout("redirectTo();", 10 * 1000);
+      }
+
+      return retVal;
+    }
+  </script>
+</head>
+<body>
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="WWW"><span>WWW</span></a></li>
+      <li><a href="certificates" title="Certificates"><span>Certificates</span></a></li>
+      <li><a href="sys_telnet" title="Telnet"><span>Telnet</span></a></li>
+      <li><a href="sys_snmp" title="SNMP"><span>SNMP</span></a></li>
+      <li><a href="sys_ftp" title="FTP"><span>FTP</span></a></li>
+      <li><a href="sys_https" title="HTTPS"><span>HTTPS</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <div class="table_top"></div>
+  <form method="post" onsubmit="return formSubmit();">
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        WWW
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">HTTP Port :</li>
+          <li class="right_table"><input size="5" maxlength="5" value="~~MGMT_HTTP_PORT~" type="text" name="MGMT_HTTP_PORT" id="MGMT_HTTP_PORT" /></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">HTTPS Port :</li>
+          <li class="right_table"><input size="5" maxlength="5" value="~~MGMT_HTTPS_PORT~" type="text" name="MGMT_HTTPS_PORT" id="MGMT_HTTPS_PORT" /></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Access Control :</li>
+          <li class="right_table"><select size="1" name="MGMT_WWW_ACCESS">
+            <option value="0" ~sMGMT_WWW_ACCESS:0~> Disable </option>
+            <option value="1" ~sMGMT_WWW_ACCESS:1~> LAN </option>
+            <option value="2" ~sMGMT_WWW_ACCESS:2~> WLAN </option>
+            <option value="3" ~sMGMT_WWW_ACCESS:3~> LAN &amp; WLAN </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Client IP Address :</li>
+          <li class="right_table">
+            <div>
+              <div style="float: left; width: 130px;">
+                <input value="0" type="radio" name="MGMT_WWW_IP_SEL" ~cMGMT_WWW_IP_SEL:0~ /> All&nbsp;&nbsp;&nbsp;
+                <input value="1" type="radio" name="MGMT_WWW_IP_SEL" ~cMGMT_WWW_IP_SEL:1~ /> Selected&nbsp; 
+              </div>
+              <div style="float: left;">
+                <input size="20" maxlength="15" value="~~MGMT_WWW_IP~" type="text" name="MGMT_WWW_IP" id="MGMT_WWW_IP" />
+              </div>
+              <div style="clear: both; padding-left: 130px;">
+                <input size="20" maxlength="64" value="~~MGMT_WWW_IPV6~" type="text" name="MGMT_WWW_IPV6" id="MGMT_WWW_IPV6" />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Client MAC Address :</li>
+          <li class="right_table">
+            <div>
+              <div style="float: left; width: 130px;">
+                <input value="0" type="radio" name="MGMT_WWW_MAC_SEL" ~cMGMT_WWW_MAC_SEL:0~ /> All&nbsp;&nbsp;&nbsp;
+                <input value="1" type="radio" name="MGMT_WWW_MAC_SEL" ~cMGMT_WWW_MAC_SEL:1~ /> Selected&nbsp; 
+              </div>
+              <div style="float: left;">
+                <input size="20" maxlength="17" value="~~MGMT_WWW_MAC~" type="text" name="MGMT_WWW_MAC" id="MGMT_WWW_MAC" />
+              </div>
+              <div style="clear: both; padding-left: 130px;">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_button">
+      <center>
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_l" />
+        <input name="cancel" value="Cancel" type="reset" class="table_button_r" onclick="document.location.replace('sys_http')" />
+        <input type="hidden" name="EXECUTE" value="sys_http" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    function formSubmit() {
+      var retVal = true;
+	  var portArray = ["~~MGMT_HTTP_PORT~", "~~MGMT_TELNET_PORT~", "~~MGMT_SNMP_PORT~", "~~MGMT_HTTPS_PORT~", "~~LOG_PORT~"];
+      if (!validate(NN_getById("MGMT_FTP_PORT"), V_INT, 1, 65535)) retVal = false;
+	  if (!validate(NN_getById("MGMT_FTP_PORT"), V_DUPLICATE_PORT, 0, portArray)) retVal = false;
+	  if (NN_getByName("MGMT_FTP_IP_SEL")[1].checked)
+		if (!validate(NN_getById("MGMT_FTP_IP"), V_IP, NN_getById("MGMT_FTP_IPV6"))) retVal = false;
+	  if (NN_getByName("MGMT_FTP_IP_SEL")[0].checked)
+			NN_removeClass(NN_getById("MGMT_FTP_IP"), "invalidinput");
+      if (!validate(NN_getById("MGMT_FTP_IPV6"), V_IPV6)) retVal = false;
+      if (!validate(NN_getById("MGMT_FTP_MAC"), V_MAC)) retVal = false;
+      return retVal;
+    }
+  </script>
+</head>
+<body>
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li><a href="sys_http" title="WWW"><span>WWW</span></a></li>
+      <li><a href="certificates" title="Certificates"><span>Certificates</span></a></li>
+      <li><a href="sys_telnet" title="Telnet"><span>Telnet</span></a></li>
+      <li><a href="sys_snmp" title="SNMP"><span>SNMP</span></a></li>
+      <li class="hightline"><a title="FTP"><span>FTP</span></a></li>
+      <li><a href="sys_https" title="HTTPS"><span>HTTPS</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post" onsubmit="return formSubmit();">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        FTP
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Port :</li>
+          <li class="right_table"><input size="5" maxlength="5" value="~~MGMT_FTP_PORT~" type="text" name="MGMT_FTP_PORT" id="MGMT_FTP_PORT" /></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Access Control :</li>
+          <li class="right_table"><select size="1" name="MGMT_FTP_ACCESS">
+            <option value="0" ~sMGMT_FTP_ACCESS:0~> Disable </option>
+            <option value="1" ~sMGMT_FTP_ACCESS:1~> LAN </option>
+            <option value="2" ~sMGMT_FTP_ACCESS:2~> WLAN </option>
+            <option value="3" ~sMGMT_FTP_ACCESS:3~> LAN &amp; WLAN </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Client IP Address :</li>
+          <li class="right_table">
+            <div>
+              <div style="float: left; width: 130px;">
+                <input value="0" type="radio" name="MGMT_FTP_IP_SEL" ~cMGMT_FTP_IP_SEL:0~ /> All&nbsp;&nbsp;&nbsp;
+                <input value="1" type="radio" name="MGMT_FTP_IP_SEL" ~cMGMT_FTP_IP_SEL:1~ /> Selected&nbsp; 
+              </div>
+              <div style="float: left;">
+                <input size="20" maxlength="15" value="~~MGMT_FTP_IP~" type="text" name="MGMT_FTP_IP" id="MGMT_FTP_IP" />
+              </div>
+              <div style="clear: both; padding-left: 130px;">
+                <input size="20" maxlength="64" value="~~MGMT_FTP_IPV6~" type="text" name="MGMT_FTP_IPV6" id="MGMT_FTP_IPV6" />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Client MAC Address :</li>
+          <li class="right_table">
+            <div>
+              <div style="float: left; width: 130px;">
+                <input value="0" type="radio" name="MGMT_FTP_MAC_SEL" ~cMGMT_FTP_MAC_SEL:0~ /> All&nbsp;&nbsp;&nbsp;
+                <input value="1" type="radio" name="MGMT_FTP_MAC_SEL" ~cMGMT_FTP_MAC_SEL:1~ /> Selected&nbsp; 
+              </div>
+              <div style="float: left;">
+                <input size="20" maxlength="17" value="~~MGMT_FTP_MAC~" type="text" name="MGMT_FTP_MAC" id="MGMT_FTP_MAC" />
+              </div>
+              <div style="clear: both; padding-left: 130px;">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_button">
+      <center>
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_l" />
+        <input name="cancel" value="Cancel" type="reset" class="table_button_r" onclick="document.location.replace('sys_ftp')" />
+        <input type="hidden" name="EXECUTE" value="sys_ftp" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

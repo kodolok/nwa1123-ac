@@ -1,0 +1,11 @@
+#!/bin/sh
+if [ -f "/tmp/webupload" ]; then
+  sys_fwupgrade /tmp/webupload
+  if [ "$?" != "0" ]; then
+      rm /tmp/webupload
+      exit 2
+  fi 
+  exit 0
+fi
+
+

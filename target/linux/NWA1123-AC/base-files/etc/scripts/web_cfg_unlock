@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ -f /tmp/web.lock ]; then
+    rm /tmp/web.lock
+    exit 0
+fi

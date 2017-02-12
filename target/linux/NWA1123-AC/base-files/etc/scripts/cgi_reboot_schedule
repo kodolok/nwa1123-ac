@@ -1,0 +1,35 @@
+#!/bin/sh 
+#
+#reboot schedule script
+#
+#
+ROOT_FILE=/var/spool/cron/crontabs/root
+. /etc/ath/apcfg
+
+if [ "$REBOOT_SCHEDULE" = "1" ] #Daily
+then
+    killall -q crond
+    crontab -l | grep -v sys_reboot > /tmp/crontab
+    echo "$REBOOT_MIN $REBOOT_HOUR * * * sys_reboot" >> /tmp/crontab
+    if [ -f /tmp/crontab ];then
+        mv /tmp/crontab $ROOT_FILE
+    fi
+    crond &
+elif [ "$REBOOT_SCHEDULE" = "2" ] #Weekly
+then
+    killall -q crond
+    crontab -l | grep -v sys_reboot > /tmp/crontab
+    echo "$REBOOT_MIN $REBOOT_HOUR * * $REBOOT_WEEKLY sys_reboot" >> /tmp/crontab
+    if [ -f /tmp/crontab ];then
+        mv /tmp/crontab $ROOT_FILE
+    fi
+    crond &	    	
+else
+  killall -q crond
+  crontab -l | grep -v sys_reboot > /tmp/crontab
+  if [ -f /tmp/crontab ];then
+  	mv /tmp/crontab $ROOT_FILE
+  fi
+  crond &
+fi
+exit 0

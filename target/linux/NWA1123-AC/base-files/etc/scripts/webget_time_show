@@ -1,0 +1,21 @@
+#!/bin/sh
+
+year=`date | awk '{print $6}'`
+mon=`date +"%D"| cut -d '/' -f1`
+day=`date +"%D"| cut -d '/' -f2`
+currenttime=`date| awk '{print $4}'`
+hour=`echo $currenttime|cut -d ':' -f1`
+min=`echo $currenttime|cut -d ':' -f2`
+sec=`echo $currenttime|cut -d ':' -f3`
+
+echo -n {
+echo -n \"Year\":\"$year\",
+echo -n \"Mon\":\"$mon\",
+echo -n \"Day\":\"$day\",
+echo -n \"Hour\":\"$hour\",
+echo -n \"Min\":\"$min\",
+echo -n \"Sec\":\"$sec\",
+echo -n \"Time zone\":\"$TZ\"
+echo -n }
+echo
+exit 0

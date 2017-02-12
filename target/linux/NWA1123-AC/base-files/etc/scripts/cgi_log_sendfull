@@ -1,0 +1,120 @@
+#!/bin/sh
+#
+#    send log when the log reach 256
+
+#. /etc/ath/apcfg
+SMTP_SUBJECT=`cfg -v SMTP_SUBJECT`
+SMTP_SERVER=`cfg -v SMTP_SERVER`
+SMTP_AUTH=`cfg -v SMTP_AUTH`
+SMTP_LOG_TO=`cfg -v SMTP_LOG_TO`
+SMTP_USER=`cfg -v SMTP_USER`
+SMTP_PWD=`cfg -v SMTP_PWD`
+LOG_CLEAR=`cfg -v LOG_CLEAR`
+SMTP_TLS=`cfg -v SMTP_TLS`
+SMTP_PORT=`cfg -v SMTP_PORT`
+
+smtpc=/sbin/ssmtp
+CONF_FILE=/tmp/ssmtp/ssmtp.conf
+LOG_FILE=/var/log/messages
+SYSLOG_FILE=/var/log/log-messages
+
+
+print_smtpc_arg()
+{
+        local subject=$SMTP_SUBJECT
+
+        local smtp_server=$SMTP_SERVER
+        local need_auth=$SMTP_AUTH
+        local username
+        local password
+        local to_addr=$SMTP_LOG_TO
+
+        echo -n "$to_addr"
+		touch $CONF_FILE
+		touch /tmp/ssmtp/revaliases
+		echo "root:$to_addr:$SMTP_SERVER:$SMTP_PORT" > /tmp/ssmtp/revaliases
+        echo "FromLineOverride=YES" > $CONF_FILE
+        echo "mailhub=$SMTP_SERVER:$SMTP_PORT" >> $CONF_FILE
+        
+	case $SMTP_TLS in
+	"0")
+		;;
+	"1")
+		echo "UseTLS=YES" >> $CONF_FILE
+		;;
+	*)
+		echo "UseTLS=YES" >> $CONF_FILE
+		echo "UseSTARTTLS=YES" >> $CONF_FILE
+		;;
+	esac
+        if [ "$need_auth" = "1" ]; then
+                echo "AuthUser=$SMTP_USER" >> $CONF_FILE
+				echo "AuthPass=$SMTP_PWD" >> $CONF_FILE
+        fi
+}
+
+print_log()
+{
+        if [ -s $LOG_FILE ]; then
+				echo ""
+                sed -n '1! G;$p;h' $LOG_FILE | sed -n '1,256 p'
+        else
+                echo "The system doesn't have any logs yet"
+        fi
+}
+
+clear_log()
+{
+        rm -f $LOG_FILE
+        rm -f $SYSLOG_FILE
+        touch $LOG_FILE
+        touch $SYSLOG_FILE
+}
+cut_log()
+{
+
+        if [ -s $LOG_FILE ]; then
+                sed -n '1! G;$p;h' $LOG_FILE | sed -n '1,256 p' > /tmp/log.tmp
+		rm -f $LOG_FILE
+		cp /tmp/log.tmp $LOG_FILE
+		rm -f /tmp/log.tmp
+        fi
+}
+
+sendlog() # $1: clearlog_if_success
+{
+        local email_file=/tmp/tmp_email_file
+        local err_file=/tmp/tmp_email_err_file
+		echo "Subject: $SMTP_SUBJECT" > $email_file
+        print_log >> $email_file
+        cmd="cat $email_file | $smtpc $(print_smtpc_arg) >/dev/null 2>$err_file"
+        if ! eval $cmd; then
+                rm -f $email_file $err_file
+                return 1
+        fi
+        rm -f $email_file $err_file
+
+        if [ "$1" = "clearlog_if_success" ]; then
+                clear_log
+        fi
+        return 0
+}
+
+### start here ###
+
+prog=${0##*/}
+
+case "$prog" in
+cgi_log_sendfull)
+        # send log only if lines of log file > 256 * 90% = 230.4
+        [ ! -s $LOG_FILE ] && exit
+        if [ "$(wc -l $LOG_FILE | sed -n 's/[^0-9]*//gp')" -ge "256" ]; then
+            if [ "$LOG_CLEAR" = "1" ]; then
+                sendlog "clearlog_if_success"
+            else
+                cut_log
+                sendlog
+            fi
+        fi
+       ;;
+esac

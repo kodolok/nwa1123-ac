@@ -1,0 +1,229 @@
+#!/bin/sh
+
+#if DEBUG is set 1, print detail WIFI statistics information on console
+#DEBUG=1
+
+#LINE_NUM=0
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+IDX=$2
+
+
+if [ "${OID}" = "1" ]; then
+    if [ "${IDX}" = "1" ]; then
+        FAILED_CNT=`athstats -i wifi0 | grep "tx failed 'cuz too many retries" | cut -d ' ' -f 1`
+    elif [ "${IDX}" = "2" ]; then
+        FAILED_CNT=`athstats -i wifi1 | grep "tx failed 'cuz too many retries" | cut -d ' ' -f 1`
+    fi
+    if [ -z "$FAILED_CNT" ]; then
+        FAILED_CNT=0
+    fi
+    echo "$FAILED_CNT"
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    if [ "${IDX}" = "1" ]; then
+        RETRY_CNT=`iwconfig 2>/dev/null | read_iwconfig.sh WLAN1 | grep RETRY | cut -d '"' -f 4`
+    elif [ "${IDX}" = "2" ]; then
+        RETRY_CNT=`iwconfig 2>/dev/null | read_iwconfig.sh WLAN2 | grep RETRY | cut -d '"' -f 4`
+    fi
+    if [ -z "$RETRY_CNT" ]; then
+        RETRY_CNT=0
+    fi
+    echo "$RETRY_CNT"
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    if [ "${IDX}" = "1" ]; then
+        ACKFAIL_CNT=`athstats -i wifi0 | grep "tx frames with no ack marked" | cut -d ' ' -f 1`
+    elif [ "${IDX}" = "2" ]; then
+        ACKFAIL_CNT=`athstats -i wifi1 | grep "tx frames with no ack marked" | cut -d ' ' -f 1`
+    fi
+    if [ -z "$ACKFAIL_CNT" ]; then
+        ACKFAIL_CNT=0
+    fi
+    echo "$ACKFAIL_CNT"
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    if [ "${IDX}" = "1" ]; then
+        #WLAN1
+        # echo "Start to output the 802.11 statistics info into a temp file: 80211stats"$$
+        rm -f /tmp/80211stat.$$
+        80211stats -i ath0 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath1 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath2 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath3 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath4 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath5 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath6 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath7 2>/dev/null >> /tmp/80211stat.$$
+        
+        RX_FRAMES_CNT=0
+        
+        # process each line in temp file
+        while read line
+        do
+        
+        #    LINE_NUM=$(($LINE_NUM+1))
+        #    echo "got #"$LINE_NUM" : "$line
+            FIND_RX_FRAMES=`echo $line | grep "frames successfully received" | cut -d ' ' -f 1`
+            if [ "$FIND_RX_FRAMES" ]
+            then
+                RX_FRAMES_CNT=$((${RX_FRAMES_CNT}+${FIND_RX_FRAMES}))
+            fi
+        
+        #     echo -n $line
+        
+        done < /tmp/80211stat.$$
+
+        rm -f /tmp/80211stat.$$
+        
+        echo "$RX_FRAMES_CNT"
+        
+        exit 0
+    elif [ "${IDX}" = "2" ]; then
+        #WLAN2
+        # echo "Start to output the 802.11 statistics info into a temp file: 80211stats"$$
+        rm -f /tmp/80211stat.$$
+        80211stats -i ath8 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath9 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath10 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath11 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath12 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath13 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath14 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath15 2>/dev/null >> /tmp/80211stat.$$
+        
+        RX_FRAMES_CNT=0
+        
+        # process each line in temp file
+        while read line
+        do
+        
+        #    LINE_NUM=$(($LINE_NUM+1))
+        #    echo "got #"$LINE_NUM" : "$line
+            FIND_RX_FRAMES=`echo $line | grep "frames successfully received" | cut -d ' ' -f 1`
+            if [ "$FIND_RX_FRAMES" ]
+            then
+                RX_FRAMES_CNT=$((${RX_FRAMES_CNT}+${FIND_RX_FRAMES}))
+            fi
+        
+        #     echo -n $line
+        
+        done < /tmp/80211stat.$$
+        
+        rm -f /tmp/80211stat.$$
+        
+        echo "$RX_FRAMES_CNT"
+        
+        exit 0
+    fi
+elif [ "${OID}" = "5" ]; then
+    if [ "${IDX}" = "1" ]; then
+        #WLAN1
+        # echo "Start to output the 802.11 statistics info into a temp file: 80211stats"$$
+        rm -f /tmp/80211stat.$$
+        80211stats -i ath0 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath1 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath2 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath3 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath4 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath5 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath6 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath7 2>/dev/null >> /tmp/80211stat.$$
+        
+        TX_FRAMES_CNT=0
+        
+        # process each line in temp file
+        while read line
+        do
+        
+        #    LINE_NUM=$(($LINE_NUM+1))
+        #    echo "got #"$LINE_NUM" : "$line
+            FIND_TX_FRAMES=`echo $line | grep "frames successfully transmitted" | cut -d ' ' -f 1`
+            if [ "$FIND_TX_FRAMES" ]
+            then
+                TX_FRAMES_CNT=$((${TX_FRAMES_CNT}+${FIND_TX_FRAMES}))
+            fi
+        
+        #     echo -n $line
+        
+        done < /tmp/80211stat.$$
+        
+        rm -f /tmp/80211stat.$$
+        
+        echo "$TX_FRAMES_CNT"
+        
+        exit 0
+    elif [ "${IDX}" = "2" ]; then
+        #WLAN2
+        # echo "Start to output the 802.11 statistics info into a temp file: 80211stats"$$
+        rm -f /tmp/80211stat.$$
+        80211stats -i ath8 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath9 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath10 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath11 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath12 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath13 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath14 2>/dev/null >> /tmp/80211stat.$$
+        80211stats -i ath15 2>/dev/null >> /tmp/80211stat.$$
+        
+        TX_FRAMES_CNT=0
+        
+        # process each line in temp file
+        while read line
+        do
+        
+        #    LINE_NUM=$(($LINE_NUM+1))
+        #    echo "got #"$LINE_NUM" : "$line
+            FIND_TX_FRAMES=`echo $line | grep "frames successfully transmitted" | cut -d ' ' -f 1`
+            if [ "$FIND_TX_FRAMES" ]
+            then
+                TX_FRAMES_CNT=$((${TX_FRAMES_CNT}+${FIND_TX_FRAMES}))
+            fi
+        
+        #     echo -n $line
+        
+        done < /tmp/80211stat.$$
+        
+        rm -f /tmp/80211stat.$$
+        
+        echo "$TX_FRAMES_CNT"
+        
+        exit 0
+    fi
+elif [ "${OID}" = "6" ]; then
+    if [ "${IDX}" = "1" ]; then
+        RX_CNT=`cat /proc/net/dev | read_dev.sh WLAN1 | grep RX | cut -d '"' -f 4`
+    elif [ "${IDX}" = "2" ]; then
+        RX_CNT=`cat /proc/net/dev | read_dev.sh WLAN2 | grep RX | cut -d '"' -f 4`
+    fi
+    if [ -z "$RX_CNT" ]
+    then
+        RX_CNT=0
+    fi
+    echo "$RX_CNT"
+    exit 0
+elif [ "${OID}" = "7" ]; then
+    if [ "${IDX}" = "1" ]; then
+        TX_CNT=`cat /proc/net/dev | read_dev.sh WLAN1 | grep TX | cut -d '"' -f 4`
+    elif [ "${IDX}" = "2" ]; then
+        TX_CNT=`cat /proc/net/dev | read_dev.sh WLAN2 | grep TX | cut -d '"' -f 4`
+    fi
+    if [ -z "$TX_CNT" ]
+    then
+        TX_CNT=0
+    fi
+    echo "$TX_CNT"
+    exit 0
+fi
+
+exit 0

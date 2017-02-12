@@ -1,0 +1,11 @@
+#!/bin/sh
+#########################################################################
+##  DHCP renew script
+##  This file used to DHCP Client renew
+#########################################################################
+
+PID=`pidof udhcpc`
+
+kill -SIGUSR1 $PID
+
+exit 0

@@ -1,0 +1,118 @@
+#!/bin/sh
+
+RADIO_DIR="/tmp/.radio_conf_$1"
+
+get_radio_vaplist(){
+    STR=""
+    VAPLIST=`iwconfig | grep 'ESSID' | cut -f1 -d' '`
+
+    if [ "$1" = "0" ]; then
+        min=0
+        max=7
+    elif [ "$1" = "1" ]; then
+        min=8
+        max=15
+    fi
+
+    for i in $VAPLIST
+    do
+        id=`echo $i | cut -b 4-5`
+        if [ $id -ge $min -a $id -le $max ]; then
+            STR="$STR $i"
+        fi
+    done
+    echo $STR
+}
+
+apdownmulti() {
+    CMD=$1
+
+    if [ -e $RADIO_DIR/conf_filename ]; then
+        pidlist=`ps | grep hostapd | grep $RADIO_DIR | cut -b1-5`
+        
+        for j in $pidlist
+        do
+            kill -9 $j
+        done
+    
+        sleep 2
+    fi
+    
+    if [ -e $RADIO_DIR/sta_conf_filename ]; then
+        pidlist=`ps | grep wpa_supplicant | grep $RADIO_DIR | cut -b1-5`
+        
+        for j in $pidlist
+        do
+            kill -9 $j
+        done
+    
+        sleep 2
+    fi
+
+	##
+	##  Get the list of VAPs
+	##
+
+    VAPLIST=$(get_radio_vaplist $CMD)
+    ##
+    ## ALL VAPs must be down before ANY can be destroyed
+    ## Do this in two stages
+	##
+
+    for i in $VAPLIST
+    do
+        echo "downing $i"
+        ifconfig $i down
+    done
+
+    sleep 1
+    for i in $VAPLIST
+    do
+        echo "killing $i"
+        wlanconfig $i destroy
+    done
+}
+
+
+if [ "${1}" = "" ]; then
+    echo "    kill_radio usage"
+    echo "    kill_radio [0 | 1]"
+    exit
+fi
+
+##
+## SPE-profing
+## Check to see if killVAP is already running.  If so, exit, because you should only
+## be doing one at a time
+##
+
+SPEPROOF=`ps | grep -c killVAP`
+if [ $SPEPROOF -gt 12 ]; then
+   ps
+   echo "Too much killing!!  Give peace a chance!!"
+   exit
+fi
+
+##
+## If the modules are already unloaded, we don't need to do anything
+##
+
+MODLIST=`lsmod | grep ath_hal`
+
+if [ "${MODLIST}" = "" ]; then
+   echo "Modules already unloaded"
+   exit
+fi
+
+apdownmulti $1
+
+#
+# Remove files in /tmp
+#
+rm -rf /tmp/br*
+rm -rf /tmp/ap*
+rm -rf /tmp/sta*
+rm -rf /tmp/top*
+rm -rf /tmp/conf*
+rm -rf /tmp/sta_conf*
+rm -rf $RADIO_DIR

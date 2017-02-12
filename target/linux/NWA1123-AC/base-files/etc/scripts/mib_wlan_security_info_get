@@ -1,0 +1,149 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanSecurityInfo. 
+##
+## mib_wlan_security_info
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ "${OID}" = "1" ]; then
+    SEC_MODE=`cfg -v SEC_MODE_${INDEX}`
+    SEC_WPA=`cfg -v SEC_WPA_${INDEX}`
+    SEC_TYPE=`cfg -v SEC_TYPE_${INDEX}`
+    SEC_WEP_KEY_MGMT=`cfg -v SEC_WEP_KEY_MGMT_${INDEX}`
+    
+    if [ "$SEC_MODE" = "None" ] && [ "$SEC_WPA" = "0" ] && [ "$SEC_TYPE" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT" = "none" ]; then
+        MODE=0
+    fi
+    if [ "$SEC_MODE" = "WEP" ] && [ "$SEC_WPA" = "0" ] && [ "$SEC_TYPE" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT" = "static" ]; then
+        MODE=1
+    fi
+    if [ "$SEC_MODE" = "WPA" ] && [ "$SEC_TYPE" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT" = "none" ]; then
+        if [ "$SEC_WPA" = "1" ]; then
+            MODE=4
+        elif [ "$SEC_WPA" = "2" ]; then
+            MODE=8
+        elif [ "$SEC_WPA" = "3" ]; then
+            MODE=12
+        fi
+    fi
+    if [ "$SEC_MODE" = "WPA" ] && [ "$SEC_TYPE" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT" = "none" ]; then
+        if [ "$SEC_WPA" = "1" ]; then
+            MODE=16
+        elif [ "$SEC_WPA" = "2" ]; then
+            MODE=32
+        elif [ "$SEC_WPA" = "3" ]; then
+            MODE=48
+        fi
+    fi
+    echo "$MODE"
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    SEC_WPA_GROUP_REKEY_PER=`cfg -v SEC_WPA_GROUP_REKEY_PER_${INDEX}`
+    echo $SEC_WPA_GROUP_REKEY_PER
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    PSK_KEY=`cfg -v PSK_KEY_${INDEX}`
+    if [ "$PSK_KEY" = "" ]; then
+        PSK_KEY="unknown"
+    fi
+    echo $PSK_KEY
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    SEC_WEP_KEY_LEN=`cfg -v SEC_WEP_KEY_LEN_${INDEX}`
+    if [ "$SEC_WEP_KEY_LEN" = "5" ]; then
+        SEC_WEP_KEY_LEN=40
+    elif [ "$SEC_WEP_KEY_LEN" = "13" ]; then
+        SEC_WEP_KEY_LEN=104
+    fi
+    echo $SEC_WEP_KEY_LEN
+    exit 0
+elif [ "${OID}" = "5" ]; then
+    SEC_PRIMARY_KEY=`cfg -v SEC_PRIMARY_KEY_${INDEX}`
+    if [ "$SEC_PRIMARY_KEY" = "0" ]; then
+        SEC_PRIMARY_KEY=1
+    elif [ "$SEC_PRIMARY_KEY" = "1" ]; then
+        SEC_PRIMARY_KEY=2
+    elif [ "$SEC_PRIMARY_KEY" = "2" ]; then
+        SEC_PRIMARY_KEY=3
+    elif [ "$SEC_PRIMARY_KEY" = "3" ]; then
+        SEC_PRIMARY_KEY=4
+    fi
+    echo $SEC_PRIMARY_KEY
+    exit 0
+elif [ "${OID}" = "6" ]; then
+    SEC_WEP_KEY1=`cfg -v SEC_WEP_KEY1_${INDEX}`
+    if [ "$SEC_WEP_KEY1" = "" ]; then
+        SEC_WEP_KEY1="unknown"
+    fi
+    echo $SEC_WEP_KEY1
+    exit 0
+elif [ "${OID}" = "7" ]; then
+    SEC_WEP_KEY2=`cfg -v SEC_WEP_KEY2_${INDEX}`
+    if [ "$SEC_WEP_KEY2" = "" ]; then
+        SEC_WEP_KEY2="unknown"
+    fi
+    echo $SEC_WEP_KEY2
+    exit 0
+elif [ "${OID}" = "8" ]; then
+    SEC_WEP_KEY3=`cfg -v SEC_WEP_KEY3_${INDEX}`
+    if [ "$SEC_WEP_KEY3" = "" ]; then
+        SEC_WEP_KEY3="unknown"
+    fi
+    echo $SEC_WEP_KEY3
+    exit 0
+elif [ "${OID}" = "9" ]; then
+    SEC_WEP_KEY4=`cfg -v SEC_WEP_KEY4_${INDEX}`
+    if [ "$SEC_WEP_KEY4" = "" ]; then
+        SEC_WEP_KEY4="unknown"
+    fi
+    echo $SEC_WEP_KEY4
+    exit 0
+elif [ "${OID}" = "10" ]; then
+    SEC_EAP_TYPE=`cfg -v SEC_EAP_TYPE_${INDEX}`
+    if [ "$SEC_EAP_TYPE" = "TLS" ]; then
+        SEC_EAP_TYPE=13
+    elif [ "$SEC_EAP_TYPE" = "LEAP" ]; then
+        SEC_EAP_TYPE=17
+    elif [ "$SEC_EAP_TYPE" = "TTLS" ]; then
+        SEC_EAP_TYPE=21
+    elif [ "$SEC_EAP_TYPE" = "PEAP" ]; then
+        SEC_EAP_TYPE=25
+    fi
+    echo $SEC_EAP_TYPE
+    exit 0
+elif [ "${OID}" = "11" ]; then
+    SEC_PRO_NAME=`cfg -v SEC_PRO_NAME_${INDEX}`
+    echo $SEC_PRO_NAME
+    exit 0
+elif [ "${OID}" = "12" ]; then
+    SEC_EAP_REAUTH_PER=`cfg -v SEC_EAP_REAUTH_PER_${INDEX}`
+    echo $SEC_EAP_REAUTH_PER
+    exit 0
+elif [ "${OID}" = "13" ]; then
+    SEC_WPA_GROUP_REKEY=`cfg -v SEC_WPA_GROUP_REKEY_${INDEX}`
+    if [ "$SEC_WPA_GROUP_REKEY" = 0 ]; then
+        SEC_WPA_GROUP_REKEY=2
+    fi
+    echo $SEC_WPA_GROUP_REKEY
+    exit 0
+fi
+
+exit 0

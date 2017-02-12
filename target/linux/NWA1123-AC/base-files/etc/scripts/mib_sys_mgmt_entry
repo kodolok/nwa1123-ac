@@ -1,0 +1,142 @@
+#!/bin/sh
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+#VALUE=$1
+OID=$1
+VALUE=$2
+
+## System Reboot
+if [ "${OID}" = "1" ];then
+    ## read-only
+    reboot
+    exit 0
+fi
+
+## Config Save
+if [ "${OID}" = "2" ];then
+    ## read-only
+    cfg -c
+    exit 0
+fi
+
+## Restore Default Config
+if [ "${OID}" = "3" ];then
+    ## read-only
+    cfg -x
+    reboot
+    exit 0
+fi
+
+## sysMgmtVLANControl
+if [ "${OID}" = "13" ];then
+    ## read
+    if [ "${VALUE}" = "" ]; then
+        MGMT_VLAN=`cfg -v MGMT_VLAN`
+        if [ "${MGMT_VLAN}" = "1" ]; then
+            echo -e 2
+        elif [ "${MGMT_VLAN}" = "0" ]; then
+            echo -e 1
+        else
+            echo -e 2
+        fi
+        exit 0
+    fi
+    ## write
+    if [ "${VALUE}" = "2" ]; then
+        cfg -a MGMT_VLAN="1"
+    elif [ "${VALUE}" = "1" ]; then
+        cfg -a MGMT_VLAN="0"
+    else
+        cfg -a MGMT_VLAN="0"
+    fi
+    exit 0
+fi
+
+## sysMgmtVLANID
+if [ "${OID}" = "14" ];then
+    ## read
+    if [ "${VALUE}" = "" ]; then
+        MGMT_VLAN_ID=`cfg -v MGMT_VLAN_ID`
+        echo -e ${MGMT_VLAN_ID}
+        exit 0
+    fi
+    ## write
+    if [ "${VALUE}" -lt 4095 ]  && [ "${VALUE}" -gt 0 ]; then
+        cfg -a MGMT_VLAN_ID=${VALUE}
+        if [ -e /etc/scripts/vlan_setvlan ]; then
+            sh vlan_setvlan
+            exit 0
+        else
+            echo "there is no /etc/scripts/vlan_setvlan...exit $0"
+            exit 255
+        fi
+    fi
+fi
+
+## sys8021QControl
+if [ "${OID}" = "15" ];then
+    ## read
+    if [ "${VALUE}" = "" ]; then
+        DOT1Q_VLAN=`cfg -v DOT1Q_VLAN`
+        if [ "${DOT1Q_VLAN}" = "0" ]; then
+            echo -e 2
+        elif [ "${DOT1Q_VLAN}" = "1" ]; then
+            echo -e 1
+        else
+            echo -e 2
+        fi
+        exit 0
+    fi
+    ## write
+    if [ "${VALUE}" = "1" ]; then
+        cfg -a DOT1Q_VLAN="1"
+    elif [ "${VALUE}" = "2" ]; then
+        cfg -a DOT1Q_VLAN="0"
+    else
+        cfg -a DOT1Q_VLAN="0"
+    fi
+    exit 0
+fi
+
+## devGatewayIPAddr
+if [ "${OID}" = "17" ];then
+    ## read
+    if [ "${VALUE}" = "" ]; then
+        IPGW=`cfg -v IPGW`
+        echo -e ${IPGW}
+        exit 0
+    fi
+    ## write
+    if [ "${VALUE}" != "" ]; then
+        if [ "${VALUE}" = "0.0.0.0" ]; then
+            cfg -r IPGW
+            echo -e ${VALUE}
+            exit 0
+        else
+            IPCHECK=`sh /etc/scripts/cgi_check_ip.sh ${VALUE} |cut -d ' ' -f 1`
+            if [ "$IPCHECK" = "Valid" ]; then
+                cfg -a IPGW="${VALUE}"
+				cfg -c
+                if [ -n /etc/scripts/cgi_ipv4_settings ]; then
+					MODE=`cfg -v WAN_MODE`
+					if [ "${MODE}" = "static" ]; then
+						route del -net 0.0.0.0 netmask 0.0.0.0 dev br0
+						route add default gw $VALUE dev br0
+					fi
+                    ##sh /etc/scripts/cgi_ipv4_settings br0 > /dev/null 2>&1;
+                fi
+                echo -e ${IPGW}
+                exit 0
+            else
+                echo "Invalid Gateway IP."
+                exit 255
+            fi
+        fi
+    fi
+fi
+
+exit0

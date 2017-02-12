@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+<meta http-equiv="X-UA-Compatible" content="IE=10" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>.::Welcome to the Web-Based Configurator::.</title>
+<link href="css/expert.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/baseJS.js" ></script>
+<script type="text/javascript" src="js/uimake.js" ></script>
+<script type="text/javascript">
+var l2Iso = [~`sys_get_l2_isolation`~];
+
+function formSubmit() {
+  var retVal = true;
+  var el;
+  for (var i = 0, index = 1, max = l2Iso.length; i < max; i++, index++) {
+      if (!validate(NN_getById("mac" + index), V_MAC)) retVal = false;
+      if (!validate(NN_getById("desc" + index), V_STR, 0, 32)) retVal = false;
+  }
+
+  return retVal;
+}
+function init() {
+  var table = NN_getById("taL2Iso");
+  var itemNum = l2Iso.length;
+  var leftColIndex = 1, rightColIndex = (1 + itemNum / 2);
+  var newRow;
+
+  var _appendItem = function (row, index) {
+    row.appendChild(uiMake('td', index)); 
+    row.appendChild(uiMake('td', ['input', {'type':'text', 'maxLength':'17', 'name':'L2_ISO_MAC_'+index, 'id':'mac'+index, 'value':l2Iso[index-1]['mac']}])); 
+    row.appendChild(uiMake('td', ['input', {'type':'text', 'maxLength':'32', 'name':'L2_ISO_DESC_'+index, 'id':'desc'+index, 'value':l2Iso[index-1]['descr'], 'size':'30'}])); 
+  }
+  
+  for (var i = 0, max = itemNum / 2; i < max; i++, leftColIndex++, rightColIndex++) {
+      newRow = table.insertRow(table.rows.length);
+      newRow.className = "table_font";
+      newRow.align = "center";
+      _appendItem(newRow, leftColIndex);
+      _appendItem(newRow, rightColIndex);
+  } 
+}
+</script>
+</head>
+<body onload="init();">
+<div class="topgraph"></div>
+<div id="tabs">
+  <ul>
+    <li><a href="wlan_2dot4g" title="Wireless Settings - 2.4G"><span>Wireless Settings - 2.4G</span></a></li>
+    <li><a href="wlan_5g" title="Wireless Settings - 5G"><span>Wireless Settings - 5G</span></a></li>
+    <li><a href="wlan_ssid" title="SSID"><span>SSID</span></a></li>
+    <li><a href="wlan_security" title="Security"><span>Security</span></a></li>
+    <li><a href="wlan_radius" title="RADIUS"><span>RADIUS</span></a></li>
+    <li class="hightline"><a href="wlan_l2iso" title="Layer-2 Isolation"><span>Layer-2 Isolation</span></a></li>
+    <li><a href="wlan_mf" title="MAC Filter"><span>MAC Filter</span></a></li>
+  </ul>
+  <br class="clearfloat" />
+</div>
+<div class="table_top"></div>
+<div id="table">
+  <form method="post" onsubmit="return formSubmit();">
+  <div class="data">
+    <div class="undownLineTitle">Layer-2 Isolation Configuration</div>
+    <div class="tableframe" >
+      <table width="100%" cellpadding="0" cellspacing="0" id="taL2Iso">
+        <tr class="top_font" align="center" >
+          <td width="35">Index</td>
+          <td>MAC Address</td>
+          <td>Description</td>
+          <td width="35">Index</td>
+          <td>MAC Address</td>
+          <td>Description</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="table_button">
+    <center>
+      <input class="table_button_m" name="COMMIT" value="Apply" type="submit" />
+      <input class="table_button_r" name="cancel" value="Cancel" type="button" onclick="document.location.replace('wlan_l2iso');" />
+      <input name="EXECUTE" value="wlan_l2iso" type="hidden" />
+    </center>
+  </div>
+  </form>
+</div>
+
+</body>
+
+</html>

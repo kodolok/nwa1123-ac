@@ -1,0 +1,135 @@
+#!/bin/sh
+
+trap 'echo "Please use exit to logout this system !"' 1 2 15
+
+LOGIN_PASS=1
+LOGIN_COUNT=0
+
+until [ "$LOGIN_PASS" = "Access granted." ]
+do
+    echo -n "Login: " 
+    if test -t 0; then
+    	read USERID
+    else
+    	exit 0
+    fi
+
+    echo -n "Password: " 
+    stty -echo
+    if test -t 0; then
+        read PASSWD
+    else
+        exit 0
+    fi
+    stty echo
+
+    LOGIN_PASS=`chkpwd $USERID $PASSWD`
+
+    echo ""
+    if [  "$LOGIN_PASS" = "Access denied." ]
+    then
+        echo $LOGIN_PASS
+
+        LOGIN_COUNT=`expr $LOGIN_COUNT + 1`
+        if [ $LOGIN_COUNT = 3 ]
+        then
+            exit 0
+        fi
+    fi
+
+done
+
+if [ "$USERID" = "root" ]
+then
+    /bin/sh
+    exit 0
+fi
+
+while [ 1 ]
+do
+    echo -n "NWA1123-AC> " 
+    
+    if test -t 0; then
+        read INPUT_CMD ARG_LIST ARG_LIST1
+    else
+        exit 0
+    fi
+
+    case $INPUT_CMD in
+    "gateway")
+        echo `/root/bin/gateway $ARG_LIST`
+        ;;
+    "ipaddr")
+        echo `/root/bin/ipaddr $ARG_LIST`
+        ;;
+    "iptype")
+        echo `/root/bin/iptype $ARG_LIST`
+        ;;
+    "mgtvid")
+        echo `/root/bin/mgtvid $ARG_LIST`
+        ;;
+    "dot1qvlan")
+        echo `/root/bin/dot1qvlan $ARG_LIST`
+        ;;
+    "netmask")
+        echo `/root/bin/netmask $ARG_LIST`
+        ;;
+    "cpustatus")
+        echo `/root/bin/cpustatus $ARG_LIST`
+        ;;
+    "password")
+        /root/bin/password $ARG_LIST
+        ;;
+    "watchdog")
+	if [ "$ARG_LIST" = "status" ]
+	then
+		killall -q watchdogd
+		watchdogd -s&
+        elif [ "$ARG_LIST" = "interval" ]
+        then
+ 		if [ "$ARG_LIST1" != "" ]
+		then
+			killall -q watchdogd
+			watchdogd -i $ARG_LIST1&
+		else 
+			echo "Invalid command."
+		fi 
+        else
+		echo "Invalid command."
+        fi
+        ;;
+    "default")
+        echo `/root/bin/default $ARG_LIST`
+        ;;
+    "ledctrl")
+        /etc/scripts/sys_led_suppression $ARG_LIST
+        ;;
+    "memstatus")
+        echo `/root/bin/memstatus $ARG_LIST`
+        ;;
+    "version")
+        echo `/root/bin/version $ARG_LIST`
+        ;;
+    "uptime")
+	echo `uptime`
+	;;
+    "reboot")
+	echo `reboot`
+	;;
+    "exit")
+        exit 0
+        ;;
+    "help")
+        cat /var/helpmessage
+        ;;
+    "?")
+        cat /var/helpmessage
+        ;;
+    "")
+        ;;
+    *)
+        echo "Invalid command."
+        ;;
+    esac
+
+done

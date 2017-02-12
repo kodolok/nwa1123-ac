@@ -1,0 +1,177 @@
+#!/bin/sh 
+############################################
+# This script need scanning result as      #
+# input file.                              #
+# Ex: site_survey.sh /tmp/scan_result      #
+############################################
+
+SCAN_RESULT=$1
+OUTPUT_TYPE=$2
+RESULT_TMP=/tmp/scan_flt_tmp
+
+print_site_web()
+{
+#echo "----------CELL "$LOOP_COUNT"-------------------"
+#echo "SSID           : "$SSID
+#echo "Frequency      : "$FREQ" GHz"
+#echo "Channel        : "$CHANNEL
+#echo "MAC Address    : "$ADDRESS
+#echo "Wireless Mode  : 802.11"$WMODE
+#echo "Singal Strength: "${QUALITY}%
+#echo "Encryption     : "$CRYPTION
+#echo "Security       : "$SECURITY
+#echo "------------------------------------"
+
+echo -n "{\"SSID\":\""$WEBSSID"\",\"CHANNEL\":\""$CHANNEL"\",\"MAC\":\""$ADDRESS"\",\"MODE\":\"802.11"$WMODE"\",\"QUALITY\":\""$QUALITY"%\",\"SECURITY\":\""$SECURITY"\"}"
+}
+print_site_mib()
+{
+#echo "----------CELL "$LOOP_COUNT"-------------------"
+#echo "SSID           : "$SSID
+#echo "Frequency      : "$FREQ" GHz"
+#echo "Channel        : "$CHANNEL
+#echo "MAC Address    : "$ADDRESS
+#echo "Wireless Mode  : 802.11"$WMODE
+#echo "Singal Strength: "${QUALITY}%
+#echo "Encryption     : "$CRYPTION
+#echo "Security       : "$SECURITY
+#echo "------------------------------------"
+if [ "$MIBSSID" = "" ]
+then
+    echo "unknown,$CHANNEL,$ADDRESS,$WMODE,$QUALITY,$SECURITY"
+else
+    echo "$MIBSSID,$CHANNEL,$ADDRESS,$WMODE,$QUALITY,$SECURITY"
+fi
+
+}
+
+determine_wlan_mode()
+{
+    case $IEEE_MODE in
+    "802.11b")
+        WMODE="b"
+        ;;
+    "802.11bg")
+        WMODE="b/g"
+        ;;
+    "802.11g")
+        WMODE="g"
+        ;;
+    "802.11ng")
+        WMODE="b/g/n"
+        ;;
+    "802.11a")
+        WMODE="a"
+        ;;
+    "802.11na")
+        WMODE="a/n"
+        ;;
+    "802.11ac")
+        WMODE="a/n/ac"
+        ;;
+    *)
+        WMODE="Unknown"
+        ;;
+    esac
+
+}
+
+read_site()
+{
+	unset -v ADDRESS SSID IEEE_MODE WMODE CHANNEL QUALITY SECURITY
+	
+	WPA=0
+	PSK=0
+	SECURITY="NONE"
+	
+	while IFS=' :=' read field value 
+	do
+		#echo "$field $value"
+		case $field in
+		
+		Cell)
+			ADDRESS=`echo $value|cut -d ' ' -f 4`
+			;;
+		ESSID)
+      MIBSSID=`echo $value| sed 's/\"//' | sed 's/\"$//'`
+      WEBSSID=`echo $value| sed -e 's/\\\\/\\\\x5c/g' -e 's/\"/\\\\x22/g' -e 's/</\\\\x3c/g' -e 's/>/\\\\x3e/g' | sed 's/\\\\x22//' | sed 's/\\\\x22$//'`
+			;;
+		Protocol)
+			IEEE_MODE=`echo $value|cut -d ' ' -f 2`
+			;;
+		Frequency)
+			CHANNEL=`echo $value|grep Channel|cut -d ' ' -f 4|cut -d ')' -f 1`
+			;;
+		Quality)
+			QUALITY_STRING=`echo $value|cut -d ' ' -f 1`
+			SIG_LEVEL=`echo $QUALITY_STRING|cut -d '/' -f 1`
+			MAX_LEVEL=`echo $QUALITY_STRING|cut -d '/' -f 2`
+			QUALITY=$(((1000*$SIG_LEVEL/$MAX_LEVEL+5)/10))
+			;;
+		Encryption)
+			if [ -n "`echo $value | grep on`" ]; then
+				SECURITY="WEP"
+			fi
+			;;
+		IE)
+			if [ -n "`echo $value | grep WPA2`" ]; then
+				[ $WPA -lt 2 ] && SECURITY="WPA2"
+				WPA=2
+			elif [ -n "`echo $value | grep WPA`" ]; then
+				[ $WPA -lt 1 ] && SECURITY="WPA"
+				WPA=1
+			fi
+			;;
+		Authentication)
+			if [ -n "`echo $value | grep PSK`" ]; then
+				PSK=1
+			fi
+			;;
+		*)
+			;;
+		esac
+		
+	done < $RESULT_TMP
+	
+	# SECURITY
+	[ $PSK -eq 1 ] && SECURITY="$SECURITY"-PSK
+	#echo $SECURITY
+	
+	# IEEE802.11 phy mode
+	determine_wlan_mode
+	
+	# print style
+	if [ "$OUTPUT_TYPE" = "web" ]; then
+		print_site_web
+	else
+		print_site_mib
+	fi
+}
+
+#### START ####
+if [ ! -f $SCAN_RESULT ]; then
+    exit 1
+fi
+
+LAST_LNUM=0
+CELL_LIST=`cat $SCAN_RESULT | egrep -n "Cell [0-9]* - Address:" | cut -d ':' -f 1`
+
+for line_num in $CELL_LIST
+do 
+	if [ $LAST_LNUM -ne 0 ]; then
+		#echo "$LAST_LNUM,$((line_num-1))"
+		sed -n "$LAST_LNUM,$((line_num-1))"' p' $SCAN_RESULT > $RESULT_TMP
+		read_site 
+    if [ "$CHECKSTR" = "" ]; then
+      echo -n ","
+    fi
+	fi
+	LAST_LNUM=$line_num
+done
+#echo "$LAST_LNUM"
+if [ $LAST_LNUM -ne 0 ]; then
+	sed -n "$LAST_LNUM,\$"' p' $SCAN_RESULT > $RESULT_TMP
+	read_site 
+fi
+
+rm -f $RESULT_TMP

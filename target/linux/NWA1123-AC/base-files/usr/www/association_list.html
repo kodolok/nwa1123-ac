@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <style>
+  .sort-normal > span {
+    padding: 3px 20px 3px 0;
+    background: url("images/sortnormal.png") no-repeat right;
+  }
+  .sort-ascending > span {
+    background-image: url("images/sortascending.png");
+  }
+  .sort-descending > span {
+    background-image: url("images/sortdescending.png");
+  }
+  </style>
+  <script type="text/javascript" src="js/baseJS.js"></script>
+  <script type="text/javascript" src="js/uimake.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript">
+    var assoList = ~`cgi_wlan_asso_list.sh`~;
+
+    $(function () {
+      var App = {
+        init: function () {      
+          this.cacheElements();
+          this.render();
+          this.bindEvents();      
+        },
+        cacheElements: function () {
+          this.list = assoList;
+          this.$table = $("#assocTable");      
+          this.sortTypes = ["NUMBER", "ADDR", "FREQ", "SSID", "ASSOCIATION", "SIGNALSTR"];
+          this.ASCENDING = "sort-ascending";
+          this.DESCENDING = "sort-descending";
+        },
+        render: function () {
+          var list = App.list, $table = App.$table, frag, sortTypes = App.sortTypes;            
+
+          frag = "<tbody>";
+          $.each(list, function (i, arr) {
+            frag += "<tr class='table_font' align='center'>";
+            $.each(sortTypes, function (j, type) {
+              if (type === "SIGNALSTR") {     
+                frag += "<td><img src='" + App.getSignalImgSrc(arr[type]) + "'>" +  arr[type] + "</td>";
+              } else if (type === "FREQ") {
+                frag += "<td>" + App.getRadioFreq(arr[type]) + "</td>";
+              } else {
+                frag += "<td>" + arr[type].replace(/\x3c/g, '&#060;') + "</td>";         
+              }
+            });    
+            frag += "</tr>";
+          });
+          frag += "</tbody>";
+          $table.find("tbody").replaceWith(frag);            
+        },    
+        getSignalImgSrc: function (signal) {
+          var i = parseInt(signal);
+
+          if (0 <= i && i <= 20)
+            src = 'images/signal_1.gif';
+          else if (20 < i && i <= 40)
+            src = 'images/signal_2.gif';
+          else if (40 < i && i <= 60)
+            src = 'images/signal_3.gif';
+          else if (60 < i && i <= 80)
+            src = 'images/signal_4.gif';
+          else if (80 < i && i <= 100)
+            src = 'images/signal_5.gif';
+          return src;
+        },
+        getRadioFreq: function (freq) {
+          if (freq == "2") {
+            return "2.4GHz";
+          } else {
+            return "5GHz";
+          }
+        },
+        sortBy: function (type, order) {
+          var list = App.list;
+
+          order = order || App.ASCENDING;
+          list.sort(function (a, b) {
+            var aVal = a[type].toLowerCase();
+            var bVal = b[type].toLowerCase();
+            if (type == "NUMBER") {
+              aVal = parseInt(a[type]);
+              bVal = parseInt(b[type]);
+            }
+
+            if (order === App.ASCENDING) {
+              return ((aVal < bVal) ? -1 : ((aVal > bVal) ? 1 : 0));                  
+            } else {
+              return ((aVal < bVal) ? 1 : ((aVal > bVal) ? -1 : 0));                  
+            }                
+          });            
+        },    
+        bindEvents: function () {
+          this.$table.find("thead").find("td").on("click", function (event) {
+            var $curr = $(event.currentTarget),     
+                $parent = $curr.parent(),
+                isAscending = $curr.hasClass(App.ASCENDING),             
+                isDescending = $curr.hasClass(App.DESCENDING),
+                type = $curr.attr("data-sort-by");       
+
+            if (isAscending === false && isDescending === false) {
+              $parent.find("td." + App.ASCENDING).removeClass(App.ASCENDING);         
+              $parent.find("td." + App.DESCENDING).removeClass(App.DESCENDING);
+              $curr.addClass(App.ASCENDING);
+              App.sortBy(type, App.ASCENDING);  
+            } else {          
+              $curr.toggleClass(App.ASCENDING + " " + App.DESCENDING);            
+              if (isAscending === true) {                    
+                App.sortBy(type, App.DESCENDING);
+              } else  {
+                App.sortBy(type, App.ASCENDING);
+              }              
+            }
+
+            App.render();
+          });
+        }
+      };
+
+      App.init();
+    });
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Association List"><span>Association List</span></a></li>
+    </ul>
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        View Association List
+      </div>
+      <div class="tableframe">
+        <table width="100%" cellpadding="0" cellspacing="0" id="assocTable">
+          <thead>
+            <tr class="top_font" align="center">
+              <td width="35" class="sort-normal" data-sort-by="NUMBER"><span>#</span></td>
+              <td class="sort-normal" data-sort-by="ADDR"><span>MAC Address</span></td>
+              <td class="sort-normal" data-sort-by="FREQ"><span>Radio</span></td>
+              <td class="sort-normal" data-sort-by="SSID"><span>SSID</span></td>
+              <td class="sort-normal" data-sort-by="ASSOCIATION"><span>Time</span></td>
+              <td class="sort-normal" data-sort-by="SIGNALSTR"><span>Signal</span></td>            
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="table_button">
+        <center>
+          <input name="refresh" value="Refresh" type="button" onclick="document.location.replace('association_list');"/>
+        </center>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    function init() {
+      NN_val(NN_getById("cDOT1Q_VLAN"), NN_val(NN_getById("DOT1Q_VLAN")));
+      NN_val(NN_getById("cMGMT_VLAN"), NN_val(NN_getById("MGMT_VLAN")));
+      checkDot1QVlanStatus();
+    }
+    function checkDot1QVlanStatus() {
+      var isChecked = NN_val(NN_getById("cDOT1Q_VLAN"));
+      NN_val(NN_getById("DOT1Q_VLAN"), ((isChecked == true) ? 1 : 0));
+      if (isChecked == true) {
+        NN_enableByClass("c_managevlan");
+        checkManageVlanStatus();
+      } else {
+        NN_disableByClass("c_managevlan");
+        NN_disableByClass("c_managevlanid");
+      }
+    }
+    function checkManageVlanStatus() {
+      var isChecked = NN_val(NN_getById("cMGMT_VLAN"));
+      NN_val(NN_getById("MGMT_VLAN"), ((isChecked == true) ? 1 : 0));
+      if (isChecked == true) {
+        NN_enableByClass("c_managevlanid");
+      } else {
+        NN_disableByClass("c_managevlanid");
+      }
+    }
+    function formSubmit() {
+      if (NN_val(NN_getById("cDOT1Q_VLAN")) == true) {
+        if (NN_val(NN_getById("cMGMT_VLAN")) == true) {
+          if (!validate(NN_getById("MGMT_VLAN_ID"), V_INT, 1, 4094)) return false;
+        }
+      }
+      
+      return true;
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="VLAN"><span>VLAN</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post" onsubmit="return formSubmit();">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        VLAN Settings
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">802.1Q VLAN:</li>
+          <li class="right_table">
+            <input type="checkbox" id="cDOT1Q_VLAN" value="1" onclick="checkDot1QVlanStatus();" />
+            <input type="hidden" name="DOT1Q_VLAN" id="DOT1Q_VLAN" value="~~DOT1Q_VLAN~" />
+            Enabled
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Management VLAN:</li>
+          <li class="right_table">
+            <input type="checkbox" id="cMGMT_VLAN" value="1" class="c_managevlan" onclick="checkManageVlanStatus();" />
+            <input type="hidden" name="MGMT_VLAN" id="MGMT_VLAN" value="~~MGMT_VLAN~" />
+            Enabled
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Management VLAN ID :</li>
+          <li class="right_table"><input maxlength="4" size="4" name="MGMT_VLAN_ID" id="MGMT_VLAN_ID" value="~~MGMT_VLAN_ID~" class="c_managevlanid" />(1-4094)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_button">
+      <center>
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_l" /> 
+        <input name="cancel" value="Cancel" type="button" onclick="document.location.replace('vlan');" class="table_button_r" />
+        <input type="hidden" name="EXECUTE" value="vlan" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <title>.::Welcome to the Web-Based Configurator::.</title>
+    <link href="css/expert.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/baseJS.js" ></script>
+    <script type="text/javascript" src="js/uimake.js" ></script>
+    <script type="text/javascript">
+      var radprofile_name = {
+        "1":"~~RAD_PRO_NAME_1~", /* radProfile1 */
+        "2":"~~RAD_PRO_NAME_2~", /* radProfile2 */
+        "3":"~~RAD_PRO_NAME_3~", /* radProfile3 */
+        "4":"~~RAD_PRO_NAME_4~"  /* radProfile4 */
+      };
+      var secProf = {
+        "sec_profile_1":{
+          "radprof":"~~AP_RAD_PROFILE_1~",
+          "secmode":"~~SEC_DESC_1~"
+        },
+        "sec_profile_2":{
+          "radprof":"~~AP_RAD_PROFILE_2~",
+          "secmode":"~~SEC_DESC_2~"
+        },
+        "sec_profile_3":{
+          "radprof":"~~AP_RAD_PROFILE_3~",
+          "secmode":"~~SEC_DESC_3~"
+        },
+        "sec_profile_4":{
+          "radprof":"~~AP_RAD_PROFILE_4~",
+          "secmode":"~~SEC_DESC_4~"
+        },
+        "sec_profile_5":{
+          "radprof":"~~AP_RAD_PROFILE_5~",
+          "secmode":"~~SEC_DESC_5~"
+        },
+        "sec_profile_6":{
+          "radprof":"~~AP_RAD_PROFILE_6~",
+          "secmode":"~~SEC_DESC_6~"
+        },
+        "sec_profile_7":{
+          "radprof":"~~AP_RAD_PROFILE_7~",
+          "secmode":"~~SEC_DESC_7~"
+        },
+        "sec_profile_8":{
+          "radprof":"~~AP_RAD_PROFILE_8~",
+          "secmode":"~~SEC_DESC_8~"
+        }
+      };
+
+      function init() {
+        for (var i = 1; i <= 8; i++) {  
+          var rad_idx = secProf["sec_profile_"+i].radprof;
+          var secmode_str = secProf["sec_profile_"+i].secmode;
+
+          var radProf = NN_getById("radProf_"+i);
+          var secMode = NN_getById("secMode_"+i);
+
+          NN_val(secMode,secmode_str);
+          if (secmode_str == "WPA2-MIX" || secmode_str == "WPA2") {
+            NN_val(radProf,radprofile_name[rad_idx]);
+          } else {
+            NN_val(radProf,"None");
+          }
+        }
+      }
+    </script>
+  </head>
+  <body onload="init();">
+    <div class="topgraph"></div>
+    <div id="tabs">
+      <ul>
+		    <li><a href="wlan_2dot4g" title="Wireless Settings - 2.4G"><span>Wireless Settings - 2.4G</span></a></li>
+		    <li><a href="wlan_5g" title="Wireless Settings - 5G"><span>Wireless Settings - 5G</span></a></li>
+        <li><a href="wlan_ssid" title="SSID"><span>SSID</span></a></li>
+        <li class="hightline"><a title="Security"><span>Security</span></a></li>
+        <li><a href="wlan_radius" title="RADIUS"><span>RADIUS</span></a></li>
+        <li><a href="wlan_l2iso" title="Layer-2 Isolation"><span>Layer-2 Isolation</span></a></li>
+        <li><a href="wlan_mf" title="MAC Filter"><span>MAC Filter</span></a></li>
+      </ul>
+      <br class="clearfloat" />
+    </div>
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data">
+        <div class="undownLineTitle">Security Profiles</div>
+        <div class="tableframe" >
+          <table width="100%" cellpadding="0" cellspacing="0" >
+            <tr class="top_font" align="center" >
+              <td width="35">#</td>
+              <td>Profile Name</td>
+              <td>Security Mode</td>
+              <td>RADIUS</td>
+              <td width="100" >Edit</td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>1</td><td>~~SEC_PRO_NAME_1~</td><td id="secMode_1"></td><td id="radProf_1"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=1" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>2</td><td>~~SEC_PRO_NAME_2~</td><td id="secMode_2"></td><td id="radProf_2"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=2" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>3</td><td>~~SEC_PRO_NAME_3~</td><td id="secMode_3"></td><td id="radProf_3"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=3" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>4</td><td>~~SEC_PRO_NAME_4~</td><td id="secMode_4"></td><td id="radProf_4"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=4" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>5</td><td>~~SEC_PRO_NAME_5~</td><td id="secMode_5"></td><td id="radProf_5"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=5" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>6</td><td>~~SEC_PRO_NAME_6~</td><td id="secMode_6"></td><td id="radProf_6"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=6" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>7</td><td>~~SEC_PRO_NAME_7~</td><td id="secMode_7"></td><td id="radProf_7"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=7" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>8</td><td>~~SEC_PRO_NAME_8~</td><td id="secMode_8"></td><td id="radProf_8"></td>
+              <td>&nbsp;<a href="wlan_security_modify?INDEX=8" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image191','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image191" width="18" height="18" border="0" id="Image191"  title="Edit"/></a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>

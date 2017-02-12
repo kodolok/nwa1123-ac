@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<title>[nwa1123-ac]</title>
+<link rel="stylesheet" type="text/css" href="../login/images/login.css" />
+<style type="text/css">
+.invalidinput {border-color:red;}
+</style>
+<script type="text/javascript" src="../js/baseJS.js"></script>
+<script type="text/javascript">
+document.title = "[nwa1123-ac] (" + document.domain + ")";
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+}
+
+function formSubmit() {
+  var retVal = true;
+  var newPwd = NN_getById("PASSWD_NEW");
+  var confirmPwd = NN_getById("PASSWD_CONFIRM");
+  if (!validate(newPwd, V_STR, 1, 32)) retVal = false;
+  if (!validate(confirmPwd, V_STR, 1, 32)) retVal = false;
+  if (retVal != false) {
+    if (NN_val(newPwd) == NN_val(confirmPwd)) {
+      NN_removeClass(newPwd, 'invalidinput');
+      NN_removeClass(confirmPwd, 'invalidinput');
+    } else {
+      NN_addClass(newPwd, 'invalidinput');
+      NN_addClass(confirmPwd, 'invalidinput');
+      retVal = false;
+    }
+  }
+  return retVal;
+}
+</script>
+</head>
+<body>
+<form id="form1" name="form1" method="post" onsubmit="return formSubmit();">
+<div class="l-wrap">
+<div class="login_bg">
+    <div class="related">
+      <div class="logo"></div>
+      <div class="model">NWA1123-AC</div>
+    </div>
+  <div class="usg_icon"></div>
+  <div class="content_bg"><div class="section_bg"> </div>
+  </div>
+  <div class="section">   
+	<!-- show confirm password section beginning -->
+	<div id="confirmpart">
+		<div class="title">Update Admin Info</div>
+		<span class="content_line"></span>
+		<br />
+		<p>As a security precaution, it is highly recommended that you change the admin password.</p><br />
+	
+		<div class="inputbox">
+		  <ul>
+			<li><span class="left">New Password:</span><span class="right">
+			  <input name="PASSWD_NEW" id="PASSWD_NEW" type="password" maxlength="32" />
+			</span></li>
+			<li><span class="left">Retype to Confirm:</span><span class="right">
+			  <input type="password" name="PASSWD_CONFIRM" id="PASSWD_CONFIRM" maxlength="32" /> 
+			</span></li>
+		 </ul>
+		</div>
+		<br class="clearfloat" />
+		<div class="limit">( 1-32 alphanumeric, printable characters and no spaces )</div>
+		<div class="btn">
+		  <input type="submit" name="COMMIT" value="Apply" />
+		  ~eHTTPS_CERT_FLAG!0~<input name="Submit2" type="button" onclick="MM_goToURL('parent','../cgi-bin/dashboard');" value="Ignore" />
+                  ~eHTTPS_CERT_FLAG!1~<input name="Submit2" type="button" onclick="MM_goToURL('parent','../cgi-bin/gennewcert');" value="Ignore" />
+      <input type="hidden" name="EXECUTE" value="chgpw" />
+		</div>
+	</div>
+	<!-- show confirm password section ending -->
+	</div>
+  </div>
+</div>
+</form>
+</body>
+</html>

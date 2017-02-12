@@ -1,0 +1,14 @@
+    key_mgmt=NONE
+~hSEC_WEP_KEY1#!~    wep_key0="~!SEC_WEP_KEY1#~"
+~hSEC_WEP_KEY2#!~    wep_key1="~!SEC_WEP_KEY2#~"
+~hSEC_WEP_KEY3#!~    wep_key2="~!SEC_WEP_KEY3#~"
+~hSEC_WEP_KEY4#!~    wep_key3="~!SEC_WEP_KEY4#~"
+~hSEC_WEP_KEY1#~    wep_key0=~!SEC_WEP_KEY1#~
+~hSEC_WEP_KEY2#~    wep_key1=~!SEC_WEP_KEY2#~
+~hSEC_WEP_KEY3#~    wep_key2=~!SEC_WEP_KEY3#~
+~hSEC_WEP_KEY4#~    wep_key3=~!SEC_WEP_KEY4#~
+    wep_tx_keyidx=~~SEC_PRIMARY_KEY#~
+    priority=5
+~eSEC_WEP_MODE#:1~    auth_alg=OPEN
+~eSEC_WEP_MODE#:2~    auth_alg=SHARED
+}

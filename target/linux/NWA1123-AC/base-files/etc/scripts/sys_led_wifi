@@ -1,0 +1,7 @@
+#!/bin/sh
+
+wifi_status=`get_wifi_status.sh`
+
+if [ "$wifi_status" = "0" ]; then
+    sys_led_alert wifi &
+fi

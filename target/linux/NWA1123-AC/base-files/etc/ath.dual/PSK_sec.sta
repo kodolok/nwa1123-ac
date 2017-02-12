@@ -1,0 +1,9 @@
+~eSEC_WPA#:1~    proto=WPA
+~eSEC_WPA#:2~    proto=RSN
+    key_mgmt=WPA-PSK
+~eSEC_WPA#:1~    pairwise=TKIP
+~eSEC_WPA#:2~    pairwise=CCMP
+~hPSK_KEY#!~    psk="~~PSK_KEY#~"
+~hPSK_KEY#~    psk=~~PSK_KEY#~
+}
+

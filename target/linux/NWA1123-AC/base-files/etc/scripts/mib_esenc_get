@@ -1,0 +1,28 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to get the esENC function. 
+##
+## mib_esenc_get
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please input the get function index."
+    exit 255
+elif [ "${1}" = "1" ];then
+	ip_addr=`cfg -v ESENC_IPADDR`
+	echo "${ip_addr}"
+elif [ "${1}" = "2" ]; then
+	trap_status=`cfg -v ESENC_TRAPCONTROL`
+	echo "${trap_status}"
+elif [ "${1}" = "3" ]; then
+	cpu_useage=`cfg -v ESENC_CPUUSEAGE`
+	echo "${cpu_useage}"
+elif [ "${1}" = "4" ]; then
+	mem_useage=`cfg -v ESENC_MEMUSEAGE`
+	echo "${mem_useage}"
+fi
+
+exit 0
+

@@ -1,0 +1,149 @@
+#!/bin/sh
+####################################################################
+# SYSTEM script
+#
+# This script is used to set the IP address and DNS f the interface.
+#
+# cgi_ipv4_settings <ifname>
+#
+#  ifname:  The interface name. ex: ath0,eth0
+#
+###################################################################
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+export MGMT_IF=`get_mgmt_if`
+
+if [ "$MGMT_IF" = "" ]; then
+    exit 1
+fi
+
+IF_STR=`ifconfig | grep $MGMT_IF`
+
+if [ "_$IF_STR" = "_" ]; then
+    exit 2
+fi
+
+IPADDRESS=`cfg -v AP_IPADDR`
+NETMASK="netmask 255.255.255.0"
+NET_MASK=`cfg -v AP_NETMASK`
+RESOLV_CONF="/tmp/resolv.conf"
+
+##
+## Set DNS Server
+##
+## new_namesrv_conf=/tmp/resolv.conf.tmp
+## new_namesrv_temp=/tmp/resolv.conf.temp
+## sed s/\ nameserver/\ NAMESERVER/g < $RESOLV_CONF > $new_namesrv_temp
+## sed /nameserver/d $new_namesrv_temp > $new_namesrv_conf
+## sed s/\ NAMESERVER/\ nameserver/g < $new_namesrv_conf > $new_namesrv_temp
+## mv -f $new_namesrv_temp $RESOLV_CONF
+## rm -f $new_namesrv_conf
+## unset new_namesrv_temp
+## unset new_namesrv_conf
+
+rm -f $RESOLV_CONF
+touch $RESOLV_CONF
+if [ -n "$PRIDNS" ]
+then
+    if [ "$PRIDNS" != "0.0.0.0" ]
+    then
+        echo nameserver $PRIDNS >> $RESOLV_CONF
+    fi
+fi
+if [ -n "$SECDNS" ]
+then
+    if [ "$SECDNS" != "0.0.0.0" ]
+    then
+        echo nameserver $SECDNS >> $RESOLV_CONF
+    fi
+fi
+
+##
+## Kill current udhcpc process
+##
+killall -q udhcpc
+killall -q dhcp6c
+
+##
+## Check the WAN mode.  check for DHCP client, else
+## simply set the address
+##
+if [ "${WAN_MODE}" = "dhcp" ]; then
+    ##
+    ## Run the DHCP client on this interface
+    ##    
+    ifconfig $MGMT_IF $IPADDRESS $NETMASK up    
+	cgi_get_dhcp_ip "cgi_ipv4_settings"
+
+else
+    ##
+    ## Static IP address
+    ##
+
+		#ifconfig $MGMT_IF $IPADDRESS $NETMASK up
+		ifconfig $MGMT_IF $IPADDRESS netmask $NET_MASK up
+
+		if [ -n "$IPGW" -a "$IPGW" != "0.0.0.0" ]; then
+			route add default gw $IPGW dev $MGMT_IF
+		else
+			route del -net 0.0.0.0 netmask 0.0.0.0 dev $MGMT_IF
+		fi
+fi
+
+##
+## IPV6 Setting
+##
+if [ "${IPV6_AUTO}" = "none" ]; then
+    echo "0" > /proc/sys/net/ipv6/conf/$MGMT_IF/accept_ra
+    ifconfig $MGMT_IF | awk '/Global/ { cmd="ifconfig $MGMT_IF del " $3; system(cmd) }'
+else
+    echo "1" > /proc/sys/net/ipv6/conf/$MGMT_IF/accept_ra
+    ifconfig $MGMT_IF | awk '/Global/ { cmd="ifconfig $MGMT_IF del " $3; system(cmd) }'
+fi
+
+if [ "${IPV6_AUTO}" = "stateful" ]; then
+    ##
+    ## modify /etc/dhcp6c.conf
+    ##
+    new_dhcp6c_conf=/tmp/dhcp6c.conf.tmp
+    echo interface $MGMT_IF { > $new_dhcp6c_conf
+    sed /interface/d /etc/dhcp6c.conf >> $new_dhcp6c_conf
+    mv -f $new_dhcp6c_conf /tmp/dhcp6c.conf
+    unset new_dhcp6c_conf
+
+    ##
+    ## Run the DHCPV6 client on this interface
+    ##
+
+    /sbin/dhcp6c -c /tmp/dhcp6c.conf $MGMT_IF
+fi
+
+if [ "${IPV6_AUTO}" != "none" ]; then
+	ifconfig $MGMT_IF down
+	ifconfig $MGMT_IF up
+	if [ "${WAN_MODE}" != "dhcp" ]; then
+		if [ -n "$IPGW" -a "$IPGW" != "0.0.0.0" ]; then
+			route add default gw $IPGW dev $MGMT_IF
+		else
+			route del -net 0.0.0.0 netmask 0.0.0.0 dev $MGMT_IF
+		fi
+	fi
+fi
+
+if [ -n "$OLD_IPV6_ADDR" ]
+then
+    ifconfig $MGMT_IF del $OLD_IPV6_ADDR
+fi
+
+if [ -n "$IPV6_ADDR" ]
+then
+    ifconfig $MGMT_IF add $IPV6_ADDR
+    cfg -a OLD_IPV6_ADDR=$IPV6_ADDR
+fi
+
+sh /etc/scripts/acl_setrule
+sh /etc/scripts/cgi_ntp_start
+exit 0

@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    function checkSnmpv3Admin() {
+      var isChecked = NN_val(NN_getById("cSNMPV3_ADMIN"));
+      NN_val(NN_getById("SNMPV3_ADMIN"), ((isChecked == true) ? 'Enabled' : 'Disabled'));
+      if (isChecked) {
+        NN_enableByClass("c_snmpv3admin");
+        checkAdminAuth();
+      }
+      else
+        NN_disableByClass("c_snmpv3admin");
+    }
+    function checkSnmpv3User() {
+      var isChecked = NN_val(NN_getById("cSNMPV3_USER"));
+      NN_val(NN_getById("SNMPV3_USER"), ((isChecked == true) ? 'Enabled' : 'Disabled'));
+      if (isChecked) {
+        NN_enableByClass("c_snmpv3user");
+        checkUserAuth();
+      }
+      else
+        NN_disableByClass("c_snmpv3user");
+    }
+    function checkUserAuth() {
+      if (NN_val(NN_getById("SNMPV3_USER_AUTH")) == "None") {
+        NN_disableByClass("c_snmpv3userauth");
+      } else {
+        NN_enableByClass("c_snmpv3userauth");
+      }
+    }
+    function checkAdminAuth() {
+      if (NN_val(NN_getById("SNMPV3_ADMIN_AUTH")) == "None") {
+        NN_disableByClass("c_snmpv3adminauth");
+      } else {
+        NN_enableByClass("c_snmpv3adminauth");
+      }
+    }
+    function init() {
+      checkSnmpv3Admin();
+      checkSnmpv3User();
+    }
+    function formSubmit() {
+      var retVal = true;
+	  var portArray = ["~~MGMT_HTTP_PORT~", "~~MGMT_TELNET_PORT~", "~~MGMT_FTP_PORT~", "~~MGMT_HTTPS_PORT~", "~~LOG_PORT~"];
+      if (!validate(NN_getById("MGMT_SNMP_PORT"), V_INT, 1, 65535)) retVal = false;
+	  if (!validate(NN_getById("MGMT_SNMP_PORT"), V_DUPLICATE_PORT, 0, portArray)) retVal = false;
+      if (NN_getByName("MGMT_SNMP_IP_SEL")[1].checked)	
+			if (!validate(NN_getById("MGMT_SNMP_IP"), V_IP)) retVal = false;
+	  if (NN_getByName("MGMT_SNMP_IP_SEL")[0].checked)
+			NN_removeClass(NN_getById("MGMT_SNMP_IP"), "invalidinput");
+      if (!validate(NN_getById("MGMT_SNMP_MAC"), V_MAC)) retVal = false;
+      /* snmp config */
+      if (!validate(NN_getById("SNMP_RO_USER"), V_STR, 1, 32)) retVal = false;
+      if (!validate(NN_getById("SNMP_RW_USER"), V_STR, 1, 32)) retVal = false;
+      if (!validate(NN_getById("SNMP_TRAP_USER"), V_STR, 1, 32)) retVal = false;
+      if (!validate(NN_getById("SNMP_TRAP_IP"), V_IP)) retVal = false;
+      /* admin */
+      if (NN_val(NN_getById("cSNMPV3_ADMIN")) == true) {
+        if (!validate(NN_getById("SNMPV3_ADMIN_NAME"), V_STR, 1, 32)) retVal = false;
+        if (!validate(NN_getById("SNMPV3_ADMIN_PASSWORD"), V_STR, 8, 32)) retVal = false;
+        if (!validate(NN_getById("confirmAdminPasswd"), V_STR, 8, 32)) retVal = false;
+
+        if (NN_val(NN_getById("SNMPV3_ADMIN_PASSWORD")) != NN_val(NN_getById("confirmAdminPasswd")))
+        {
+          NN_addClass(NN_getById("SNMPV3_ADMIN_PASSWORD"), 'invalidinput');
+          NN_addClass(NN_getById("confirmAdminPasswd"), 'invalidinput');
+          retVal = false;
+        }
+      } else {
+        NN_removeClass(NN_getById("SNMPV3_ADMIN_NAME"), 'invalidinput');
+        NN_removeClass(NN_getById("SNMPV3_ADMIN_PASSWORD"), 'invalidinput');
+        NN_removeClass(NN_getById("confirmAdminPasswd"), 'invalidinput');
+      }
+      /* user */
+      if (NN_val(NN_getById("cSNMPV3_USER")) == true) {
+        if (!validate(NN_getById("SNMPV3_USER_NAME"), V_STR, 1, 32)) retVal = false;
+        if (!validate(NN_getById("SNMPV3_USER_PASSWORD"), V_STR, 8, 32)) retVal = false;
+        if (!validate(NN_getById("confirmUserPasswd"), V_STR, 8, 32)) retVal = false;
+
+        if (NN_val(NN_getById("SNMPV3_USER_PASSWORD")) != NN_val(NN_getById("confirmUserPasswd")))
+        {
+          NN_addClass(NN_getById("SNMPV3_USER_PASSWORD"), 'invalidinput');
+          NN_addClass(NN_getById("confirmUserPasswd"), 'invalidinput');
+          retVal = false;
+        }
+      } else {
+        NN_removeClass(NN_getById("SNMPV3_USER_NAME"), 'invalidinput');
+        NN_removeClass(NN_getById("SNMPV3_USER_PASSWORD"), 'invalidinput');
+        NN_removeClass(NN_getById("confirmUserPasswd"), 'invalidinput');
+      }
+
+      return retVal;
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li><a href="sys_http" title="WWW"><span>WWW</span></a></li>
+      <li><a href="certificates" title="Certificates"><span>Certificates</span></a></li>
+      <li><a href="sys_telnet" title="Telnet"><span>Telnet</span></a></li>
+      <li class="hightline"><a title="SNMP"><span>SNMP</span></a></li>
+      <li><a href="sys_ftp" title="FTP"><span>FTP</span></a></li>
+      <li><a href="sys_https" title="HTTPS"><span>HTTPS</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post" onsubmit="return formSubmit();">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        SNMP
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Port :</li>
+          <li class="right_table"><input name="MGMT_SNMP_PORT" id="MGMT_SNMP_PORT" size="5" maxlength="5" value="~~MGMT_SNMP_PORT~" type="text" /></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Access Control :</li>
+          <li class="right_table"><select size="1" name="MGMT_SNMP_ACCESS">
+            <option value="0" ~sMGMT_SNMP_ACCESS:0~> Disable </option>
+            <option value="1" ~sMGMT_SNMP_ACCESS:1~> LAN </option>
+            <option value="2" ~sMGMT_SNMP_ACCESS:2~> WLAN </option>
+            <option value="3" ~sMGMT_SNMP_ACCESS:3~> LAN &amp; WLAN </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Secure Client IP Address :</li>
+          <li class="right_table"><input name="MGMT_SNMP_IP_SEL" value="0" type="radio" ~cMGMT_SNMP_IP_SEL:0~ />
+          All&nbsp;&nbsp;&nbsp; <input name="MGMT_SNMP_IP_SEL" value="1" type="radio" ~cMGMT_SNMP_IP_SEL:1~ /> 
+          Selected&nbsp; <input name="MGMT_SNMP_IP" id="MGMT_SNMP_IP" size="20" maxlength="15" value="~~MGMT_SNMP_IP~" type="text" /></li>
+          </li>
+        </ul>
+        <ul>
+          <li class="left_table">Secure Client MAC Address :</li>
+          <li class="right_table"><input value="0" type="radio" name="MGMT_SNMP_MAC_SEL" ~cMGMT_SNMP_MAC_SEL:0~ /> All&nbsp;&nbsp;&nbsp;
+          <input value="1" type="radio" name="MGMT_SNMP_MAC_SEL" ~cMGMT_SNMP_MAC_SEL:1~ /> Selected&nbsp; 
+          <input size="20" maxlength="17" value="~~MGMT_SNMP_MAC~" type="text" name="MGMT_SNMP_MAC" id="MGMT_SNMP_MAC" /></li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        <b>SNMP Configuration</b>
+      </div>
+<!--
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Protocol Version:</li>
+          <li class="right_table"><select name="SNMP_VERSION">
+            <option value="2" ~sSNMP_VERSION:2~> V2 </option>
+            <option value="3" ~sSNMP_VERSION:3~> V3 </option>
+          </select></li>
+        </ul>
+      </div>
+//-->
+		<input name="SNMP_VERSION" type="hidden" value="3" />
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Get Community :</li>
+          <li class="right_table">
+            <span class="cfig_word"><input size="32" maxlength="32" name="SNMP_RO_USER" id="SNMP_RO_USER" value="~~SNMP_RO_USER~" type="text" /></span>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Set Community :</li>
+          <li class="right_table"><span class="cfig_word"><input size="32" maxlength="32" name="SNMP_RW_USER" id="SNMP_RW_USER" value="~~SNMP_RW_USER~" type=
+          "text" /></span></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Trap Community :</li>
+          <li class="right_table">
+            <span class="cfig_word"><input size="32" maxlength="32" name="SNMP_TRAP_USER" id="SNMP_TRAP_USER" value="~~SNMP_TRAP_USER~" type="text" /></span>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Trap Destination :</li>
+          <li class="right_table">
+            <span class="cfig_word"><input size="15" maxlength="15" name="SNMP_TRAP_IP" id="SNMP_TRAP_IP" value="~~SNMP_TRAP_IP~" type="text" /></span>
+          </li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        <b>SNMPv3 Admin Settings</b>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">SNMPv3 Admin:</li>
+          <li class="right_table"><input type="checkbox" name="cSNMPV3_ADMIN" id="cSNMPV3_ADMIN" value="Enabled" onclick="checkSnmpv3Admin();" ~cSNMPV3_ADMIN:Enabled~ /> Enabled</li>
+          <input type="hidden" name="SNMPV3_ADMIN" id="SNMPV3_ADMIN" value="Disabled" />
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">User Name:</li>
+          <li class="right_table">
+            <span class="cfig_word"><input size="32" maxlength="32" name="SNMPV3_ADMIN_NAME" id="SNMPV3_ADMIN_NAME" value="~~SNMPV3_ADMIN_NAME~" type="text" class="c_snmpv3admin" /></span>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Password:</li>
+          <li class="right_table">
+            <span class="cfig_word"><input size="32" maxlength="32" name="SNMPV3_ADMIN_PASSWORD" id="SNMPV3_ADMIN_PASSWORD" value="~~SNMPV3_ADMIN_PASSWORD~" type="password" class="c_snmpv3admin" />(8 - 32 alphanumeric, printable characters and no spaces)</span>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Confirm Password:</li>
+          <li class="right_table">
+            <span class="cfig_word"><input size="32" maxlength="32" id="confirmAdminPasswd" value="~~SNMPV3_ADMIN_PASSWORD~" type="password" class="c_snmpv3admin" /></span>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Access Type:</li>
+          <li class="right_table"><select name="SNMPV3_ADMIN_TYPE" class="c_snmpv3admin">
+            <option value="ReadOnly" ~sSNMPV3_ADMIN_TYPE:ReadOnly~> Read Only </option>
+            <option value="ReadAndWrite" ~sSNMPV3_ADMIN_TYPE:ReadAndWrite~> Read/Write </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Authentication Protocol:</li>
+          <li class="right_table"><select name="SNMPV3_ADMIN_AUTH" id="SNMPV3_ADMIN_AUTH" class="c_snmpv3admin" onchange="checkAdminAuth();">
+            <option value="None" ~sSNMPV3_ADMIN_AUTH:None~> None </option>
+            <option value="MD5" ~sSNMPV3_ADMIN_AUTH:MD5~> MD5 </option>
+            <option value="SHA" ~sSNMPV3_ADMIN_AUTH:SHA~> SHA </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Privacy Protocol:</li>
+          <li class="right_table"><span class="cfig_word"><select name="SNMPV3_ADMIN_PRIV" id="SNMPV3_ADMIN_PRIV" class="c_snmpv3admin c_snmpv3adminauth">
+            <option value="None" ~sSNMPV3_ADMIN_PRIV:None~> None </option>
+            <option value="DES" ~sSNMPV3_ADMIN_PRIV:DES~> DES </option>
+            <option value="AES" ~sSNMPV3_ADMIN_PRIV:AES~> AES </option>
+          </select></span></li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        <b>SNMPv3 User Settings</b>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">SNMPv3 User:</li>
+          <li class="right_table"><input type="checkbox" name="cSNMPV3_USER" id="cSNMPV3_USER" value="Enabled" onclick="checkSnmpv3User();" ~cSNMPV3_USER:Enabled~ /> Enabled</li>
+          <input type="hidden" name="SNMPV3_USER" id="SNMPV3_USER" value="disabled" />
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">User Name:</li>
+          <li class="right_table">
+          <span class="cfig_word"><input size="32" maxlength="32" name="SNMPV3_USER_NAME" id="SNMPV3_USER_NAME" value="~~SNMPV3_USER_NAME~" type="text" class="c_snmpv3user" /></span></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Password:</li>
+          <li class="right_table">
+          <span class="cfig_word"><input size="32" maxlength="32" name="SNMPV3_USER_PASSWORD" id="SNMPV3_USER_PASSWORD" value="~~SNMPV3_USER_PASSWORD~" type="password" class="c_snmpv3user" />(8 - 32 alphanumeric, printable characters and no spaces)</span></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Confirm Password:</li>
+          <li class="right_table">
+          <span class="cfig_word"><input size="32" maxlength="32" id="confirmUserPasswd" value="~~SNMPV3_USER_PASSWORD~" type="password" class="c_snmpv3user" /></span></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Access Type:</li>
+          <li class="right_table"><select name="SNMPV3_USER_TYPE" class="c_snmpv3user">
+            <option value="ReadOnly" ~sSNMPV3_USER_TYPE:ReadOnly~> Read Only </option>
+            <option value="ReadAndWrite" ~sSNMPV3_USER_TYPE:ReadAndWrite~> Read/Write </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Authentication Protocol:</li>
+          <li class="right_table"><select name="SNMPV3_USER_AUTH" id="SNMPV3_USER_AUTH" class="c_snmpv3user" onchange="checkUserAuth();">
+            <option value="None" ~sSNMPV3_USER_AUTH:None~> None </option>
+            <option value="MD5" ~sSNMPV3_USER_AUTH:MD5~> MD5 </option>
+            <option value="SHA" ~sSNMPV3_USER_AUTH:SHA~> SHA </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Privacy Protocol:</li>
+          <li class="right_table"><span class="cfig_word"><select name="SNMPV3_USER_PRIV" id="SNMPV3_USER_PRIV" class="c_snmpv3user c_snmpv3userauth">
+            <option value="None" ~sSNMPV3_USER_PRIV:None~> None </option>
+            <option value="DES" ~sSNMPV3_USER_PRIV:DES~> DES </option>
+            <option value="AES" ~sSNMPV3_USER_PRIV:AES~> AES </option>
+          </select></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_button">
+      <center>
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_l" />
+        <input name="cancel" value="Cancel" type="reset" class="table_button_r" onclick="document.location.replace('sys_snmp')" />
+        <input type="hidden" name="EXECUTE" value="sys_snmp" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

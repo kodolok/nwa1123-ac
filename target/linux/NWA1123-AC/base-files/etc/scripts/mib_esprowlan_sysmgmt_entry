@@ -1,0 +1,41 @@
+#!/bin/sh
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the Step."
+    exit 255
+fi
+
+Step=$1
+VALUE=$2
+
+## Change Password
+if [ "${Step}" = "1" ];then
+    ## write
+    if [ "${VALUE}" != "" ]; then
+        STATUS=`echo admin:${VALUE} | chpasswd -m`
+        echo -n $STATUS
+        exit 0
+    fi
+    ## else fail
+    echo "Please specify the Password."
+    exit 255
+fi
+
+## Update Password
+if [ "${Step}" = "2" ];then
+    ## write
+    if [ "${VALUE}" = "" ]; then
+        cfg -a ENCRYPT_PASSWD=`grep admin /etc/shadow | awk -F":" '{print $2}' | tail -c 23`
+        cfg -c
+        exit 0
+    fi
+    ## else fail
+    exit 255
+fi
+
+exit 0
+
+
+
+
+

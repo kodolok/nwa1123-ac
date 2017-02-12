@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+if [ ! -n "$1" ]
+then
+    echo "Current mode $WAN_MODE"
+    exit 0
+fi
+
+if [ "${WAN_MODE}" = "$1" ]; then
+    exit 0
+fi
+if [ "${WAN_MODE}" = "dhcp" -a "$1" = "dynamic" ]; then
+    exit 0
+fi
+
+if [ "$1" = "static" ]; then
+    WAN_MODE="static"
+else
+    if [ "$1" = "dynamic" ]; then
+        WAN_MODE="dhcp"
+    else
+        echo "Please input the value static/dynamic.."
+        exit 0
+    fi
+
+fi
+
+MGMT_IF=`get_mgmt_if`
+killall -q udhcpc
+
+##
+## Check the WAN mode.  check for DHCP client, else
+## simply set the address
+##
+if [ "${WAN_MODE}" = "dhcp" ]; then
+    ifconfig $MGMT_IF $AP_IPADDR netmask $AP_NETMASK up
+    udhcpc -b -i $MGMT_IF -h $SYS_NAME&
+else
+    ##
+    ## Static IP address
+    ##
+
+    ifconfig $MGMT_IF $AP_IPADDR netmask $AP_NETMASK up
+
+    if [ -n "$IPGW" ]
+    then
+        route add default gw $IPGW dev $MGMT_IF
+    fi
+fi
+
+cfg -a WAN_MODE="$WAN_MODE"
+cfg -c
+sh /etc/scripts/acl_setrule
+
+exit 0
+

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+MEM_MIN=10240
+
+while [ 1 ]; do
+    MEM=`cat /proc/meminfo | grep '^Mem'`
+    MEM_FREE=`echo ${MEM} | cut -d ' ' -f5`
+    if [ $MEM_FREE -lt $MEM_MIN ]
+    then
+        echo 3 > /proc/sys/vm/drop_caches
+        echo "MEM_FREE=$MEM_FREE. Memory less than $MEM_MIN. sys_check_ramfs drop caches now." > /dev/console	
+
+	sleep 1
+
+        MEM=`cat /proc/meminfo | grep '^Mem'`
+        MEM_FREE=`echo ${MEM} | cut -d ' ' -f5`
+	if [ $MEM_FREE -lt $MEM_MIN ]
+	then
+            rm -f /tmp/upload/*
+            echo "MEM_FREE=$MEM_FREE. Memory still less than $MEM_MIN. sys_check_ramfs remove upload now." > /dev/console
+        fi
+    fi
+    sleep 3
+done
+exit 0
+

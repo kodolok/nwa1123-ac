@@ -1,0 +1,46 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set the esENC. 
+##
+## mib_esenc_set
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+OID=$1
+VALUE=$2
+
+## esENC server ip ##
+if [ "${OID}" = "1" ];then
+    ## read-only
+    cfg -a ESENC_IPADDR="${VALUE}"
+    cfg -c
+    exit 0
+fi
+
+## Trap device control
+if [ "${OID}" = "2" ];then
+    cfg -a ESENC_TRAPCONTROL="${VALUE}"
+    cfg -c
+    exit 0
+fi
+
+## CPU useage threshold ##
+if [ "${OID}" = "3" ];then
+    cfg -a ESENC_CPUUSEAGE="${VALUE}"
+    cfg -c
+    exit 0
+fi
+
+## Memory useage threshold ##
+if [ "${OID}" = "4" ];then
+    cfg -a ESENC_MEMUSEAGE="${VALUE}"
+    cfg -c
+    exit 0
+fi
+

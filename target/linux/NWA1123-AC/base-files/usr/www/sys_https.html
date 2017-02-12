@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+
+    .input-pos {
+      margin-bottom: 2px;
+    }
+    .input-file {
+      width: 240px;
+      width: 250px\0;
+      width: 250px\9;
+      position: absolute;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .btn.disabled,
+    .btn[disabled] {
+      cursor: default;
+      background-image: none;
+      background-color: #e6e6e6;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .input-file:hover .btn,
+    .input-pos:hover .btn {
+      color: #333333;
+      text-decoration: none;
+      background-color: #e6e6e6;
+      background-position: 0 -15px;
+      -webkit-transition: background-position 0.1s linear;
+      -moz-transition: background-position 0.1s linear;
+      -ms-transition: background-position 0.1s linear;
+      -o-transition: background-position 0.1s linear;
+      transition: background-position 0.1s linear;
+    }
+  </style>
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript" src="../js/uimake.js"></script>
+  <script type="text/javascript">
+    var startSec = 15;
+    var timerId = 0;
+    function init() {
+      NN_hideByClass("dvMsgCert");
+    }
+    function countdownCert() {
+      startSec -= 1;
+      if (startSec < 0) {
+        clearInterval(timerId);
+        document.getElementById("certDescr").innerHTML = "Please attempt to access ap again.";
+        redirectTo();
+      } else {
+        document.getElementById("clockCert").innerHTML = startSec;
+      }
+    }
+    function goCountdownCert() {
+      NN_showByClass("dvMsgCert");
+      NN_hideByClass("dvContent");
+      timerId = setInterval("countdownCert();", 1 * 1000);
+      setTimeout("NN_stopLoading();", 10 * 1000);
+    }
+    function changeFilePath (path) {
+      var regax = /(\.pem)$/i;
+      if (!regax.exec(path)) {
+        document.getElementById("txtFilePath").value = "";
+        document.getElementById("txtFile").value = "";
+        alert("File extension not supported.");
+      } else {
+        document.getElementById("txtFilePath").value = path;  
+      }
+
+      if (document.getElementById("txtFilePath").value != "") {
+        document.getElementById("btnImport").removeAttribute("disabled");
+      } else {
+        document.getElementById("btnImport").setAttribute("disabled", "disabled");
+      }
+    }
+    function redirectTo() {
+        forceLogout();
+        top.location.href = location.protocol + "//" + location.hostname; 
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li><a href="sys_http" title="WWW"><span>WWW</span></a></li>
+      <li><a href="certificates" title="HTTPS"><span>Certificates</span></a></li>
+      <li><a href="sys_telnet" title="Telnet"><span>Telnet</span></a></li>
+      <li><a href="sys_snmp" title="SNMP"><span>SNMP</span></a></li>
+      <li><a href="sys_ftp" title="FTP"><span>FTP</span></a></li>
+      <li class="hightline"><a title="HTTPS"><span>HTTPS</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data dvContent">
+      <div class="undownLineTitle">
+        Import Certificate
+      </div>
+      <div class="w_text">
+        <form enctype="multipart/form-data" method="post">
+          <div class="input-pos">
+            <div>Import HTTPS Certificate:</div>
+            <input class="input-file" id="txtFile" name="httpscertificate" type="file" size="30"  onchange="changeFilePath(this.value);" />
+            <div>
+              <input disabled="disabled" id="txtFilePath" size="28" type="text" />
+              <input type="button" value="Browse" id="fakeBtn" />
+            </div>
+          </div>
+          <input id="btnImport" disabled="disabled"  type="submit" value="Import"  onclick="goCountdownCert();"/>
+        </form>
+      </div><br class="clearfloat" />
+    </div>
+    <div class="data dvMsgCert">
+      <div class="undownLineTitle">
+        Importing...
+      </div>
+      <div class="w_text">
+        <span id="certDescr">The file is importing now.<br />
+        As there will be no indication of when the process is complete, please wait for <span id="clockCert" class="css_clock">15</span> seconds before attempting to access AP again.</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

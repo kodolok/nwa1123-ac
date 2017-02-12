@@ -1,0 +1,19 @@
+cpustatus  Show cpu status
+default    Reset to system default configuration
+dot1qvlan  Get/Set 802.1q VLAN status
+exit       Logout from CLI
+gateway    Get/Set ip address of the gateway
+help       Show all commands
+ipaddr     Get/Set ip address of the devise
+iptype     Get/Set ip type to static IP or DHCP client
+ledctrl    Enable/Disable LED function
+memstatus  Show memory status
+mgtvid     Get/Set management VID with tag or untag.
+netmask    Get/Set netmask of the device
+password   Set device admin login password
+reboot     Reboot the device
+uptime     Show system uptime
+version    Show system firmware version
+watchdog
+   status   Show software watchdog status
+   interval Get/Set software watchdog internal (seconds)

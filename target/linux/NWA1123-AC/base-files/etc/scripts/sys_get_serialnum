@@ -1,0 +1,10 @@
+#!/bin/sh
+#########################################################################
+##  get serial number
+##  This file used to get serial number
+#########################################################################
+
+dd if=/dev/mtdblock6 of=/tmp/mtdblock6 bs=64k count=1 2>/dev/null
+SERIAL_NUM=`cat /tmp/mtdblock6 | grep 'serialnum' | awk '{print $1}'`
+echo $SERIAL_NUM
+exit 0

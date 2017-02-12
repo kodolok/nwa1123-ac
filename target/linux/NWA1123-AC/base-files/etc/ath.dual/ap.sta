@@ -1,0 +1,5 @@
+ap_scan=1
+network={
+~eAP_SSID#!any~    ssid="~~AP_SSID#~"
+#~eAP_SSID#:any~    ssid=""
+~eAP_SSID#!any~    scan_ssid=1

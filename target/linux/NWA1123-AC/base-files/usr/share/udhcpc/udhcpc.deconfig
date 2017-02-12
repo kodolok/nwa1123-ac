@@ -1,0 +1,8 @@
+#!/bin/sh
+# Sample udhcpc deconfig script
+
+IPADDRESS=`cfg -v AP_IPADDR`
+
+#/sbin/ifconfig $interface 192.168.1.2
+/sbin/ifconfig $interface $IPADDRESS
+

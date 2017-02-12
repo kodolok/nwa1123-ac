@@ -1,0 +1,21 @@
+#!/bin/sh
+#########################################################################
+##  Reboot Schdule
+##  
+#########################################################################
+
+REBOOT_SCHEDULE="`cfg -v REBOOT_SCHEDULE`"
+
+if [ "$REBOOT_SCHEDULE" = "1" ] #Daily
+then
+    log_maintain "Reboot Schdule: Daily Reboot"
+    sleep 1
+    reboot
+elif [ "$REBOOT_SCHEDULE" = "2" ] #Weekly
+then
+    log_maintain "Reboot Schdule: Weekly Reboot"
+    sleep 1
+    reboot
+else
+    log_maintain "Reboot Schdule: Undefined Status"
+fi

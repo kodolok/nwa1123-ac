@@ -1,0 +1,7 @@
+#!/bin/sh
+## apup procedure will do it
+#sh /etc/scripts/vlan_setvlan
+#sh /etc/scripts/acl_setrule
+apdown
+apup
+

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+CERTFILE="/tmp/mini_httpd.pem"
+
+if [ ! -n "$1" ]
+then
+    exit 1
+fi
+if [ -f "/tmp/webupload" ]; then
+  killall -q mini_httpd
+  if [ ! -f $CERTFILE ]; then
+    rm $CERTFILE
+  fi
+
+  mv /tmp/webupload $CERTFILE
+  if [ ! -d "/tmp/certs/" ]; then
+    tar -zcv -f /tmp/mtd4.tar /tmp/mini_httpd.pem
+  else
+  	tar -zcv -f /tmp/mtd4.tar /tmp/certs /tmp/mini_httpd.pem
+  fi
+  
+  TMP_CERT_LENGTH=`wc -c /tmp/mtd4.tar | awk '{print $1}'`
+  dd if=/tmp/mtd4.tar of=/dev/mtdblock4 bs=$TMP_CERT_LENGTH count=1
+  cfg -a CERT_LENGTH="$TMP_CERT_LENGTH"
+  cfg -a HTTPS_CERT_FLAG="1"
+  cfg -c
+  rm /tmp/mtd4.tar
+
+  if [ -f /usr/sbin/mini_httpd ]
+  then
+      /usr/sbin/mini_httpd -C /tmp/mini_httpd.conf 2>/dev/null
+      /usr/sbin/mini_httpd -C /tmp/mini_httpd_ssl.conf 2>/dev/null
+  fi
+
+  exit 0
+fi

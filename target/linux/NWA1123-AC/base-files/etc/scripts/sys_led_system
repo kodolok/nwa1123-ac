@@ -1,0 +1,59 @@
+#!/bin/sh
+
+#######################################################
+##
+## sys_led_system <sys>
+##
+## <sys>: [fw | bootup | stop]
+##
+#######################################################
+
+REG_GPIO_SET=0xb804000c
+REG_GPIO_CLEAR=0xb8040010
+GPIO_ALERT=0x00000800
+PID_FILE="/tmp/.led_system"
+
+stop_blink(){
+    if [ -e "$PID_FILE" ]; then
+        kill `cat $PID_FILE`
+        rm $PID_FILE
+        mm $REG_GPIO_SET $GPIO_ALERT
+        exit 0
+    fi
+}
+
+stop_alertLED(){
+    sys_led_alert wifi stop &
+    sys_led_alert uplink stop &
+}
+
+led_blink(){
+    mm $REG_GPIO_CLEAR $GPIO_ALERT
+    usleep $sleeptime
+
+    mm $REG_GPIO_SET $GPIO_ALERT
+    usleep $sleeptime
+}
+
+case $1 in
+    "fw")
+        sleeptime=50000
+        stop_alertLED
+        ;;
+    "bootup")
+        sleeptime=1000000
+        ;;
+    "stop")
+        stop_blink
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+echo $$ > $PID_FILE
+
+while true
+do
+    led_blink
+done

@@ -1,0 +1,42 @@
+#!/bin/sh
+# inser/remove module: module x_iptables xt_physdev xt_mac xt_tcpudp {ip_tables iptable_filter ip6_tables ip6table_filter | ebtables ebtable_filter}
+
+MODULE_NAME=$1
+status=$2
+KVER=`uname -r | cut -f 1 -d '-'`
+MODULE_PATH=/lib/modules/$KVER
+
+if [ "$MODULE_NAME" = "iptables" ]; then
+    MOD_TABLES="ip_tables.ko"
+    MOD_FILTER="iptable_filter.ko"
+elif [ "$MODULE_NAME" = "ebtables" ]; then
+    MOD_TABLES="ebtables.ko"
+    MOD_FILTER="ebtable_filter.ko"
+else
+    echo "module name not match!\n"
+    exit 0
+fi
+
+if [ "$status" = "enable" ]; then
+    insmod $MODULE_PATH/x_tables.ko > /dev/null 2>&1
+    insmod $MODULE_PATH/$MOD_TABLES > /dev/null 2>&1
+    insmod $MODULE_PATH/$MOD_FILTER > /dev/null 2>&1
+    if [ "$MODULE_NAME" = "iptables" ]; then
+        insmod $MODULE_PATH/ip6_tables.ko > /dev/null 2>&1
+        insmod $MODULE_PATH/ip6table_filter.ko > /dev/null 2>&1
+    fi
+    insmod $MODULE_PATH/xt_mac.ko > /dev/null 2>&1
+    insmod $MODULE_PATH/xt_physdev.ko > /dev/null 2>&1
+    insmod $MODULE_PATH/xt_tcpudp.ko > /dev/null 2>&1
+elif [ "$status" = "disable" ]; then
+    rmmod xt_tcpudp.ko > /dev/null 2>&1
+    rmmod xt_physdev.ko > /dev/null 2>&1
+    rmmod xt_mac.ko > /dev/null 2>&1
+    rmmod $MOD_FILTER > /dev/null 2>&1
+    rmmod $MOD_TABLES > /dev/null 2>&1
+    if [ "$MODULE_NAME" = "iptables" ]; then
+        rmmod $MODULE_PATH/ip6table_filter.ko > /dev/null 2>&1
+        rmmod $MODULE_PATH/ip6_tables.ko > /dev/null 2>&1
+    fi
+    rmmod x_tables.ko > /dev/null 2>&1
+fi

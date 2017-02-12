@@ -1,0 +1,14 @@
+#!/bin/sh
+
+SYSLOG_FILE=/var/log/log-messages
+TMPLOG=/tmp/tmplog
+
+LOGNUM=`wc -l $SYSLOG_FILE | sed -n 's/[^0-9]*//gp'`
+if [ "$LOGNUM" -ge "256" ]
+then
+	START=1
+	DELETELINE=$(($LOGNUM - 256))
+	sed "${START}","${DELETELINE}"d $SYSLOG_FILE >> $TMPLOG
+	cp $TMPLOG $SYSLOG_FILE
+	rm -f $TMPLOG
+fi

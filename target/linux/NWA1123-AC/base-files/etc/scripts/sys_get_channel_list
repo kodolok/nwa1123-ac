@@ -1,0 +1,26 @@
+#!/bin/sh
+#########################################################################
+##  get channel list
+##  This file used to get channel list
+#########################################################################
+
+
+CH=""
+WLAN_STATUS=`cfg -v WLAN_UP_1`
+
+echo -n "["
+
+if [ "$WLAN_STATUS" = "1" ]; then
+    iwlist ath0 channel | grep 2.4 | grep -v Current > /tmp/.chlist
+
+    while read line
+    do
+        PRE=$CH
+        CH=`echo $line | cut -d ' ' -f2`
+        [ "$PRE" != "" ] && echo -n ","
+        echo -n "\"$CH\""
+    done < /tmp/.chlist
+fi
+
+echo "]"
+

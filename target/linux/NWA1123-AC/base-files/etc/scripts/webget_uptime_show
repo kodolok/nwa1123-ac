@@ -1,0 +1,15 @@
+#!/bin/sh
+#uptime=`uptime |cut -d ',' -f1`
+uptime=`uptime`
+#year=`date | cut -d ' ' -f7`
+#mon=`date| cut -d ' '  -f2`
+#day=`date|cut -d ' ' -f4`
+#currenttime=`date|cut -d ' ' -f5`
+echo -n {
+echo -n \"UpTime\":\"$uptime\"
+#echo -n \"Year\":\"$year\",
+#echo -n \"Mon\":\"$mon\",
+#echo -n \"Day\":\"$day\",
+#echo -n \"Time\":\"$currenttime\"
+echo -n }
+echo

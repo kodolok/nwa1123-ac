@@ -1,0 +1,87 @@
+#!/bin/sh
+######################################################################
+## This script controls bridge configuration.  It will configure the
+## bridge as specified by the apcfg file
+##
+## ETH0 is the WAN port
+## ETH1 is the LAN port
+######################################################################
+
+. /etc/ath/apcfg
+
+WAN_IF=${WAN_IF:=eth0}
+LAN_IF=${LAN_IF:=eth1}
+IPADDRESS="192.168.1.2"
+NETMASK="netmask 255.255.255.0"
+BROADCAST="broadcast 192.168.1.255"
+
+brctl addbr br0
+## This project is bridged mode only, so we mark it.
+## if [ "${WAN_MODE}" = "bridged" ]; then
+    ifconfig $WAN_IF up
+    brctl addif br0 $WAN_IF
+##fi
+# brctl addif br0 $LAN_IF
+brctl setfd br0 0
+
+##
+## Check the WAN mode.  check for DHCP client, else
+## simply set the address
+##
+if [ "${WAN_MODE}" = "dhcp" ]; then
+    ##
+    ## Run the DHCP client on this interface
+    ##
+    #ifconfig br0 $AP_IPADDR netmask $AP_NETMASK up
+
+    ifconfig br0 $IPADDRESS $NETMASK up
+    #cgi_get_dhcp_ip
+else
+    ##
+    ## Static IP address
+    ##
+
+	# if AP_STARTMODE is client mode, wait wifi driver to ready and then get dhcp ip from wifi
+	ifconfig br0 $AP_IPADDR netmask $AP_NETMASK up
+
+	if [ -n "$IPGW" ]
+	then
+		route add default gw $IPGW dev br0
+	fi
+fi
+
+##
+## IPV6 Setting
+##
+if [ "${IPV6_AUTO}" = "none" ]; then
+    echo "0" > /proc/sys/net/ipv6/conf/br0/accept_ra
+    ifconfig br0 | awk '/Global/ { cmd="ifconfig br0 del " $3; system(cmd) }'
+else
+    echo "1" > /proc/sys/net/ipv6/conf/br0/accept_ra
+    ifconfig br0 | awk '/Global/ { cmd="ifconfig br0 del " $3; system(cmd) }'
+fi
+
+if [ "${IPV6_AUTO}" = "stateful" ]; then
+    ##
+    ## modify /etc/dhcp6c.conf first
+    ##
+    new_dhcp6c_conf=/tmp/dhcp6c.conf.tmp
+    echo interface br0 { > $new_dhcp6c_conf
+    sed /interface/d /etc/dhcp6c.conf >> $new_dhcp6c_conf
+    mv -f $new_dhcp6c_conf /tmp/dhcp6c.conf
+    unset new_dhcp6c_conf
+
+    ##
+    ## Run the DHCPV6 client on this interface
+    ##
+
+    /sbin/dhcp6c -c /tmp/dhcp6c.conf br0
+fi
+
+if [ -n "$IPV6_ADDR" ]
+then
+    ifconfig br0 add $IPV6_ADDR
+    cfg -a OLD_IPV6_ADDR=$IPV6_ADDR
+fi
+
+## ifconfig br0 $AP_IPADDR netmask $AP_NETMASK up

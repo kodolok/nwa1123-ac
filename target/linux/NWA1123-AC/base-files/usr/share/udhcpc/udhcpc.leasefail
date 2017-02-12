@@ -1,0 +1,5 @@
+#!/bin/sh
+# Sample udhcpc leasefail script
+
+#rm -f /tmp/udhcpc_on
+cgi_get_dhcp_ip "udhcpc.deconfig"

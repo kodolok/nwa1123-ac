@@ -1,0 +1,4 @@
+config QCA_RF_WLAN_10_2
+	bool "QCA WiFi 10.2 version"
+	help
+		bool "QCA WiFi 10.2 version"

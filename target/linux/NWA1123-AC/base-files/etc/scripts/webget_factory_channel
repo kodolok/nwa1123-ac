@@ -1,0 +1,6 @@
+#!/bin/sh
+INFO="`webget_ssid_prof_info`"
+str1="`echo "$INFO" | cut -d , -f 4`"
+str2="`echo "$str1" | cut -d : -f 2`"
+str3="`echo "$str2" | sed 's/\"//g'`"
+echo $str3

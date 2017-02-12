@@ -1,0 +1,628 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanRadiusInfo. 
+##
+## mib_wlan_radius_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+IDX=$2
+VALUE=$3
+
+#
+#ProfileName
+#
+if [ "$OID" = "1" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_PRO_NAME_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_PRO_NAME_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_PRO_NAME_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_PRO_NAME_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#PrimaryActivate
+#
+if [ "$OID" = "3" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_1="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_1="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "2" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_2="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_2="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "3" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_3="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_3="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "4" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_4="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_PRI_SERVER_4="Inactive"
+            cfg -c
+            exit 0
+        fi
+    fi
+fi
+
+#
+#PrimaryServerIPAddress
+#
+if [ "$OID" = "4" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_IP_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_IP_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_IP_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_IP_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#PrimaryServerPort
+#
+if [ "$OID" = "5" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_PORT_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_PORT_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_PORT_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_PORT_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#PrimaryServerShareSecret
+#
+if [ "$OID" = "6" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_SECRET_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_SECRET_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_SECRET_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_AUTH_PRI_SERVER_SECRET_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#PrimaryACCActivate
+#
+if [ "$OID" = "7" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_1="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_1="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "2" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_2="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_2="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "3" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_3="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_3="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "4" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_4="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_PRI_SERVER_4="Inactive"
+            cfg -c
+            exit 0
+        fi
+    fi
+fi
+
+#
+#PrimaryACCServerIPAddress
+#
+if [ "$OID" = "8" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_IP_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_IP_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_IP_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_IP_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#PrimaryACCServerPort
+#
+if [ "$OID" = "9" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_PORT_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_PORT_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_PORT_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_PORT_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#PrimaryACCShareSecret
+#
+if [ "$OID" = "10" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_SECRET_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_SECRET_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_SECRET_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_ACCT_PRI_SERVER_SECRET_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#BUActivate
+#
+if [ "$OID" = "11" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_1="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_1="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "2" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_2="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_2="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "3" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_3="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_3="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "4" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_4="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_AUTH_SEC_SERVER_4="Inactive"
+            cfg -c
+            exit 0
+        fi
+    fi
+fi
+
+#
+#BUServerIPAddress
+#
+if [ "$OID" = "12" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_IP_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_IP_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_IP_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_IP_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#BUServerPort
+#
+if [ "$OID" = "13" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_PORT_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_PORT_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_PORT_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_PORT_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#BUShareSecret
+#
+if [ "$OID" = "14" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_SECRET_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_SECRET_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_SECRET_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_AUTH_SEC_SERVER_SECRET_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#BUACCActivate
+#
+if [ "$OID" = "15" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_1="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_1="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "2" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_2="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_2="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "3" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_3="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_3="Inactive"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$IDX" = "4" ]
+    then
+        if [ "$VALUE" = "1" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_4="Active"
+            cfg -c
+            exit 0
+        elif [ "$VALUE" = "2" ]
+        then
+            cfg -a RAD_ACCT_SEC_SERVER_4="Inactive"
+            cfg -c
+            exit 0
+        fi
+    fi
+fi
+
+#
+#BUACCServerIPAddress
+#
+if [ "$OID" = "16" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_IP_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_IP_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_IP_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_IP_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#BUACCServerPort
+#
+if [ "$OID" = "17" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_PORT_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_PORT_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_PORT_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_PORT_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+#
+#BUACCShareSecret
+#
+if [ "$OID" = "18" ]
+then
+    if [ "$IDX" = "1" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_SECRET_1="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "2" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_SECRET_2="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "3" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_SECRET_3="$VALUE"
+        cfg -c
+        exit 0
+    elif [ "$IDX" = "4" ]
+    then
+        cfg -a RAD_ACCT_SEC_SERVER_SECRET_4="$VALUE"
+        cfg -c
+        exit 0
+    fi
+fi
+
+exit 0

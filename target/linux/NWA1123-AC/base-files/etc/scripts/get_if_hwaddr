@@ -1,0 +1,22 @@
+#!/bin/sh
+####################################################################
+## SYSTEM script
+## 
+## This script is used to get the MAC address of the interface. 
+##
+## get_if_hwaddr <ifname>
+##
+##  ifname:  The interface name. ex: ath0,eth0
+##
+####################################################################
+
+if [ "${1}" = "" ]; then
+    exit
+fi
+
+IF_STR=`ifconfig | grep $1`
+
+if [ "_$IF_STR" != "_" ]; then
+    ifconfig $1 | awk '/HWaddr/ {print $5}'
+fi
+

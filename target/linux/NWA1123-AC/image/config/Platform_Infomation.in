@@ -1,0 +1,11 @@
+config TARGET_SDK_PATH
+    	string "Define the Platform SDK path"
+    	default ""
+
+config TARGET_SDK_VERSION
+   	string "Define the target SDK version"
+    	default "10.2.85"
+
+config TARGET_RF_VERSION
+   	string "Define the Platform RF version"
+    	default "10.2.85"

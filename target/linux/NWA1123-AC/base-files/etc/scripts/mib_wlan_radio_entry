@@ -1,0 +1,273 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanRadioEntry. 
+##
+## mib_wlan_radio_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+if [ "${2}" = "" ]; then
+    echo "Please specify the VALUE."
+    exit 255
+fi
+
+if [ "${3}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+VALUE=$2
+IDX=$3
+
+## WLAN mode
+if [ "${OID}" = "5" ];then
+    ## write
+    if [ "${IDX}" = "1" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a AP_CHMODE_1=11G
+            cfg -a PUREN_${IDX}=0
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "8" ]; then
+            cfg -a AP_CHMODE_1=11NGHT
+            cfg -a PUREN_${IDX}=0
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "9" ]; then
+            cfg -a AP_CHMODE_1=11NGHT
+            cfg -a PUREN_${IDX}=1
+            cfg -c
+            exit 0
+        fi
+    fi
+    
+    if [ "${IDX}" = "2" ]; then
+        if [ "${VALUE}" = "1" ]; then
+            cfg -a AP_CHMODE_2=11A
+            cfg -a PUREN_${IDX}=0
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "9" ]; then
+            cfg -a AP_CHMODE_2=11NAHT
+            cfg -a PUREN_${IDX}=1
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "10" ]; then
+            cfg -a AP_CHMODE_2=11NAHT
+            cfg -a PUREN_${IDX}=0
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "11" ]; then
+            cfg -a AP_CHMODE_2=11ACVHT
+            cfg -a PUREN_${IDX}=0
+            cfg -c
+            exit 0
+        fi
+    fi
+    ## else fail
+    exit 255
+fi
+
+## Channel
+if [ "${OID}" = "6" ];then
+    ## write
+    if [ "${IDX}" = "1" ]; then
+        if [ ${VALUE} -gt 0 -a ${VALUE} -le 4 ]; then
+            cfg -a AP_PRIMARY_CH_1=${VALUE}
+            cfg -a AP_PRIMARY_CH_EXT_1=PLUS
+            cfg -c
+            exit 0
+        elif [ ${VALUE} -gt 4 -a ${VALUE} -le 14 ]; then
+            cfg -a AP_PRIMARY_CH_1=${VALUE}
+            cfg -a AP_PRIMARY_CH_EXT_1=MINUS
+            cfg -c
+            exit 0
+        elif [ ${VALUE} = 0 ]; then
+            cfg -a AP_PRIMARY_CH_1=11ng
+            cfg -c
+            exit 0
+        fi
+    fi
+
+    if [ "${IDX}" = "2" ]; then
+        CH_LIST="`sh /etc/scripts/mib_channel_list_get ${IDX}`"
+        for i in $CH_LIST; do
+            if [ ${VALUE} -eq 0 -a ${i} ]; then
+                cfg -a AP_PRIMARY_CH_2=11ng
+                cfg -c
+                exit 0
+            elif [ ${VALUE} -eq ${i} ]; then
+                cfg -a AP_PRIMARY_CH_2=${VALUE}
+                # AP_PRIMARY_CH_EXT for HT40 of channel list on web is always PLUS
+                cfg -a AP_PRIMARY_CH_EXT_2=PLUS
+                cfg -c
+                exit 0
+            fi
+        done
+    fi
+    ## else fail
+    exit 255
+fi
+
+## TX-power
+if [ "${OID}" = "7" ];then
+    ## write
+    if [ "${IDX}" = "1" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a TXP_LEVEL_1=0
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "1" ]; then
+            cfg -a TXP_LEVEL_1=3
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "2" ]; then
+            cfg -a TXP_LEVEL_1=6
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "3" ]; then
+            cfg -a TXP_LEVEL_1=9
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "4" ]; then
+            cfg -a TXP_LEVEL_1=9
+            cfg -c
+            exit 0
+        fi
+    fi
+    
+    if [ "${IDX}" = "2" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a TXP_LEVEL_2=0
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "1" ]; then
+            cfg -a TXP_LEVEL_2=3
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "2" ]; then
+            cfg -a TXP_LEVEL_2=6
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "3" ]; then
+            cfg -a TXP_LEVEL_2=9
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "4" ]; then
+            cfg -a TXP_LEVEL_2=9
+            cfg -c
+            exit 0
+        fi
+    fi
+    ## else fail
+    exit 255
+fi
+
+## Radio-activate
+if [ "${OID}" = "8" ];then
+    ## write
+    if [ "${IDX}" = "1" ]; then
+        cfg -a WLAN_UP_1=${VALUE}
+        cfg -c
+        exit 0
+    fi
+    
+    if [ "${IDX}" = "2" ]; then
+        cfg -a WLAN_UP_2=${VALUE}
+        cfg -c
+        exit 0
+    fi
+    ## else fail
+    exit 255
+fi
+
+## Operation-mode
+if [ "${OID}" = "9" ];then
+    ## write
+    if [ "${IDX}" = "1" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a AP_STARTMODE_1="mbssid"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "1" ]; then
+            cfg -a AP_STARTMODE_1="client"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "5" ]; then
+            cfg -a AP_STARTMODE_1="repeater"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "9" ]; then
+            cfg -a AP_STARTMODE_1="root-mbssid"
+            cfg -c
+            exit 0
+        fi
+    fi
+    
+    if [ "${IDX}" = "2" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a AP_STARTMODE_2="mbssid"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "1" ]; then
+            cfg -a AP_STARTMODE_2="client"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "5" ]; then
+            cfg -a AP_STARTMODE_2="repeater"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "9" ]; then
+            cfg -a AP_STARTMODE_2="root-mbssid"
+            cfg -c
+            exit 0
+        fi
+    fi
+    ## else fail
+    exit 255
+fi
+
+## Channel-width
+if [ "${OID}" = "11" ];then
+    ## write
+    if [ "${IDX}" = "1" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a AP_CHWIDTH_1="20"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "1" ]; then
+            cfg -a AP_CHWIDTH_1="40"
+            cfg -c
+            exit 0
+        fi
+    fi
+    
+    if [ "${IDX}" = "2" ]; then
+        if [ "${VALUE}" = "0" ]; then
+            cfg -a AP_CHWIDTH_2="20"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "1" ]; then
+            cfg -a AP_CHWIDTH_2="40"
+            cfg -c
+            exit 0
+        elif [ "${VALUE}" = "2" ]; then
+            cfg -a AP_CHWIDTH_2="80"
+            cfg -c
+            exit 0
+        fi
+    fi
+    ## else fail
+    exit 255
+fi
+
+## APSSID-profile-index
+
+exit 0

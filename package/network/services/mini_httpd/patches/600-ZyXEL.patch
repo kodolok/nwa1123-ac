@@ -1,0 +1,491 @@
+diff -Nur old/mini_httpd.c new/mini_httpd.c
+--- old/mini_httpd.c	2015-10-29 04:37:57.000000000 +0100
++++ new/mini_httpd.c	2015-10-29 04:54:02.000000000 +0100
+@@ -138,7 +138,7 @@
+ #define CGI_NICE 10
+ #endif /* CGI_NICE */
+ #ifndef CGI_PATH
+-#define CGI_PATH "/usr/bin:/bin:/usr/sbin:/sbin"
++#define CGI_PATH "/usr/bin:/bin:/usr/sbin:/sbin:/usr/sbin:/sbin:/tmp:/etc/scripts:/etc/ath"
+ #endif /* CGI_PATH */
+ #ifndef CGI_LD_LIBRARY_PATH
+ #define CGI_LD_LIBRARY_PATH "/usr/lib:/lib"
+@@ -147,10 +147,10 @@
+ #define AUTH_FILE ".htpasswd"
+ #endif /* AUTH_FILE */
+ #ifndef READ_TIMEOUT
+-#define READ_TIMEOUT 60
++#define READ_TIMEOUT 600
+ #endif /* READ_TIMEOUT */
+ #ifndef WRITE_TIMEOUT
+-#define WRITE_TIMEOUT 300
++#define WRITE_TIMEOUT 600
+ #endif /* WRITE_TIMEOUT */
+ #ifndef DEFAULT_CHARSET
+ #define DEFAULT_CHARSET "iso-8859-1"
+@@ -162,6 +162,11 @@
+ #define METHOD_HEAD 2
+ #define METHOD_POST 3
+ 
++// login
++#define LOGIN_FAIL 0
++#define LOGIN_SUCCESS 1
++#define COOKIE_CRYP "zy"
++
+ 
+ /* A multi-family sockaddr. */
+ typedef union {
+@@ -233,6 +238,7 @@
+ static char* authorization;
+ static size_t content_length;
+ static char* content_type;
++static char* multipart_boundary;
+ static char* cookie;
+ static char* host;
+ static time_t if_modified_since;
+@@ -241,6 +247,9 @@
+ 
+ static char* remoteuser;
+ 
++// login
++static int login_status;
++static char* content_start;
+ 
+ /* Forwards. */
+ static void usage( void );
+@@ -313,6 +322,13 @@
+ static int snprintf( char* str, size_t size, const char* format, ... );
+ #endif /* NO_SNPRINTF */
+ 
++// login 
++static void redirect_to_login(char* host);
++static void redirect_to_page(char* host, char* path);
++static int check_auth_cookie(char* host, char* cookie); 
++static int shellEncode2(char* host, char* cookie); 
++static void send_auth_cookie(char* host, char* nextpage); 
++static char* generate_auth_cookie(char* host); 
+ 
+ int
+ main( int argc, char** argv )
+@@ -355,6 +371,13 @@
+     certfile = DEFAULT_CERTFILE;
+     cipher = (char*) 0;
+ #endif /* USE_SSL */
++
++	int pid  = 0;
++    int prio = -20; // I give httpd the highest priority.
++    	
++    pid = getpid();
++    errno = setpriority(PRIO_PROCESS, pid, prio);
++
+     argn = 1;
+     while ( argn < argc && argv[argn][0] == '-' )
+ 	{
+@@ -1260,7 +1283,10 @@
+     while ( ( line = get_request_line() ) != (char*) 0 )
+ 	{
+ 	if ( line[0] == '\0' )
++        {
++            content_start = &line[2];
+ 	    break;
++        }
+ 	else if ( strncasecmp( line, "Authorization:", 14 ) == 0 )
+ 	    {
+ 	    cp = &line[14];
+@@ -1275,9 +1301,26 @@
+ 	    }
+ 	else if ( strncasecmp( line, "Content-Type:", 13 ) == 0 )
+ 	    {
+-	    cp = &line[13];
+-	    cp += strspn( cp, " \t" );
+-	    content_type = cp;
++            if (strstr(line, "multipart/form-data") != NULL)
++            {
++                char *p; 
++
++                content_type = (char*)e_malloc(100);
++                strncpy(content_type, "multipart/form-data", 19);
++
++                if ((p = strstr(line, "boundary=")) != NULL)
++                {
++                    p += strlen("boundary=");
++                    multipart_boundary = (char*)e_malloc(100);
++                    sprintf(multipart_boundary, "--%s", p);
++                }
++            }
++            else 
++            {
++                cp = &line[13];
++                cp += strspn(cp, " \t");
++                content_type = cp;
++            }
+ 	    }
+ 	else if ( strncasecmp( line, "Cookie:", 7 ) == 0 )
+ 	    {
+@@ -1322,6 +1365,70 @@
+     else
+ 	send_error( 501, "Not Implemented", "", "That method is not implemented." );
+ 
++    /* Auth Cookie Check */
++    if (strncmp(path, "/login/", 7) != 0)
++    {
++        login_status = LOGIN_FAIL;
++        if (check_auth_cookie(host, cookie) == LOGIN_SUCCESS)
++        {
++            login_status = LOGIN_SUCCESS;
++        }
++        else 
++        {
++            redirect_to_login(host);
++        }
++    }
++    else
++    {
++        if ((method == METHOD_POST) && (content_length > 0))
++        {
++            char myname[70] = {0}, mypasswd[70] = {0};
++            char *pStr;
++            int len = 0;
++            FILE *f;
++            char cmd[256] = {0}, tmpBuf[50] = {0};
++            char safeFormat[200] = {0};
++
++            pStr = strstr(content_start, "myname=");
++            if (pStr != NULL) 
++            {
++                pStr += 7;
++                len = strcspn(pStr, " &");
++                strncpy(myname, pStr, len); 
++                strdecode(myname, myname);
++            }
++            
++            pStr = strstr(content_start, "mypasswd=");
++            if (pStr != NULL) 
++            {
++                pStr += 9;
++                len = strcspn(pStr, " &");
++                strncpy(mypasswd, pStr, len); 
++                strdecode(mypasswd, mypasswd);
++            }
++           
++            shellEncode2(mypasswd, safeFormat);
++            sprintf(cmd, "chkpwd %s %s", myname, safeFormat);
++            f = popen(cmd, "r");
++            if (f) 
++            { 
++                fgets(tmpBuf, 50, f);
++                if (strncmp(tmpBuf, "Access granted", 14) == 0)
++                {
++                    char nextpage[20];
++
++                    /* ask user to change default password. */
++                    if (strcmp(mypasswd, "1234") == 0) 
++                        strncpy(nextpage, "chgpw", 5);
++                    else 
++                        strncpy(nextpage, "dashboard", 9);
++
++                    send_auth_cookie(host, nextpage);
++                }
++            }
++        }
++    }
++
+     strdecode( path, path );
+     if ( path[0] != '/' )
+ 	send_error( 400, "Bad Request", "", "Bad filename." );
+@@ -1391,7 +1498,8 @@
+ 	    }
+ 
+ 	/* Nope, no index file, so it's an actual directory request. */
+-	do_dir();
++        /* We don't want to show directories. */
++        /* do_dir(); */
+ 
+ 	got_one: ;
+ 	}
+@@ -2189,6 +2297,8 @@
+ 	envp[envn++] = build_env( "HTTP_HOST=%s", host );
+     if ( content_type != (char*) 0 )
+ 	envp[envn++] = build_env( "CONTENT_TYPE=%s", content_type );
++    if (multipart_boundary != (char*)0)
++        envp[envn++] = build_env("MULTIPART_BOUNDARY=%s", multipart_boundary);
+     if ( content_length != -1 )
+ 	{
+ 	(void) snprintf(
+@@ -3588,3 +3698,244 @@
+     return r;
+     }
+ #endif /* NO_SNPRINTF */
++
++static void 
++redirect_to_login(char* host)
++{
++    redirect_to_page(host, "login/login.html");
++}
++
++
++static void 
++redirect_to_page(char* host, char* path)
++{
++    char extra_header[100] = {0}; 
++
++#ifdef USE_SSL
++    if (do_ssl)
++        sprintf(extra_header, "Location: https://%s/%s", host, path);
++    else
++        sprintf(extra_header, "Location: http://%s/%s", host, path);
++#else /* USE_SSL */
++    sprintf(extra_header, "Location: http://%s/%s", host, path);
++#endif
++    add_headers(
++        301, "Redirect", extra_header, "", "text/html", (off_t)-1, (time_t)-1);
++
++    send_response();
++#ifdef USE_SSL
++    SSL_free(ssl);
++#endif /* USE_SSL */
++    exit(0);
++}
++
++
++static char*  
++generate_auth_cookie(char* host) 
++{
++    FILE *f;
++    char cmd[256] = {0}, tmpBuf[50] = {0};
++    char encryptStr[20] = {0};
++    sprintf(cmd, "cfg -v ENCRYPT_PASSWD");
++    f = popen(cmd, "r");
++    if (f)
++    {
++        fgets(tmpBuf, 50, f);
++        if (strncmp(tmpBuf, "", 22) != 0){
++            strncpy(encryptStr, tmpBuf, 22);
++        }
++    }
++
++    return crypt(host, encryptStr);
++}
++
++
++static void 
++send_auth_cookie(char* host, char* nextpage) 
++{
++    char extra_header[100] = {0};     
++    char url[256] = {0};
++    int urlStrLen = 0;
++    char meta_refresh[256] = {0};
++
++
++
++    if (*host == '[')
++    {// IPv6
++        if (match("**Firefox**", useragent)) 
++        {
++            urlStrLen = strcspn((host + 1), " ]");
++            strncpy(url, (host + 1), (urlStrLen));
++        }
++        else if (match("**Chrome**", useragent) || match("**like Gecko**", useragent)) 
++        {// chrome, ie11+
++            strcpy(url, host);
++        }
++        else if (match("**MSIE**", useragent) ) 
++        {
++            strcpy(url, host);
++        }
++        else 
++        {
++            strcpy(url, host);
++        }
++    }
++    else
++    {// IPv4
++        urlStrLen = strcspn(host, " :");
++        strncpy(url, host, urlStrLen);
++    }
++
++#ifdef USE_SSL
++    if (do_ssl) 
++    {
++        sprintf(extra_header, "Location: https://%s/cgi-bin/%s\r\nSet-Cookie: AUTH=%s; max-age=600; path=/", host, nextpage, generate_auth_cookie(host));
++    }
++    else
++#endif        
++    {
++        sprintf(extra_header, "Location: http://%s/cgi-bin/%s\r\nSet-Cookie: AUTH=%s; max-age=600; path=/", host, nextpage, generate_auth_cookie(host));
++    }
++
++    add_headers(200, "ok", extra_header, "", "text/html", (off_t)-1, (time_t)-1);
++    send_response();
++#ifdef USE_SSL
++    if (do_ssl) 
++    {
++        sprintf(meta_refresh, "<html><head><meta http-equiv=\"refresh\" content=\"0;url='https://%s/cgi-bin/%s'\"></head></html>", host, nextpage);
++    }
++    else
++#endif        
++    {
++        sprintf(meta_refresh, "<html><head><meta http-equiv=\"refresh\" content=\"0;url='http://%s/cgi-bin/%s'\"></head></html>", host, nextpage);
++    }
++    my_write(meta_refresh, strlen(meta_refresh));
++
++#ifdef USE_SSL
++    SSL_free(ssl);
++#endif /* USE_SSL */
++    exit(0);
++}
++
++
++static int 
++check_auth_cookie(char* host, char* cookie)
++{
++    char *pAuthStr, authStr[100] = {0};
++    int authStrLen = 0;
++
++    if (cookie != 0) 
++    {
++        pAuthStr = strstr(cookie, "AUTH=");
++        if (pAuthStr != NULL)
++        {
++            pAuthStr += 5;
++            authStrLen = strcspn(pAuthStr, " ;");  
++            strncpy(authStr, pAuthStr, authStrLen);
++
++            if (strcmp(authStr, generate_auth_cookie(host)) == 0)
++            {
++                return LOGIN_SUCCESS;
++            }
++        }
++    }
++    
++    return LOGIN_FAIL;
++}
++
++
++static int 
++shellEncode2(char *src, char *dest)
++{
++    int needQuot = 0;
++
++    /*
++     ** Code Begins
++     ** Search for special characters to do encoding as required
++     */
++    while (*src)
++    {
++        switch (*src)
++        {
++            case 0x22:  // double-quote
++                dest += sprintf(dest, "\\\"");
++                needQuot = 1;
++                break;
++            case 0x23:  
++                dest += sprintf(dest, "\\#");
++                needQuot = 1;
++                break;
++            case 0x24:  // dollar sign
++                dest += sprintf(dest, "\\$");
++                needQuot = 1;
++                break;
++            case 0x26:  
++                dest += sprintf(dest, "\\&");
++                needQuot = 1;
++                break;
++            case 0x27:  // single-quote
++                dest += sprintf(dest, "\\\'");
++                needQuot = 1;
++                break;
++            case 0x28:  // ( 
++                dest += sprintf(dest, "\\(");
++                needQuot = 1;
++                break;
++            case 0x29:  // ) 
++                dest += sprintf(dest, "\\)");
++                needQuot = 1;
++                break;
++            case 0x2a:   
++                dest += sprintf(dest, "\\*");
++                needQuot = 1;
++                break;
++            case 0x3b:   
++                dest += sprintf(dest, "\\;");
++                needQuot = 1;
++                break;
++            case 0x3c:   
++                dest += sprintf(dest, "\\<");
++                needQuot = 1;
++                break;
++            case 0x3e:   
++                dest += sprintf(dest, "\\>");
++                needQuot = 1;
++                break;
++            case 0x5c:  // backslash
++                dest += sprintf(dest, "\\\\");
++                needQuot = 1;
++                break;
++            case 0x60:  // grave accent 
++                dest += sprintf(dest, "\\`");
++                needQuot = 1;
++                break;
++            case 0x7c:  // grave accent 
++                dest += sprintf(dest, "\\|");
++                needQuot = 1;
++                break;
++            case 0x7e:  // grave accent 
++                dest += sprintf(dest, "\\~");
++                needQuot = 1;
++                break;
++            default:
++                *dest++ = *src;
++        }
++
++        if (((*src < '0') || (*src > '9')) &&
++                ((*src < 'a') || (*src > 'z')) &&
++                ((*src < 'A') || (*src > 'Z')))
++        {
++            needQuot = 1;
++        }
++
++        src++;
++    }
++
++    /*
++     ** Put in the terminal null for the destination
++     */
++
++    *dest = 0;
++    return(needQuot);
++}
++
+diff -Nur old/mini_httpd.cnf new/mini_httpd.cnf
+--- old/mini_httpd.cnf	2001-12-20 08:14:29.000000000 +0100
++++ new/mini_httpd.cnf	2015-10-21 10:22:08.000000000 +0200
+@@ -10,22 +10,24 @@
+ 
+ [ req_dn ]
+ countryName = Country Name (2 letter code)
+-countryName_default             = PL
++countryName_default             = TW
+ countryName_min                 = 2
+ countryName_max                 = 2
+ 
+ stateOrProvinceName             = State or Province Name (full name)
+-stateOrProvinceName_default     = Some-State
++stateOrProvinceName_default     = Taipei City
+ 
+ localityName                    = Locality Name (eg, city)
++localityName_default            = Taipei City
+ 
+ 0.organizationName              = Organization Name (eg, company)
+-0.organizationName_default      = Mini Webservice Ltd
++0.organizationName_default      = Zyxel Co. Ltd
+ 
+ organizationalUnitName          = Organizational Unit Name (eg, section)
+-#organizationalUnitName_default =
++organizationalUnitName_default  = AP
+ 
+ 0.commonName                    = Common Name (FQDN of your server)
++0.commonName_default            = localhost.localhost
+ 
+ # To create a certificate for more than one name uncomment:
+ # 1.commonName                  = DNS alias of your server

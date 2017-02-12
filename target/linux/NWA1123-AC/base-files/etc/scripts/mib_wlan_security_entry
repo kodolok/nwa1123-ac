@@ -1,0 +1,179 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set the wlanSecurityEntry. 
+##
+## mib_wlan_security_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+IDX=$2
+VALUE=$3
+
+if [ "${OID}" = "1" ]; then
+    if [ "$VALUE" = "0" ]; then
+        cfg -a SEC_MODE_$IDX="None"
+        cfg -a SEC_WPA_$IDX="0"
+        cfg -a SEC_TYPE_$IDX="OPEN"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="None"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "1" ]; then
+        cfg -a SEC_MODE_$IDX="WEP"
+        cfg -a SEC_WPA_$IDX="0"
+        cfg -a SEC_TYPE_$IDX="WEP"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="static"
+        cfg -a SEC_DESC_$IDX="WEP"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "4" ]; then
+        cfg -a SEC_MODE_$IDX="WPA"
+        cfg -a SEC_WPA_$IDX="1"
+        cfg -a SEC_TYPE_$IDX="EAP"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="WPA"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "8" ]; then
+        cfg -a SEC_MODE_$IDX="WPA"
+        cfg -a SEC_WPA_$IDX="2"
+        cfg -a SEC_TYPE_$IDX="EAP"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="WPA2"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "12" ]; then
+        cfg -a SEC_MODE_$IDX="WPA"
+        cfg -a SEC_WPA_$IDX="3"
+        cfg -a SEC_TYPE_$IDX="EAP"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="WPA2-MIX"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "16" ]; then
+        cfg -a SEC_MODE_$IDX="WPA"
+        cfg -a SEC_WPA_$IDX="1"
+        cfg -a SEC_TYPE_$IDX="PSK"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="WPA-PSK"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "32" ]; then
+        cfg -a SEC_MODE_$IDX="WPA"
+        cfg -a SEC_WPA_$IDX="2"
+        cfg -a SEC_TYPE_$IDX="PSK"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="WPA2-PSK"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "48" ]; then
+        cfg -a SEC_MODE_$IDX="WPA"
+        cfg -a SEC_WPA_$IDX="3"
+        cfg -a SEC_TYPE_$IDX="PSK"
+        cfg -a SEC_WEP_KEY_MGMT_$IDX="none"
+        cfg -a SEC_DESC_$IDX="WPA2-PSK-MIX"
+        cfg -c
+        exit 0
+    fi
+elif [ "${OID}" = "2" ]; then
+    cfg -a SEC_WPA_GROUP_REKEY_PER_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    cfg -a PSK_KEY_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    if [ "$VALUE" = 40 ]; then
+        cfg -a SEC_WEP_KEY_LEN_$IDX=5
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "104" ]; then
+        cfg -a SEC_WEP_KEY_LEN_$IDX=13
+        cfg -c
+        exit 0
+    fi
+elif [ "${OID}" = "6" ]; then
+    if [ "$VALUE" = "1" ]; then
+        cfg -a SEC_PRIMARY_KEY_$IDX=0
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "2" ]; then
+        cfg -a SEC_PRIMARY_KEY_$IDX=1
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "3" ]; then
+        cfg -a SEC_PRIMARY_KEY_$IDX=2
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "4" ]; then
+        cfg -a SEC_PRIMARY_KEY_$IDX=3
+        cfg -c
+        exit 0
+    fi
+elif [ "${OID}" = "7" ]; then
+    cfg -a SEC_WEP_KEY1_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "8" ]; then
+    cfg -a SEC_WEP_KEY2_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "9" ]; then
+    cfg -a SEC_WEP_KEY3_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "10" ]; then
+    cfg -a SEC_WEP_KEY4_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "11" ]; then
+    if [ "$VALUE" = "13" ]; then
+        cfg -a SEC_EAP_TYPE_$IDX="TLS"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "17" ]; then
+        cfg -a SEC_EAP_TYPE_$IDX="LEAP"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "21" ]; then
+        cfg -a SEC_EAP_TYPE_$IDX="TTLS"
+        cfg -c
+        exit 0
+    elif [ "$VALUE" = "25" ]; then
+        cfg -a SEC_EAP_TYPE_$IDX="PEAP"
+        cfg -c
+        exit 0
+    fi
+elif [ "${OID}" = "12" ]; then
+    cfg -a SEC_PRO_NAME_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "13" ]; then
+    cfg -a SEC_EAP_REAUTH_PER_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "14" ]; then
+    if [ "${VALUE}" = "2" ]; then
+        cfg -a SEC_WPA_GROUP_REKEY_$IDX=0
+        cfg -c
+    elif [ "${VALUE}" = "1" ]; then
+        cfg -a SEC_WPA_GROUP_REKEY_$IDX=1
+        cfg -c
+    fi
+    exit 0
+fi
+
+exit 255

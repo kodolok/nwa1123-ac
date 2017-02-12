@@ -1,0 +1,9 @@
+#!/bin/sh
+INFO="`iwpriv wifi0 getCountry 2> /dev/null`"
+ATH_CSTR=`echo "$INFO" | cut -d : -f 2`
+if [ "$ATH_CSTR" = "" ]; then
+    ## Get from mtdblock6 ##
+    TEMP=`cat /tmp/mtdblock6 | grep 'countrycode' | awk '{print $2}'`
+    ATH_CSTR=`expr "$TEMP" : '.*countrycode=\([A-Z]*\)'`
+fi
+echo $ATH_CSTR

@@ -1,0 +1,50 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to update the MAC ACL file. 
+##
+## mib_wlan_mf_modify <MacProfile>
+##
+####################################################################
+
+if [ -f /sbin/snmpd ]; then
+    killall snmpd
+fi
+
+NEED_RESTART=0
+
+if [ -f /tmp/.radio_conf_0/ap_proflog_1 ]; then
+    PROF_ACTIVED=`grep MAC_PROFILE$1 /tmp/.radio_conf_0/ap_proflog_1`
+    if [ "${PROF_ACTIVED}" != "" ]; then
+        ## The profile is in used.
+        IF_STATUS=`cfg -v WLAN_UP_1`
+        
+        if [ "${IF_STATUS}" = "1" ]; then
+            NEED_RESTART=1
+        fi
+    fi
+fi
+
+if [ -f /tmp/.radio_conf_1/ap_proflog_2 ]; then
+    PROF_ACTIVED=`grep MAC_PROFILE$1 /tmp/.radio_conf_1/ap_proflog_2`
+    if [ "${PROF_ACTIVED}" != "" ]; then
+        ## The profile is in used.
+        IF_STATUS=`cfg -v WLAN_UP_2`
+        
+        if [ "${IF_STATUS}" = "1" ]; then
+            NEED_RESTART=1
+        fi
+    fi
+fi
+
+if [ "${NEED_RESTART}" = "1" ]; then
+    apdown
+    apup
+fi
+
+if [ -f /sbin/snmpd ]; then
+    snmpd
+fi
+
+exit 0

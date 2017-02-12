@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=10"/>
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <title>.::Welcome to the Web-Based Configurator::.</title>
+    <link href="css/expert.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/baseJS.js" ></script>
+    <script type="text/javascript" src="js/uimake.js" ></script>
+    <script type="text/javascript">
+    var maclist = {
+      'MAC_ACL1~#~':'~~MAC_ACL1#~','MAC_ACL2~#~':'~~MAC_ACL2#~','MAC_ACL3~#~':'~~MAC_ACL3#~','MAC_ACL4~#~':'~~MAC_ACL4#~',
+      'MAC_ACL5~#~':'~~MAC_ACL5#~','MAC_ACL6~#~':'~~MAC_ACL6#~', 'MAC_ACL7~#~':'~~MAC_ACL7#~','MAC_ACL8~#~':'~~MAC_ACL8#~',
+      'MAC_ACL9~#~':'~~MAC_ACL9#~',
+      'MAC_ACL10~#~':'~~MAC_ACL10#~','MAC_ACL11~#~':'~~MAC_ACL11#~','MAC_ACL12~#~':'~~MAC_ACL12#~','MAC_ACL13~#~':'~~MAC_ACL13#~',
+      'MAC_ACL14~#~':'~~MAC_ACL14#~','MAC_ACL15~#~':'~~MAC_ACL15#~','MAC_ACL16~#~':'~~MAC_ACL16#~','MAC_ACL17~#~':'~~MAC_ACL17#~',
+      'MAC_ACL18~#~':'~~MAC_ACL18#~','MAC_ACL19~#~':'~~MAC_ACL19#~',
+      'MAC_ACL20~#~':'~~MAC_ACL20#~','MAC_ACL21~#~':'~~MAC_ACL21#~','MAC_ACL22~#~':'~~MAC_ACL22#~','MAC_ACL23~#~':'~~MAC_ACL23#~',
+      'MAC_ACL24~#~':'~~MAC_ACL24#~','MAC_ACL25~#~':'~~MAC_ACL25#~','MAC_ACL26~#~':'~~MAC_ACL26#~','MAC_ACL27~#~':'~~MAC_ACL27#~',
+      'MAC_ACL28~#~':'~~MAC_ACL28#~','MAC_ACL29~#~':'~~MAC_ACL29#~',
+      'MAC_ACL30~#~':'~~MAC_ACL30#~','MAC_ACL31~#~':'~~MAC_ACL31#~','MAC_ACL32~#~':'~~MAC_ACL32#~','MAC_ACL33~#~':'~~MAC_ACL33#~',
+      'MAC_ACL34~#~':'~~MAC_ACL34#~','MAC_ACL35~#~':'~~MAC_ACL35#~','MAC_ACL36~#~':'~~MAC_ACL36#~','MAC_ACL37~#~':'~~MAC_ACL37#~',
+      'MAC_ACL38~#~':'~~MAC_ACL38#~','MAC_ACL39~#~':'~~MAC_ACL39#~',
+      'MAC_ACL40~#~':'~~MAC_ACL40#~','MAC_ACL41~#~':'~~MAC_ACL41#~','MAC_ACL42~#~':'~~MAC_ACL42#~','MAC_ACL43~#~':'~~MAC_ACL43#~',
+      'MAC_ACL44~#~':'~~MAC_ACL44#~','MAC_ACL45~#~':'~~MAC_ACL45#~','MAC_ACL46~#~':'~~MAC_ACL46#~','MAC_ACL47~#~':'~~MAC_ACL47#~',
+      'MAC_ACL48~#~':'~~MAC_ACL48#~','MAC_ACL49~#~':'~~MAC_ACL49#~',
+      'MAC_ACL50~#~':'~~MAC_ACL50#~','MAC_ACL51~#~':'~~MAC_ACL51#~','MAC_ACL52~#~':'~~MAC_ACL52#~','MAC_ACL53~#~':'~~MAC_ACL53#~',
+      'MAC_ACL54~#~':'~~MAC_ACL54#~','MAC_ACL55~#~':'~~MAC_ACL55#~','MAC_ACL56~#~':'~~MAC_ACL56#~','MAC_ACL57~#~':'~~MAC_ACL57#~',
+      'MAC_ACL58~#~':'~~MAC_ACL58#~','MAC_ACL59~#~':'~~MAC_ACL59#~',
+      'MAC_ACL60~#~':'~~MAC_ACL60#~','MAC_ACL61~#~':'~~MAC_ACL61#~','MAC_ACL62~#~':'~~MAC_ACL62#~','MAC_ACL63~#~':'~~MAC_ACL63#~',
+      'MAC_ACL64~#~':'~~MAC_ACL64#~','MAC_ACL65~#~':'~~MAC_ACL65#~','MAC_ACL66~#~':'~~MAC_ACL66#~','MAC_ACL67~#~':'~~MAC_ACL67#~',
+      'MAC_ACL68~#~':'~~MAC_ACL68#~','MAC_ACL69~#~':'~~MAC_ACL69#~',
+      'MAC_ACL70~#~':'~~MAC_ACL70#~','MAC_ACL71~#~':'~~MAC_ACL71#~','MAC_ACL72~#~':'~~MAC_ACL72#~','MAC_ACL73~#~':'~~MAC_ACL73#~',
+      'MAC_ACL74~#~':'~~MAC_ACL74#~','MAC_ACL75~#~':'~~MAC_ACL75#~','MAC_ACL76~#~':'~~MAC_ACL76#~','MAC_ACL77~#~':'~~MAC_ACL77#~',
+      'MAC_ACL78~#~':'~~MAC_ACL78#~','MAC_ACL79~#~':'~~MAC_ACL79#~',
+      'MAC_ACL80~#~':'~~MAC_ACL80#~','MAC_ACL81~#~':'~~MAC_ACL81#~','MAC_ACL82~#~':'~~MAC_ACL82#~','MAC_ACL83~#~':'~~MAC_ACL83#~',
+      'MAC_ACL84~#~':'~~MAC_ACL84#~','MAC_ACL85~#~':'~~MAC_ACL85#~','MAC_ACL86~#~':'~~MAC_ACL86#~','MAC_ACL87~#~':'~~MAC_ACL87#~',
+      'MAC_ACL88~#~':'~~MAC_ACL88#~','MAC_ACL89~#~':'~~MAC_ACL89#~',
+      'MAC_ACL90~#~':'~~MAC_ACL90#~','MAC_ACL91~#~':'~~MAC_ACL91#~','MAC_ACL92~#~':'~~MAC_ACL92#~','MAC_ACL93~#~':'~~MAC_ACL93#~',
+      'MAC_ACL94~#~':'~~MAC_ACL94#~','MAC_ACL95~#~':'~~MAC_ACL95#~','MAC_ACL96~#~':'~~MAC_ACL96#~','MAC_ACL97~#~':'~~MAC_ACL97#~',
+      'MAC_ACL98~#~':'~~MAC_ACL98#~','MAC_ACL99~#~':'~~MAC_ACL99#~',
+      'MAC_ACL100~#~':'~~MAC_ACL100#~','MAC_ACL101~#~':'~~MAC_ACL101#~','MAC_ACL102~#~':'~~MAC_ACL102#~','MAC_ACL103~#~':'~~MAC_ACL103#~',
+      'MAC_ACL104~#~':'~~MAC_ACL104#~','MAC_ACL105~#~':'~~MAC_ACL105#~','MAC_ACL106~#~':'~~MAC_ACL106#~','MAC_ACL107~#~':'~~MAC_ACL107#~',
+      'MAC_ACL108~#~':'~~MAC_ACL108#~','MAC_ACL109~#~':'~~MAC_ACL109#~',
+      'MAC_ACL110~#~':'~~MAC_ACL110#~','MAC_ACL111~#~':'~~MAC_ACL111#~','MAC_ACL112~#~':'~~MAC_ACL112#~','MAC_ACL113~#~':'~~MAC_ACL113#~',
+      'MAC_ACL114~#~':'~~MAC_ACL114#~','MAC_ACL115~#~':'~~MAC_ACL115#~','MAC_ACL116~#~':'~~MAC_ACL116#~','MAC_ACL117~#~':'~~MAC_ACL117#~',
+      'MAC_ACL118~#~':'~~MAC_ACL118#~','MAC_ACL119~#~':'~~MAC_ACL119#~',
+      'MAC_ACL120~#~':'~~MAC_ACL120#~','MAC_ACL121~#~':'~~MAC_ACL121#~','MAC_ACL122~#~':'~~MAC_ACL122#~','MAC_ACL123~#~':'~~MAC_ACL123#~',
+      'MAC_ACL124~#~':'~~MAC_ACL124#~','MAC_ACL125~#~':'~~MAC_ACL125#~','MAC_ACL126~#~':'~~MAC_ACL126#~','MAC_ACL127~#~':'~~MAC_ACL127#~',
+      'MAC_ACL128~#~':'~~MAC_ACL128#~'
+    };
+    function init() {
+      for (var i = 1; i <= 128; i+=2) {
+        var elTa = NN_getById('macTable'); 
+        var newRow = elTa.insertRow(elTa.rows.length);
+        newRow.appendChild(uiMake('td', i));
+        newRow.appendChild(uiMake('td', ['input', {name:'MAC_ACL'+i+'~#~', id:'MAC_ACL'+i+'~#~', value:''}]));
+        NN_getById('MAC_ACL'+i+'~#~').maxLength = 17;
+        var j = i + 1;
+        newRow.appendChild(uiMake('td', j));
+        newRow.appendChild(uiMake('td', ['input', {name:'MAC_ACL'+j+'~#~', id:'MAC_ACL'+j+'~#~', value:''}]));
+        newRow.className = 'table_font';
+        newRow.align = 'center';
+        NN_getById('MAC_ACL'+j+'~#~').maxLength = 17;
+      }
+      uiFillOutForm(maclist);
+    }
+    function formSubmit() {
+      var retVal = true;
+      var mac2dot4g = '~`get_if_hwaddr ath0`~';
+      var mac5g = '~`get_if_hwaddr ath8`~';
+      if (!validate(NN_getById("MAC_PRO_NAME~#~"), V_STR, 1, 32)) retVal = false;
+      for (var i = 1; i <= 128; i++) {
+        var obj = NN_getById('MAC_ACL'+i+'~#~');
+        if (NN_val(obj) == "") {
+          NN_removeClass(obj, 'invalidinput'); 
+        } else {
+          if (!validate(obj, V_MAC)) { 
+            retVal = false; 
+          }
+          if (NN_val(obj).toUpperCase() == "FF:FF:FF:FF:FF:FF") {
+            obj.className = obj.className + " invalidinput";
+            retVal = false;
+          } 
+          if (NN_val(obj).toUpperCase() == mac2dot4g) {
+            obj.className = obj.className + " invalidinput";
+            retVal = false;
+          } else if (NN_val(obj).toUpperCase() == mac5g) {
+            obj.className = obj.className + " invalidinput";
+            retVal = false;
+          }
+        }
+      }
+      return retVal;
+    }
+    </script>
+  </head>
+  <body onload="init();">
+    <div class="topgraph"></div>
+    <div id="tabs">
+      <ul>
+        <li class="hightline"><a title="MAC Filter"><span>MAC Filter</span></a></li>
+      </ul>
+      <br class="clearfloat" />
+    </div>
+    <form method="post" onsubmit="return formSubmit();">
+    <input type="hidden" name="INDEX" value=~~INDEX~>
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data">
+        <br class="clearfloat" />
+        <div class="undownLineTitle">MAC Filter Settings</div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Profile Name :</li>
+            <li class="right_table">
+            <input type="text" name="MAC_PRO_NAME~#~" id="MAC_PRO_NAME~#~" value="~~MAC_PRO_NAME#~" size="32" maxlength="32" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Access Control Mode:</li>
+            <li class="right_table">
+            <select name="MAC_MODE~#~" style="width:120px">
+              <option value="0" ~sMAC_MODE#:0~>Disabled</option>
+              <option value="1" ~sMAC_MODE#:1~>Allow</option>
+              <option value="2" ~sMAC_MODE#:2~>Deny</option>
+            </select>
+            </li>
+          </ul>
+        </div>
+        <div class="tableframe" >
+          <table id="macTable" width="100%" cellpadding="0" cellspacing="0" >
+            <tr class="top_font" align="center" >
+              <td width="35">#</td>
+              <td>MAC Address</td>
+              <td width="35">#</td>
+              <td>MAC Address</td>
+            </tr>
+          </table>
+        </div>
+        <div class="table_button c_button">
+          <center>
+            <input class="table_button_l" name="Back" type="button" id="Back" value="Back" onclick="document.location.href='wlan_mf'"/>
+            <input class="table_button_m" name="COMMIT" value="Apply" type="submit" />
+            <input class="table_button_r" name="cancel" value="Cancel" type="button" onclick="document.location.replace('wlan_mf_modify?INDEX=~~INDEX~');" />
+            <input name="EXECUTE" value="wlan_mf_modify" type="hidden" />
+          </center>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

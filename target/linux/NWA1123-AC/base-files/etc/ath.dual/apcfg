@@ -1,0 +1,840 @@
+#!/bin/sh
+###################################################################################
+##  apcfg
+##
+##  Configuration file for Atheros AP.
+##  This file will "predefine" default configuration data for the AP.  This
+##  will first read all configuration data from flash (cfg -e), then fill in any
+##  defaults that are missing.  Thus the defaults will appear on the web pages
+##  even if the configuration store has been cleared.
+##
+###################################################################################
+##
+## Get the current settings from flash/cache area
+##
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+
+##
+## Check default values only first time up.
+##
+if [ -f /tmp/cfg_flg ]; then
+    echo "apcfg: Skip default verifying."
+    return 0
+fi
+
+##
+## Set Network configuration
+##
+## AP_IPADDR  = IP address of the bridge
+## WAN_IPADDR = Fixed IP address of the WAN, if it's not bridged
+## WAN_MODE   = bridged for attached to bridged, Get address if dhcp, fixed address
+##              if static
+##
+###################################################################################
+
+cfg -a AP_IPADDR=${AP_IPADDR:="192.168.1.2"}
+cfg -a AP_NETMASK=${AP_NETMASK:="255.255.255.0"}
+cfg -a WAN_MODE=${WAN_MODE:="static"}
+cfg -a WAN_IPADDR=${WAN_IPADDR:="192.168.2.1"}
+cfg -a WAN_NETMASK=${WAN_NETMASK:="255.255.255.0"}
+cfg -a IPV6_AUTO=${IPV6_AUTO:="none"}
+
+cfg -a ENCRYPT_PASSWD=${ENCRYPT_PASSWD:="iC.dUsGpxNNJGeOm1dFio/"}
+
+cfg -a DOT1Q_VLAN=${DOT1Q_VLAN:=0}
+cfg -a MGMT_VLAN=${MGMT_VLAN:=1}
+cfg -a MGMT_VLAN_ID=${MGMT_VLAN_ID:=1}
+
+cfg -a MGMT_FTP_ACCESS=${MGMT_FTP_ACCESS:=0}
+cfg -a MGMT_FTP_MAC_SEL=${MGMT_FTP_MAC_SEL:=0}
+cfg -a MGMT_FTP_MAC=${MGMT_FTP_MAC:="00:00:00:00:00:00"}
+cfg -a MGMT_FTP_IP_SEL=${MGMT_FTP_IP_SEL:=0}
+cfg -a MGMT_FTP_IP=${MGMT_FTP_IP:="0.0.0.0"}
+cfg -a MGMT_FTP_IPV6=${MGMT_FTP_IPV6:="0:0:0:0:0:0:0:0"}
+cfg -a MGMT_FTP_PORT=${MGMT_FTP_PORT:=21}
+
+cfg -a MGMT_TELNET_ACCESS=${MGMT_TELNET_ACCESS:=0}
+cfg -a MGMT_TELNET_MAC_SEL=${MGMT_TELNET_MAC_SEL:=0}
+cfg -a MGMT_TELNET_MAC=${MGMT_TELNET_MAC:="00:00:00:00:00:00"}
+cfg -a MGMT_TELNET_IP_SEL=${MGMT_TELNET_IP_SEL:=0}
+cfg -a MGMT_TELNET_IP=${MGMT_TELNET_IP:="0.0.0.0"}
+cfg -a MGMT_TELNET_IPV6=${MGMT_TELNET_IPV6:="0:0:0:0:0:0:0:0"}
+cfg -a MGMT_TELNET_PORT=${MGMT_TELNET_PORT:=23}
+
+cfg -a MGMT_WWW_ACCESS=${MGMT_WWW_ACCESS:=0}
+cfg -a MGMT_WWW_MAC_SEL=${MGMT_WWW_MAC_SEL:=0}
+cfg -a MGMT_WWW_MAC=${MGMT_WWW_MAC:="00:00:00:00:00:00"}
+cfg -a MGMT_WWW_IP_SEL=${MGMT_WWW_IP_SEL:=0}
+cfg -a MGMT_WWW_IP=${MGMT_WWW_IP:="0.0.0.0"}
+cfg -a MGMT_WWW_IPV6=${MGMT_WWW_IPV6:="0:0:0:0:0:0:0:0"}
+cfg -a MGMT_WWW_PORT=${MGMT_WWW_PORT:=80}
+cfg -a MGMT_HTTP_PORT=${MGMT_HTTP_PORT:=80}
+cfg -a MGMT_HTTPS_PORT=${MGMT_HTTPS_PORT:=443}
+cfg -a CERT_LENGTH=${CERT_LENGTH:="0"}
+cfg -a HTTPS_CERT_FLAG=${HTTPS_CERT_FLAG:="0"}
+cfg -a HTTPS_CERT_DEF_MD5=${HTTPS_CERT_DEF_MD5:="f7c1dd85e9523d563631bb9eabd753ae"}
+
+cfg -a MGMT_SNMP_ACCESS=${MGMT_SNMP_ACCESS:=0}
+cfg -a MGMT_SNMP_MAC_SEL=${MGMT_SNMP_MAC_SEL:=0}
+cfg -a MGMT_SNMP_MAC=${MGMT_SNMP_MAC:="00:00:00:00:00:00"}
+cfg -a MGMT_SNMP_IP_SEL=${MGMT_SNMP_IP_SEL:=0}
+cfg -a MGMT_SNMP_IP=${MGMT_SNMP_IP:="0.0.0.0"}
+cfg -a MGMT_SNMP_PORT=${MGMT_SNMP_PORT:=161}
+
+#
+# Indicate if you want the WLAN to be activated on boot up.
+#
+
+cfg -a WLAN_ON_BOOT=${WLAN_ON_BOOT:="y"}
+#
+# AP Start Mode
+# This can be overridded by environmental variables
+# Modes can be
+#      rootap := WDS root AP for WDS modes
+#    repeater := WDS repeater station
+#      client := Station mode
+#      mbssid := Multiple BSSID with all encryption types
+#
+
+cfg -a AP_DISABLECOEXT_1=${AP_DISABLECOEXT_1:="0"}
+cfg -a AP_DISABLECOEXT_2=${AP_DISABLECOEXT_2:="0"}
+
+cfg -a AP_STARTMODE_1=${AP_STARTMODE_1:="mbssid"}
+cfg -a AP_STARTMODE_2=${AP_STARTMODE_2:="mbssid"}
+
+export NUMRADIO_AHB=1
+
+cfg -a WLAN_UP_1=${WLAN_UP_1:="1"}
+cfg -a WLAN_UP_2=${WLAN_UP_2:="1"}
+
+#################################################################################
+## Default Parameters
+## If these are not set explictly by exporting environmental variables, the following
+## Defaults will be applied
+#################################################################################
+#
+# AP_PRIMARY_CH could be
+#                a number or
+#                11ng (which means auto-scan in 11ng mode)
+cfg -a AP_PRIMARY_CH_1=${AP_PRIMARY_CH_1:=11ng}
+cfg -a AP_PRIMARY_CH_2=${AP_PRIMARY_CH_2:=11na}
+cfg -a AP_PRIMARY_CH_EXT_1=${AP_PRIMARY_CH_EXT_1:=PLUS}
+cfg -a AP_PRIMARY_CH_EXT_2=${AP_PRIMARY_CH_EXT_2:=PLUS}
+cfg -a AP_CHMODE_1=${AP_CHMODE_1:="11NGHT"}
+cfg -a AP_CHMODE_2=${AP_CHMODE_2:="11ACVHT"}
+cfg -a AP_CHWIDTH_1=${AP_CHWIDTH_1:="20"}
+cfg -a AP_CHWIDTH_2=${AP_CHWIDTH_2:="80"}
+
+cfg -a BEACON_INT_1=${BEACON_INT_1:=100}
+cfg -a BEACON_INT_2=${BEACON_INT_2:=100}
+cfg -a DTIM_INT_1=${DTIM_INT_1:=1}
+cfg -a DTIM_INT_2=${DTIM_INT_2:=1}
+cfg -a TXPOWER_1=${TXPOWER_1:=20}
+cfg -a TXPOWER_2=${TXPOWER_2:=20}
+cfg -a TXP_LEVEL_1=${TXP_LEVEL_1:=0}
+cfg -a TXP_LEVEL_2=${TXP_LEVEL_2:=0}
+cfg -a PREAMBLETYPE_1=${PREAMBLETYPE_1:=1}
+cfg -a PREAMBLETYPE_2=${PREAMBLETYPE_2:=1}
+cfg -a RTS_THRESHOLD_1=${RTS_THRESHOLD_1:=2347}
+cfg -a RTS_THRESHOLD_2=${RTS_THRESHOLD_2:=2347}
+cfg -a PROTECTION_MODE_1=${PROTECTION_MODE_1:=0}
+cfg -a PROTECTION_MODE_2=${PROTECTION_MODE_2:=0}
+cfg -a FRAGM_THRESHOLD_1=${FRAGM_THRESHOLD_1:=2346}
+cfg -a FRAGM_THRESHOLD_2=${FRAGM_THRESHOLD_2:=2346}
+
+##
+## Channel Configuration Section
+##
+cfg -a TXQUEUELEN_1=${TXQUEUELEN_1:=1000}
+cfg -a TXQUEUELEN_2=${TXQUEUELEN_2:=1000}
+cfg -a SHORTGI_1=${SHORTGI_1:=1}
+cfg -a SHORTGI_2=${SHORTGI_2:=1}
+cfg -a COUNTRY=${COUNTRY:=0}
+
+##
+## Default radio
+##
+cfg -a AP_RADIO_ID_1=${AP_RADIO_ID_1:=0}
+cfg -a AP_RADIO_ID_2=${AP_RADIO_ID_2:=1}
+
+##
+##this is for setting default HIDESSID disable 
+##
+cfg -a AP_HIDESSID=${AP_HIDESSID:="0"}
+
+##
+## This is for pure G or pure N operations.  Hmmmm...
+##
+cfg -a PUREG=${PUREG:=0}
+cfg -a PUREN_1=${PUREN_1:=0}
+cfg -a PUREN_2=${PUREN_2:=0}
+
+#
+# Aggregation.  First parameter enables/disables,
+# second parameter sets the size limit
+#
+cfg -a AMPDUENABLE_1=${AMPDUENABLE_1:=1}
+cfg -a AMPDUENABLE_2=${AMPDUENABLE_2:=1}
+cfg -a AMPDUFRAMES_1=${AMPDUFRAMES_1:=32}
+cfg -a AMPDUFRAMES_2=${AMPDUFRAMES_2:=32}
+cfg -a AMPDULIMIT_1=${AMPDULIMIT_1:=50000}
+cfg -a AMPDULIMIT_2=${AMPDULIMIT_2:=50000}
+cfg -a CWMMODE_1=${CWMMODE_1:=1}
+cfg -a CWMMODE_2=${CWMMODE_2:=1}
+cfg -a RATECTL_1=${RATECTL_1:="auto"}
+cfg -a RATECTL_2=${RATECTL_2:="auto"}
+cfg -a MANRATE_1=${MANRATE_1:=0x8c8c8c8c}
+cfg -a MANRATE_2=${MANRATE_2:=0x8c8c8c8c}
+cfg -a MANRETRIES_1=${MANRETRIES_1:=0x04040404}
+cfg -a MANRETRIES_2=${MANRETRIES_2:=0x04040404}
+cfg -a RX_CHAINMASK_1=${RX_CHAINMASK_1:=3}
+cfg -a RX_CHAINMASK_2=${RX_CHAINMASK_2:=3}
+cfg -a TX_CHAINMASK_1=${TX_CHAINMASK_1:=3}
+cfg -a TX_CHAINMASK_2=${TX_CHAINMASK_2:=3}
+
+
+##
+## LED configuration
+##
+cfg -a SWAP_LED=${SWAP_LED:=1}
+cfg -a LED_CUSTOM=${LED_CUSTOM:=5}
+
+
+##
+##	Default SSID profile 
+##
+## The first element of the array means the profile number used 
+## by vap1, and so on. _$i means enabled, $i means disabled
+cfg -a VAP_LIST_1=${VAP_LIST_1:="1,_2,_3,_4,_5,_6,_7,_8"}
+cfg -a VAP_LIST_2=${VAP_LIST_2:="1,_2,_3,_4,_5,_6,_7,_8"}
+## Client Mode Profile
+cfg -a STA_AP_PROFILE_1=${STA_AP_PROFILE_1:="33"}
+cfg -a STA_AP_PROFILE_2=${STA_AP_PROFILE_2:="34"}
+## WDS profile
+cfg -a WDS_AP_PROFILE_1=${WDS_AP_PROFILE_1:="1"}
+cfg -a WDS_AP_PROFILE_2=${WDS_AP_PROFILE_2:="1"}
+
+##
+## AP Identification Section
+##
+## Note: _$i means the SSID profile index
+
+my_vaps="_1 _2 _3 _4 _5 _6 _7 _8 _9 _10 _11 _12 _13 _14 _15 _16 _17 _18 _19 _20 _21 _22 _23 _24 _25 _26 _27 _28 _29 _30 _31 _32 _33 _34"
+for i in $my_vaps;
+do
+    if [ "${i}" = "''" ]; then
+        i=""
+    fi
+    ITER_AP_SSID="AP_SSID$i"
+    ITER_AP_MODE="AP_MODE$i"
+    ITER_AP_SEC_PROFILE="AP_SEC_PROFILE$i"
+    ITER_AP_RAD_PROFILE="AP_RAD_PROFILE$i"
+    ITER_AP_MAC_PROFILE="AP_MAC_PROFILE$i"
+    ITER_AP_QOS="AP_QOS$i"
+    ITER_AP_VLAN="AP_VLAN$i"
+    ITER_AP_NATIVE_VLAN="AP_NATIVE_VLAN$i"
+    ITER_AP_STA_NUM="AP_STA_NUM$i"
+    ITER_AP_HIDESSID="AP_HIDESSID$i"
+    ITER_AP_IBSS="AP_IBSS$i"
+    eval ITER_SSID=\$$ITER_AP_SSID
+    eval ITER_MODE=\$$ITER_AP_MODE
+    eval ITER_SEC_PROFILE=\$$ITER_AP_SEC_PROFILE
+    eval ITER_RAD_PROFILE=\$$ITER_AP_RAD_PROFILE
+    eval ITER_MAC_PROFILE=\$$ITER_AP_MAC_PROFILE
+    eval ITER_QOS=\$$ITER_AP_QOS
+    eval ITER_VLAN=\$$ITER_AP_VLAN
+    eval ITER_NATIVE_VLAN=\$$ITER_AP_NATIVE_VLAN
+    eval ITER_STA_NUM=\$$ITER_AP_STA_NUM
+    eval ITER_HIDESSID=\$$ITER_AP_HIDESSID
+    eval ITER_IBSS=\$$ITER_AP_IBSS
+    cfg -a $ITER_AP_SSID="${ITER_SSID:="ZyXEL"}"
+    cfg -a $ITER_AP_MODE=${ITER_MODE:="ap"}
+    cfg -a $ITER_AP_SEC_PROFILE=${ITER_SEC_PROFILE:="0"}
+    cfg -a $ITER_AP_RAD_PROFILE=${ITER_RAD_PROFILE:="1"}
+    cfg -a $ITER_AP_MAC_PROFILE=${ITER_MAC_PROFILE:="0"}
+    cfg -a $ITER_AP_QOS=${ITER_QOS:="WMM"}
+    cfg -a $ITER_AP_VLAN=${ITER_VLAN:="1"}
+    cfg -a $ITER_AP_NATIVE_VLAN=${ITER_NATIVE_VLAN:="1"}
+    cfg -a $ITER_AP_STA_NUM=${ITER_STA_NUM:="64"}
+    cfg -a $ITER_AP_HIDESSID=${ITER_HIDESSID:="0"}
+    cfg -a $ITER_AP_IBSS=${ITER_IBSS:="1"}
+done
+
+
+##
+## Set the default modes for multi configuration
+##
+cfg -a AP_PRO_NAME_1=${AP_PRO_NAME_1:="Profile1"}
+cfg -a AP_PRO_NAME_2=${AP_PRO_NAME_2:="Profile2"}
+cfg -a AP_PRO_NAME_3=${AP_PRO_NAME_3:="Profile3"}
+cfg -a AP_PRO_NAME_4=${AP_PRO_NAME_4:="Profile4"}
+cfg -a AP_PRO_NAME_5=${AP_PRO_NAME_5:="Profile5"}
+cfg -a AP_PRO_NAME_6=${AP_PRO_NAME_6:="Profile6"}
+cfg -a AP_PRO_NAME_7=${AP_PRO_NAME_7:="Profile7"}
+cfg -a AP_PRO_NAME_8=${AP_PRO_NAME_8:="Profile8"}
+cfg -a AP_PRO_NAME_9=${AP_PRO_NAME_9:="Profile9"}
+cfg -a AP_PRO_NAME_10=${AP_PRO_NAME_10:="Profile10"}
+cfg -a AP_PRO_NAME_11=${AP_PRO_NAME_11:="Profile11"}
+cfg -a AP_PRO_NAME_12=${AP_PRO_NAME_12:="Profile12"}
+cfg -a AP_PRO_NAME_13=${AP_PRO_NAME_13:="Profile13"}
+cfg -a AP_PRO_NAME_14=${AP_PRO_NAME_14:="Profile14"}
+cfg -a AP_PRO_NAME_15=${AP_PRO_NAME_15:="Profile15"}
+cfg -a AP_PRO_NAME_16=${AP_PRO_NAME_16:="Profile16"}
+cfg -a AP_PRO_NAME_17=${AP_PRO_NAME_17:="Profile17"}
+cfg -a AP_PRO_NAME_18=${AP_PRO_NAME_18:="Profile18"}
+cfg -a AP_PRO_NAME_19=${AP_PRO_NAME_19:="Profile19"}
+cfg -a AP_PRO_NAME_20=${AP_PRO_NAME_20:="Profile20"}
+cfg -a AP_PRO_NAME_21=${AP_PRO_NAME_21:="Profile21"}
+cfg -a AP_PRO_NAME_22=${AP_PRO_NAME_22:="Profile22"}
+cfg -a AP_PRO_NAME_23=${AP_PRO_NAME_23:="Profile23"}
+cfg -a AP_PRO_NAME_24=${AP_PRO_NAME_24:="Profile24"}
+cfg -a AP_PRO_NAME_25=${AP_PRO_NAME_25:="Profile25"}
+cfg -a AP_PRO_NAME_26=${AP_PRO_NAME_26:="Profile26"}
+cfg -a AP_PRO_NAME_27=${AP_PRO_NAME_27:="Profile27"}
+cfg -a AP_PRO_NAME_28=${AP_PRO_NAME_28:="Profile28"}
+cfg -a AP_PRO_NAME_29=${AP_PRO_NAME_29:="Profile29"}
+cfg -a AP_PRO_NAME_30=${AP_PRO_NAME_30:="Profile30"}
+cfg -a AP_PRO_NAME_31=${AP_PRO_NAME_31:="Profile31"}
+cfg -a AP_PRO_NAME_32=${AP_PRO_NAME_32:="Profile32"}
+cfg -a AP_PRO_NAME_33=${AP_PRO_NAME_33:="client_24g"}
+cfg -a AP_PRO_NAME_34=${AP_PRO_NAME_34:="client_5g"}
+export MAX_VAPS_PER_RADIO=8
+
+
+##
+## Set default security modes
+##
+## Note: _$i means the index of security files
+##       The first one is for WDS sta mode
+cfg -a SEC_PRO_NAME_1=${SEC_PRO_NAME_1:="SecProfile1"}
+cfg -a SEC_PRO_NAME_2=${SEC_PRO_NAME_2:="SecProfile2"}
+cfg -a SEC_PRO_NAME_3=${SEC_PRO_NAME_3:="SecProfile3"}
+cfg -a SEC_PRO_NAME_4=${SEC_PRO_NAME_4:="SecProfile4"}
+cfg -a SEC_PRO_NAME_5=${SEC_PRO_NAME_5:="SecProfile5"}
+cfg -a SEC_PRO_NAME_6=${SEC_PRO_NAME_6:="SecProfile6"}
+cfg -a SEC_PRO_NAME_7=${SEC_PRO_NAME_7:="SecProfile7"}
+cfg -a SEC_PRO_NAME_8=${SEC_PRO_NAME_8:="SecProfile8"}
+
+cfg -a SEC_DESC_1=${SEC_DESC_1:="None"}
+cfg -a SEC_DESC_2=${SEC_DESC_2:="None"}
+cfg -a SEC_DESC_3=${SEC_DESC_3:="None"}
+cfg -a SEC_DESC_4=${SEC_DESC_4:="None"}
+cfg -a SEC_DESC_5=${SEC_DESC_5:="None"}
+cfg -a SEC_DESC_6=${SEC_DESC_6:="None"}
+cfg -a SEC_DESC_7=${SEC_DESC_7:="None"}
+cfg -a SEC_DESC_8=${SEC_DESC_8:="None"}
+
+cfg -a SEC_MODE_1=${SEC_MODE_1:="None"}
+cfg -a SEC_MODE_2=${SEC_MODE_2:="None"}
+cfg -a SEC_MODE_3=${SEC_MODE_3:="None"}
+cfg -a SEC_MODE_4=${SEC_MODE_4:="None"}
+cfg -a SEC_MODE_5=${SEC_MODE_5:="None"}
+cfg -a SEC_MODE_6=${SEC_MODE_6:="None"}
+cfg -a SEC_MODE_7=${SEC_MODE_7:="None"}
+cfg -a SEC_MODE_8=${SEC_MODE_8:="None"}
+
+cfg -a SEC_TYPE_1=${SEC_TYPE_1:="OPEN"}
+cfg -a SEC_TYPE_2=${SEC_TYPE_2:="OPEN"}
+cfg -a SEC_TYPE_3=${SEC_TYPE_3:="OPEN"}
+cfg -a SEC_TYPE_4=${SEC_TYPE_4:="OPEN"}
+cfg -a SEC_TYPE_5=${SEC_TYPE_5:="OPEN"}
+cfg -a SEC_TYPE_6=${SEC_TYPE_6:="OPEN"}
+cfg -a SEC_TYPE_7=${SEC_TYPE_7:="OPEN"}
+cfg -a SEC_TYPE_8=${SEC_TYPE_8:="OPEN"}
+
+cfg -a SEC_WPA_1=${SEC_WPA_1:="0"}
+cfg -a SEC_WPA_2=${SEC_WPA_2:="0"}
+cfg -a SEC_WPA_3=${SEC_WPA_3:="0"}
+cfg -a SEC_WPA_4=${SEC_WPA_4:="0"}
+cfg -a SEC_WPA_5=${SEC_WPA_5:="0"}
+cfg -a SEC_WPA_6=${SEC_WPA_6:="0"}
+cfg -a SEC_WPA_7=${SEC_WPA_7:="0"}
+cfg -a SEC_WPA_8=${SEC_WPA_8:="0"}
+
+cfg -a SEC_WEP_MODE_1=${SEC_WEP_MODE_1:=1}
+cfg -a SEC_WEP_MODE_2=${SEC_WEP_MODE_2:=1}
+cfg -a SEC_WEP_MODE_3=${SEC_WEP_MODE_3:=1}
+cfg -a SEC_WEP_MODE_4=${SEC_WEP_MODE_4:=1}
+cfg -a SEC_WEP_MODE_5=${SEC_WEP_MODE_5:=1}
+cfg -a SEC_WEP_MODE_6=${SEC_WEP_MODE_6:=1}
+cfg -a SEC_WEP_MODE_7=${SEC_WEP_MODE_7:=1}
+cfg -a SEC_WEP_MODE_8=${SEC_WEP_MODE_8:=1}
+
+cfg -a SEC_WEP_KEY_LEN_1=${SEC_WEP_KEY_LEN_1:=13}
+cfg -a SEC_WEP_KEY_LEN_2=${SEC_WEP_KEY_LEN_2:=13}
+cfg -a SEC_WEP_KEY_LEN_3=${SEC_WEP_KEY_LEN_3:=13}
+cfg -a SEC_WEP_KEY_LEN_4=${SEC_WEP_KEY_LEN_4:=13}
+cfg -a SEC_WEP_KEY_LEN_5=${SEC_WEP_KEY_LEN_5:=13}
+cfg -a SEC_WEP_KEY_LEN_6=${SEC_WEP_KEY_LEN_6:=13}
+cfg -a SEC_WEP_KEY_LEN_7=${SEC_WEP_KEY_LEN_7:=13}
+cfg -a SEC_WEP_KEY_LEN_8=${SEC_WEP_KEY_LEN_8:=13}
+
+## WEP key mgmt : {none|static|dynamic}
+cfg -a SEC_WEP_KEY_MGMT_1=${SEC_WEP_KEY_MGMT_1:="none"}
+cfg -a SEC_WEP_KEY_MGMT_2=${SEC_WEP_KEY_MGMT_2:="none"}
+cfg -a SEC_WEP_KEY_MGMT_3=${SEC_WEP_KEY_MGMT_3:="none"}
+cfg -a SEC_WEP_KEY_MGMT_4=${SEC_WEP_KEY_MGMT_4:="none"}
+cfg -a SEC_WEP_KEY_MGMT_5=${SEC_WEP_KEY_MGMT_5:="none"}
+cfg -a SEC_WEP_KEY_MGMT_6=${SEC_WEP_KEY_MGMT_6:="none"}
+cfg -a SEC_WEP_KEY_MGMT_7=${SEC_WEP_KEY_MGMT_7:="none"}
+cfg -a SEC_WEP_KEY_MGMT_8=${SEC_WEP_KEY_MGMT_8:="none"}
+##
+## STA Mode security
+##
+
+cfg -a SEC_WPA_PAIRWISE_1=${SEC_WPA_PAIRWISE_1:="TKIP"}
+cfg -a SEC_EAP_REAUTH_PER_1=${SEC_EAP_REAUTH_PER_1:=300}
+cfg -a SEC_EAP_REAUTH_PER_2=${SEC_EAP_REAUTH_PER_2:=300}
+cfg -a SEC_EAP_REAUTH_PER_3=${SEC_EAP_REAUTH_PER_3:=300}
+cfg -a SEC_EAP_REAUTH_PER_4=${SEC_EAP_REAUTH_PER_4:=300}
+cfg -a SEC_EAP_REAUTH_PER_5=${SEC_EAP_REAUTH_PER_5:=300}
+cfg -a SEC_EAP_REAUTH_PER_6=${SEC_EAP_REAUTH_PER_6:=300}
+cfg -a SEC_EAP_REAUTH_PER_7=${SEC_EAP_REAUTH_PER_7:=300}
+cfg -a SEC_EAP_REAUTH_PER_8=${SEC_EAP_REAUTH_PER_8:=300}
+cfg -a SEC_WPA_GROUP_REKEY_1=${SEC_WPA_GROUP_REKEY_1:=0}
+cfg -a SEC_WPA_GROUP_REKEY_2=${SEC_WPA_GROUP_REKEY_2:=0}
+cfg -a SEC_WPA_GROUP_REKEY_3=${SEC_WPA_GROUP_REKEY_3:=0}
+cfg -a SEC_WPA_GROUP_REKEY_4=${SEC_WPA_GROUP_REKEY_4:=0}
+cfg -a SEC_WPA_GROUP_REKEY_5=${SEC_WPA_GROUP_REKEY_5:=0}
+cfg -a SEC_WPA_GROUP_REKEY_6=${SEC_WPA_GROUP_REKEY_6:=0}
+cfg -a SEC_WPA_GROUP_REKEY_7=${SEC_WPA_GROUP_REKEY_7:=0}
+cfg -a SEC_WPA_GROUP_REKEY_8=${SEC_WPA_GROUP_REKEY_8:=0}
+cfg -a SEC_WPA_GROUP_REKEY_PER_1=${SEC_WPA_GROUP_REKEY_PER_1:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_2=${SEC_WPA_GROUP_REKEY_PER_2:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_3=${SEC_WPA_GROUP_REKEY_PER_3:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_4=${SEC_WPA_GROUP_REKEY_PER_4:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_5=${SEC_WPA_GROUP_REKEY_PER_5:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_6=${SEC_WPA_GROUP_REKEY_PER_6:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_7=${SEC_WPA_GROUP_REKEY_PER_7:=100}
+cfg -a SEC_WPA_GROUP_REKEY_PER_8=${SEC_WPA_GROUP_REKEY_PER_8:=100}
+cfg -a SEC_EAP_TYPE_1=${SEC_EAP_TYPE_1:="TLS"}
+cfg -a SEC_EAP_TYPE_2=${SEC_EAP_TYPE_2:="TLS"}
+cfg -a SEC_EAP_TYPE_3=${SEC_EAP_TYPE_3:="TLS"}
+cfg -a SEC_EAP_TYPE_4=${SEC_EAP_TYPE_4:="TLS"}
+cfg -a SEC_EAP_TYPE_5=${SEC_EAP_TYPE_5:="TLS"}
+cfg -a SEC_EAP_TYPE_6=${SEC_EAP_TYPE_6:="TLS"}
+cfg -a SEC_EAP_TYPE_7=${SEC_EAP_TYPE_7:="TLS"}
+cfg -a SEC_EAP_TYPE_8=${SEC_EAP_TYPE_8:="TLS"}
+cfg -a SEC_EAP_PHASE2_1=${SEC_EAP_PHASE2_1:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_2=${SEC_EAP_PHASE2_2:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_3=${SEC_EAP_PHASE2_3:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_4=${SEC_EAP_PHASE2_4:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_5=${SEC_EAP_PHASE2_5:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_6=${SEC_EAP_PHASE2_6:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_7=${SEC_EAP_PHASE2_7:="MSCHAPV2"}
+cfg -a SEC_EAP_PHASE2_8=${SEC_EAP_PHASE2_8:="MSCHAPV2"}
+## No default value
+#cfg -a SEC_EAP_ID_1=${SEC_EAP_ID_1:=""}
+#cfg -a SEC_EAP_PSWD_1=${SEC_EAP_PSWD_1:=""}
+#cfg -a SEC_TLS_CERT_1=${SEC_TLS_CERT_1:=""}
+
+
+cfg -a SEC_PRIMARY_KEY_1=${SEC_PRIMARY_KEY_1:=0}
+cfg -a SEC_PRIMARY_KEY_2=${SEC_PRIMARY_KEY_2:=0}
+cfg -a SEC_PRIMARY_KEY_3=${SEC_PRIMARY_KEY_3:=0}
+cfg -a SEC_PRIMARY_KEY_4=${SEC_PRIMARY_KEY_4:=0}
+cfg -a SEC_PRIMARY_KEY_5=${SEC_PRIMARY_KEY_5:=0}
+cfg -a SEC_PRIMARY_KEY_6=${SEC_PRIMARY_KEY_6:=0}
+cfg -a SEC_PRIMARY_KEY_7=${SEC_PRIMARY_KEY_7:=0}
+cfg -a SEC_PRIMARY_KEY_8=${SEC_PRIMARY_KEY_8:=0}
+cfg -a SEC_WEP_REKEY_1=${SEC_WEP_REKEY_1:=0}
+cfg -a SEC_WEP_REKEY_2=${SEC_WEP_REKEY_2:=0}
+cfg -a SEC_WEP_REKEY_3=${SEC_WEP_REKEY_3:=0}
+cfg -a SEC_WEP_REKEY_4=${SEC_WEP_REKEY_4:=0}
+cfg -a SEC_WEP_REKEY_5=${SEC_WEP_REKEY_5:=0}
+cfg -a SEC_WEP_REKEY_6=${SEC_WEP_REKEY_6:=0}
+cfg -a SEC_WEP_REKEY_7=${SEC_WEP_REKEY_7:=0}
+cfg -a SEC_WEP_REKEY_8=${SEC_WEP_REKEY_8:=0}
+cfg -a SEC_WEP_REKEY_PER_1=${SEC_WEP_REKEY_PER_1:=100}
+cfg -a SEC_WEP_REKEY_PER_2=${SEC_WEP_REKEY_PER_2:=100}
+cfg -a SEC_WEP_REKEY_PER_3=${SEC_WEP_REKEY_PER_3:=100}
+cfg -a SEC_WEP_REKEY_PER_4=${SEC_WEP_REKEY_PER_4:=100}
+cfg -a SEC_WEP_REKEY_PER_5=${SEC_WEP_REKEY_PER_5:=100}
+cfg -a SEC_WEP_REKEY_PER_6=${SEC_WEP_REKEY_PER_6:=100}
+cfg -a SEC_WEP_REKEY_PER_7=${SEC_WEP_REKEY_PER_7:=100}
+cfg -a SEC_WEP_REKEY_PER_8=${SEC_WEP_REKEY_PER_8:=100}
+#cfg -a SEC_WEP_KEY1_1=${SEC_WEP_KEY1_1:=""}
+#cfg -a SEC_WEP_KEY2_1=${SEC_WEP_KEY2_1:=""}
+#cfg -a SEC_WEP_KEY3_1=${SEC_WEP_KEY3_1:=""}
+#cfg -a SEC_WEP_KEY4_1=${SEC_WEP_KEY4_1:=""}
+#....
+
+##
+## Default keys are Decimal (NOT hex)
+##
+#cfg -a SEC_WEP_IS_HEX_1=${SEC_WEP_IS_HEX_1:="0"}
+#cfg -a SEC_WEP_IS_HEX_2=${SEC_WEP_IS_HEX_2:="0"}
+#cfg -a SEC_WEP_IS_HEX_3=${SEC_WEP_IS_HEX_3:="0"}
+#cfg -a SEC_WEP_IS_HEX_4=${SEC_WEP_IS_HEX_4:="0"}
+#cfg -a SEC_WEP_IS_HEX_5=${SEC_WEP_IS_HEX_5:="0"}
+#cfg -a SEC_WEP_IS_HEX_6=${SEC_WEP_IS_HEX_6:="0"}
+#cfg -a SEC_WEP_IS_HEX_7=${SEC_WEP_IS_HEX_7:="0"}
+#cfg -a SEC_WEP_IS_HEX_8=${SEC_WEP_IS_HEX_8:="0"}
+#cfg -a SEC_WEP_IS_HEX_9=${SEC_WEP_IS_HEX_9:="0"}
+#
+#cfg -a SEC_WPA_IS_HEX_1=${SEC_WPA_IS_HEX_1:="0"}
+#cfg -a SEC_WPA_IS_HEX_2=${SEC_WPA_IS_HEX_2:="0"}
+#cfg -a SEC_WPA_IS_HEX_3=${SEC_WPA_IS_HEX_3:="0"}
+#cfg -a SEC_WPA_IS_HEX_4=${SEC_WPA_IS_HEX_4:="0"}
+#cfg -a SEC_WPA_IS_HEX_5=${SEC_WPA_IS_HEX_5:="0"}
+#cfg -a SEC_WPA_IS_HEX_6=${SEC_WPA_IS_HEX_6:="0"}
+#cfg -a SEC_WPA_IS_HEX_7=${SEC_WPA_IS_HEX_7:="0"}
+#cfg -a SEC_WPA_IS_HEX_8=${SEC_WPA_IS_HEX_8:="0"}
+#cfg -a SEC_WPA_IS_HEX_9=${SEC_WPA_IS_HEX_9:="0"}
+
+
+
+##
+## Set default RADIUS server configuration
+##
+## Note: _$i means the index of RADIUS profiles
+cfg -a RAD_PRO_NAME_1=${RAD_PRO_NAME_1:="RadProfile1"}
+cfg -a RAD_PRO_NAME_2=${RAD_PRO_NAME_2:="RadProfile2"}
+cfg -a RAD_PRO_NAME_3=${RAD_PRO_NAME_3:="RadProfile3"}
+cfg -a RAD_PRO_NAME_4=${RAD_PRO_NAME_4:="RadProfile4"}
+
+
+##
+## RADIUS Server Settings
+##
+cfg -a RAD_AUTH_PRI_SERVER_1=${RAD_AUTH_PRI_SERVER_1:="Active"}
+cfg -a RAD_AUTH_PRI_SERVER_2=${RAD_AUTH_PRI_SERVER_2:="Active"}
+cfg -a RAD_AUTH_PRI_SERVER_3=${RAD_AUTH_PRI_SERVER_3:="Active"}
+cfg -a RAD_AUTH_PRI_SERVER_4=${RAD_AUTH_PRI_SERVER_4:="Active"}
+cfg -a RAD_AUTH_SEC_SERVER_1=${RAD_AUTH_SEC_SERVER_1:="Inactive"}
+cfg -a RAD_AUTH_SEC_SERVER_2=${RAD_AUTH_SEC_SERVER_2:="Inactive"}
+cfg -a RAD_AUTH_SEC_SERVER_3=${RAD_AUTH_SEC_SERVER_3:="Inactive"}
+cfg -a RAD_AUTH_SEC_SERVER_4=${RAD_AUTH_SEC_SERVER_4:="Inactive"}
+
+## No default value
+cfg -a RAD_AUTH_PRI_SERVER_IP_1=${RAD_AUTH_PRI_SERVER_IP_1:="0.0.0.0"}
+cfg -a RAD_AUTH_PRI_SERVER_IP_2=${RAD_AUTH_PRI_SERVER_IP_2:="0.0.0.0"}
+cfg -a RAD_AUTH_PRI_SERVER_IP_3=${RAD_AUTH_PRI_SERVER_IP_3:="0.0.0.0"}
+cfg -a RAD_AUTH_PRI_SERVER_IP_4=${RAD_AUTH_PRI_SERVER_IP_4:="0.0.0.0"}
+cfg -a RAD_AUTH_PRI_SERVER_PORT_1=${RAD_AUTH_PRI_SERVER_PORT_1:="1812"}
+cfg -a RAD_AUTH_PRI_SERVER_PORT_2=${RAD_AUTH_PRI_SERVER_PORT_2:="1812"}
+cfg -a RAD_AUTH_PRI_SERVER_PORT_3=${RAD_AUTH_PRI_SERVER_PORT_3:="1812"}
+cfg -a RAD_AUTH_PRI_SERVER_PORT_4=${RAD_AUTH_PRI_SERVER_PORT_4:="1812"}
+cfg -a RAD_AUTH_PRI_SERVER_SECRET_1=${RAD_AUTH_PRI_SERVER_SECRET_1:="password"}
+cfg -a RAD_AUTH_PRI_SERVER_SECRET_2=${RAD_AUTH_PRI_SERVER_SECRET_2:="password"}
+cfg -a RAD_AUTH_PRI_SERVER_SECRET_3=${RAD_AUTH_PRI_SERVER_SECRET_3:="password"}
+cfg -a RAD_AUTH_PRI_SERVER_SECRET_4=${RAD_AUTH_PRI_SERVER_SECRET_4:="password"}
+
+#cfg -a RAD_AUTH_SEC_SERVER_IP_1=${RAD_AUTH_SEC_SERVER_IP_1:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_IP_2=${RAD_AUTH_SEC_SERVER_IP_2:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_IP_3=${RAD_AUTH_SEC_SERVER_IP_3:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_IP_4=${RAD_AUTH_SEC_SERVER_IP_4:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_PORT_1=${RAD_AUTH_SEC_SERVER_PORT_1:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_PORT_2=${RAD_AUTH_SEC_SERVER_PORT_2:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_PORT_3=${RAD_AUTH_SEC_SERVER_PORT_3:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_PORT_4=${RAD_AUTH_SEC_SERVER_PORT_4:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_SECRET_1=${RAD_AUTH_SEC_SERVER_SECRET_1:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_SECRET_2=${RAD_AUTH_SEC_SERVER_SECRET_2:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_SECRET_3=${RAD_AUTH_SEC_SERVER_SECRET_3:=""}
+#cfg -a RAD_AUTH_SEC_SERVER_SECRET_4=${RAD_AUTH_SEC_SERVER_SECRET_4:=""}
+
+##
+## Accouting Server Settings
+##
+cfg -a RAD_ACCT_PRI_SERVER_1=${RAD_ACCT_PRI_SERVER_1:="Inactive"} 
+cfg -a RAD_ACCT_PRI_SERVER_2=${RAD_ACCT_PRI_SERVER_2:="Inactive"} 
+cfg -a RAD_ACCT_PRI_SERVER_3=${RAD_ACCT_PRI_SERVER_3:="Inactive"} 
+cfg -a RAD_ACCT_PRI_SERVER_4=${RAD_ACCT_PRI_SERVER_4:="Inactive"} 
+cfg -a RAD_ACCT_SEC_SERVER_1=${RAD_ACCT_SEC_SERVER_1:="Inactive"}
+cfg -a RAD_ACCT_SEC_SERVER_2=${RAD_ACCT_SEC_SERVER_2:="Inactive"}
+cfg -a RAD_ACCT_SEC_SERVER_3=${RAD_ACCT_SEC_SERVER_3:="Inactive"}
+cfg -a RAD_ACCT_SEC_SERVER_4=${RAD_ACCT_SEC_SERVER_4:="Inactive"}
+
+## No default value
+#cfg -a RAD_ACCT_PRI_SERVER_IP_1=${RAD_ACCT_PRI_SERVER_IP_1:=""}              
+#cfg -a RAD_ACCT_PRI_SERVER_IP_2=${RAD_ACCT_PRI_SERVER_IP_2:=""}              
+#cfg -a RAD_ACCT_PRI_SERVER_IP_3=${RAD_ACCT_PRI_SERVER_IP_3:=""}              
+#cfg -a RAD_ACCT_PRI_SERVER_IP_4=${RAD_ACCT_PRI_SERVER_IP_4:=""}              
+#cfg -a RAD_ACCT_PRI_SERVER_PORT_1=${RAD_ACCT_PRI_SERVER_PORT_1:=""}    
+#cfg -a RAD_ACCT_PRI_SERVER_PORT_2=${RAD_ACCT_PRI_SERVER_PORT_2:=""}    
+#cfg -a RAD_ACCT_PRI_SERVER_PORT_3=${RAD_ACCT_PRI_SERVER_PORT_3:=""}    
+#cfg -a RAD_ACCT_PRI_SERVER_PORT_4=${RAD_ACCT_PRI_SERVER_PORT_4:=""}    
+#cfg -a RAD_ACCT_PRI_SERVER_SECRET_1=${RAD_ACCT_PRI_SERVER_SECRET_1:=""}
+#cfg -a RAD_ACCT_PRI_SERVER_SECRET_2=${RAD_ACCT_PRI_SERVER_SECRET_2:=""}
+#cfg -a RAD_ACCT_PRI_SERVER_SECRET_3=${RAD_ACCT_PRI_SERVER_SECRET_3:=""}
+#cfg -a RAD_ACCT_PRI_SERVER_SECRET_4=${RAD_ACCT_PRI_SERVER_SECRET_4:=""}
+
+#cfg -a RAD_ACCT_SEC_SERVER_IP_1=${RAD_ACCT_SEC_SERVER_IP_1:=""}              
+#cfg -a RAD_ACCT_SEC_SERVER_IP_2=${RAD_ACCT_SEC_SERVER_IP_2:=""}              
+#cfg -a RAD_ACCT_SEC_SERVER_IP_3=${RAD_ACCT_SEC_SERVER_IP_3:=""}              
+#cfg -a RAD_ACCT_SEC_SERVER_IP_4=${RAD_ACCT_SEC_SERVER_IP_4:=""}              
+#cfg -a RAD_ACCT_SEC_SERVER_PORT_1=${RAD_ACCT_SEC_SERVER_PORT_1:=""}    
+#cfg -a RAD_ACCT_SEC_SERVER_PORT_2=${RAD_ACCT_SEC_SERVER_PORT_2:=""}    
+#cfg -a RAD_ACCT_SEC_SERVER_PORT_3=${RAD_ACCT_SEC_SERVER_PORT_3:=""}    
+#cfg -a RAD_ACCT_SEC_SERVER_PORT_4=${RAD_ACCT_SEC_SERVER_PORT_4:=""}    
+#cfg -a RAD_ACCT_SEC_SERVER_SECRET_1=${RAD_ACCT_SEC_SERVER_SECRET_1:=""}
+#cfg -a RAD_ACCT_SEC_SERVER_SECRET_2=${RAD_ACCT_SEC_SERVER_SECRET_2:=""}
+#cfg -a RAD_ACCT_SEC_SERVER_SECRET_3=${RAD_ACCT_SEC_SERVER_SECRET_3:=""}
+#cfg -a RAD_ACCT_SEC_SERVER_SECRET_4=${RAD_ACCT_SEC_SERVER_SECRET_4:=""}
+
+
+
+##
+## Set default mac filtering configuration
+##
+## Note: _$i means the index of mac profiles
+cfg -a MAC_PRO_NAME_1=${MAC_PRO_NAME_1:="MacProfile1"}
+cfg -a MAC_PRO_NAME_2=${MAC_PRO_NAME_2:="MacProfile2"}
+cfg -a MAC_PRO_NAME_3=${MAC_PRO_NAME_3:="MacProfile3"}
+cfg -a MAC_PRO_NAME_4=${MAC_PRO_NAME_4:="MacProfile4"}
+cfg -a MAC_PRO_NAME_5=${MAC_PRO_NAME_5:="MacProfile5"}
+cfg -a MAC_PRO_NAME_6=${MAC_PRO_NAME_6:="MacProfile6"}
+cfg -a MAC_PRO_NAME_7=${MAC_PRO_NAME_7:="MacProfile7"}
+cfg -a MAC_PRO_NAME_8=${MAC_PRO_NAME_8:="MacProfile8"}
+
+cfg -a MAC_MODE_1=${MAC_MODE_1:="0"}
+cfg -a MAC_MODE_2=${MAC_MODE_2:="0"}
+cfg -a MAC_MODE_3=${MAC_MODE_3:="0"}
+cfg -a MAC_MODE_4=${MAC_MODE_4:="0"}
+cfg -a MAC_MODE_5=${MAC_MODE_5:="0"}
+cfg -a MAC_MODE_6=${MAC_MODE_6:="0"}
+cfg -a MAC_MODE_7=${MAC_MODE_7:="0"}
+cfg -a MAC_MODE_8=${MAC_MODE_8:="0"}
+
+
+##
+##Set syslog configuration
+##
+cfg -a SMTP_SERVER=${SMTP_SERVER:=""}
+cfg -a SMTP_SUBJECT="${SMTP_SUBJECT:=""}"
+cfg -a SMTP_LOG_TO=${SMTP_LOG_TO:=""}
+cfg -a SMTP_AUTH=${SMTP_AUTH:=0}
+cfg -a SMTP_USER=${SMTP_USER:=""}
+cfg -a SMTP_PWD=${SMTP_PWD:=""}
+cfg -a LOG_REMOTE=${LOG_REMOTE:=0}
+cfg -a LOG_SERVER=${LOG_SERVER:="0.0.0.0"}
+cfg -a LOG_PORT=${LOG_PORT:=514}
+cfg -a LOG_SCHEDULE=${LOG_SCHEDULE:=0}
+cfg -a LOG_WEEKLY=${LOG_WEEKLY:=0}
+cfg -a LOG_HOUR=${LOG_HOUR:=1}
+cfg -a LOG_MIN=${LOG_MIN:=0}
+cfg -a LOG_CLEAR=${LOG_CLEAR:=0}
+cfg -a LOG_CATE_MAINT=${LOG_CATE_MAINT:=1}
+cfg -a LOG_CATE_ERROR=${LOG_CATE_ERROR:=1}
+cfg -a LOG_CATE_DOT1X=${LOG_CATE_DOT1X:=1}
+cfg -a LOG_CATE_WIRELESS=${LOG_CATE_WIRELESS:=1}
+
+
+##
+## Set NTP configuration
+##
+cfg -a NTP_STATUS=${NTP_STATUS:=0}            #disable:0; enable:1
+cfg -a NTP_SERVER_TYPE=${NTP_SERVER_TYPE:=1}  #NTP server:0; Manual IP:1
+cfg -a NTP_SERVER=${NTP_SERVER:=""}
+cfg -a NTP_SERVER_IP=${NTP_SERVER_IP:=""}
+cfg -a NTP_TIME_ZONE=${NTP_TIME_ZONE:=23}     #greenwich time
+cfg -a NTP_YEAR=${NTP_YEAR:=0}
+cfg -a NTP_MON=${NTP_MON:=0}
+cfg -a NTP_DAY=${NTP_DAY:=0}
+cfg -a NTP_HOUR=${NTP_HOUR:=0}
+cfg -a NTP_MIN=${NTP_MIN:=0}
+cfg -a NTP_SEC=${NTP_SEC:=0}
+cfg -a NTP_DAYLIGHT_SAVING=${NTP_DAYLIGHT_SAVING:=0}
+##
+## Set daylight-saving
+##
+## NTP_DAYLIGHT_START_WEEK_NUM:1 ==> First
+## NTP_DAYLIGHT_START_WEEK_DAY:1 ==> Monday
+## NTP_DAYLIGHT_START_MONTH:1 ==> Jan
+cfg -a NTP_DAYLIGHT_START_WEEK_NUM=${NTP_DAYLIGHT_START_WEEK_NUM:=1}
+cfg -a NTP_DAYLIGHT_START_WEEK_DAY=${NTP_DAYLIGHT_START_WEEK_DAY:=1}
+cfg -a NTP_DAYLIGHT_START_MONTH=${NTP_DAYLIGHT_START_MONTH:=1}
+cfg -a NTP_DAYLIGHT_START_HOUR=${NTP_DAYLIGHT_START_HOUR:=12}
+cfg -a NTP_DAYLIGHT_START_MINUTE=${NTP_DAYLIGHT_START_MINUTE:=0}
+cfg -a NTP_DAYLIGHT_END_WEEK_NUM=${NTP_DAYLIGHT_END_WEEK_NUM:=1}
+cfg -a NTP_DAYLIGHT_END_WEEK_DAY=${NTP_DAYLIGHT_END_WEEK_DAY:=1}
+cfg -a NTP_DAYLIGHT_END_MONTH=${NTP_DAYLIGHT_END_MONTH:=1}
+cfg -a NTP_DAYLIGHT_END_HOUR=${NTP_DAYLIGHT_END_HOUR:=12}
+cfg -a NTP_DAYLIGHT_END_MINUTE=${NTP_DAYLIGHT_END_MINUTE:=0}
+
+
+
+
+##Set snmp configuration
+##
+cfg -a SNMP_VERSION=${SNMP_VERSION:="3"}
+cfg -a SNMP_RO_USER=${SNMP_RO_USER:="public"}
+cfg -a SNMP_RW_USER=${SNMP_RW_USER:="private"}
+cfg -a SNMP_TRAP_USER=${SNMP_TRAP_USER:="private"}
+cfg -a SNMP_TRAP_IP=${SNMP_TRAP_IP:="192.168.1.10"}
+cfg -a SNMPV3_ADMIN=${SNMPV3_ADMIN:="Enabled"}
+cfg -a SNMPV3_ADMIN_NAME=${SNMPV3_ADMIN_NAME:="SNMPv3Admin"}
+cfg -a SNMPV3_ADMIN_PASSWORD=${SNMPV3_ADMIN_PASSWORD:="12345678"}
+cfg -a SNMPV3_ADMIN_TYPE=${SNMPV3_ADMIN_TYPE:="ReadAndWrite"}
+cfg -a SNMPV3_ADMIN_AUTH=${SNMPV3_ADMIN_AUTH:="SHA"}
+cfg -a SNMPV3_ADMIN_PRIV=${SNMPV3_ADMIN_PRIV:="DES"}
+cfg -a SNMPV3_USER=${SNMPV3_USER:="Enabled"}
+cfg -a SNMPV3_USER_NAME=${SNMPV3_USER_NAME:="SNMPv3User"}
+cfg -a SNMPV3_USER_PASSWORD=${SNMPV3_USER_PASSWORD:="12345678"}
+cfg -a SNMPV3_USER_TYPE=${SNMPV3_USER_TYPE:="ReadOnly"}
+cfg -a SNMPV3_USER_AUTH=${SNMPV3_USER_AUTH:="MD5"}
+cfg -a SNMPV3_USER_PRIV=${SNMPV3_USER_PRIV:="None"}
+
+##
+## Layer 2 isolation configuration
+##
+cfg -a AP_L2_ISO_1=${AP_L2_ISO_1:="0"}
+cfg -a AP_L2_ISO_2=${AP_L2_ISO_2:="0"}
+cfg -a AP_L2_ISO_3=${AP_L2_ISO_3:="0"}
+cfg -a AP_L2_ISO_4=${AP_L2_ISO_4:="0"}
+cfg -a AP_L2_ISO_5=${AP_L2_ISO_5:="0"}
+cfg -a AP_L2_ISO_6=${AP_L2_ISO_6:="0"}
+cfg -a AP_L2_ISO_7=${AP_L2_ISO_7:="0"}
+cfg -a AP_L2_ISO_8=${AP_L2_ISO_8:="0"}
+cfg -a AP_L2_ISO_9=${AP_L2_ISO_9:="0"}
+cfg -a AP_L2_ISO_10=${AP_L2_ISO_10:="0"}
+cfg -a AP_L2_ISO_11=${AP_L2_ISO_11:="0"}
+cfg -a AP_L2_ISO_12=${AP_L2_ISO_12:="0"}
+cfg -a AP_L2_ISO_13=${AP_L2_ISO_13:="0"}
+cfg -a AP_L2_ISO_14=${AP_L2_ISO_14:="0"}
+cfg -a AP_L2_ISO_15=${AP_L2_ISO_15:="0"}
+cfg -a AP_L2_ISO_16=${AP_L2_ISO_16:="0"}
+cfg -a AP_L2_ISO_17=${AP_L2_ISO_17:="0"}
+cfg -a AP_L2_ISO_18=${AP_L2_ISO_18:="0"}
+cfg -a AP_L2_ISO_19=${AP_L2_ISO_19:="0"}
+cfg -a AP_L2_ISO_20=${AP_L2_ISO_20:="0"}
+cfg -a AP_L2_ISO_21=${AP_L2_ISO_21:="0"}
+cfg -a AP_L2_ISO_22=${AP_L2_ISO_22:="0"}
+cfg -a AP_L2_ISO_23=${AP_L2_ISO_23:="0"}
+cfg -a AP_L2_ISO_24=${AP_L2_ISO_24:="0"}
+cfg -a AP_L2_ISO_25=${AP_L2_ISO_25:="0"}
+cfg -a AP_L2_ISO_26=${AP_L2_ISO_26:="0"}
+cfg -a AP_L2_ISO_27=${AP_L2_ISO_27:="0"}
+cfg -a AP_L2_ISO_28=${AP_L2_ISO_28:="0"}
+cfg -a AP_L2_ISO_29=${AP_L2_ISO_29:="0"}
+cfg -a AP_L2_ISO_30=${AP_L2_ISO_30:="0"}
+cfg -a AP_L2_ISO_31=${AP_L2_ISO_31:="0"}
+cfg -a AP_L2_ISO_32=${AP_L2_ISO_32:="0"}
+
+cfg -a L2_ISO_MAC_1=${L2_ISO_MAC_1:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_2=${L2_ISO_MAC_2:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_3=${L2_ISO_MAC_3:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_4=${L2_ISO_MAC_4:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_5=${L2_ISO_MAC_5:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_6=${L2_ISO_MAC_6:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_7=${L2_ISO_MAC_7:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_8=${L2_ISO_MAC_8:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_9=${L2_ISO_MAC_9:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_10=${L2_ISO_MAC_10:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_11=${L2_ISO_MAC_11:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_12=${L2_ISO_MAC_12:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_13=${L2_ISO_MAC_13:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_14=${L2_ISO_MAC_14:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_15=${L2_ISO_MAC_15:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_16=${L2_ISO_MAC_16:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_17=${L2_ISO_MAC_17:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_18=${L2_ISO_MAC_18:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_19=${L2_ISO_MAC_19:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_20=${L2_ISO_MAC_20:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_21=${L2_ISO_MAC_21:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_22=${L2_ISO_MAC_22:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_23=${L2_ISO_MAC_23:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_24=${L2_ISO_MAC_24:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_25=${L2_ISO_MAC_25:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_26=${L2_ISO_MAC_26:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_27=${L2_ISO_MAC_27:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_28=${L2_ISO_MAC_28:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_29=${L2_ISO_MAC_29:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_30=${L2_ISO_MAC_30:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_31=${L2_ISO_MAC_31:="00:00:00:00:00:00"}
+cfg -a L2_ISO_MAC_32=${L2_ISO_MAC_32:="00:00:00:00:00:00"}
+ 
+cfg -a L2_ISO_DESC_1=${L2_ISO_DESC_1:=""}
+cfg -a L2_ISO_DESC_2=${L2_ISO_DESC_2:=""}
+cfg -a L2_ISO_DESC_3=${L2_ISO_DESC_3:=""}
+cfg -a L2_ISO_DESC_4=${L2_ISO_DESC_4:=""}
+cfg -a L2_ISO_DESC_5=${L2_ISO_DESC_5:=""}
+cfg -a L2_ISO_DESC_6=${L2_ISO_DESC_6:=""}
+cfg -a L2_ISO_DESC_7=${L2_ISO_DESC_7:=""}
+cfg -a L2_ISO_DESC_8=${L2_ISO_DESC_8:=""}
+cfg -a L2_ISO_DESC_9=${L2_ISO_DESC_9:=""}
+cfg -a L2_ISO_DESC_10=${L2_ISO_DESC_10:=""}
+cfg -a L2_ISO_DESC_11=${L2_ISO_DESC_11:=""}
+cfg -a L2_ISO_DESC_12=${L2_ISO_DESC_12:=""}
+cfg -a L2_ISO_DESC_13=${L2_ISO_DESC_13:=""}
+cfg -a L2_ISO_DESC_14=${L2_ISO_DESC_14:=""}
+cfg -a L2_ISO_DESC_15=${L2_ISO_DESC_15:=""}
+cfg -a L2_ISO_DESC_16=${L2_ISO_DESC_16:=""}
+cfg -a L2_ISO_DESC_17=${L2_ISO_DESC_17:=""}
+cfg -a L2_ISO_DESC_18=${L2_ISO_DESC_18:=""}
+cfg -a L2_ISO_DESC_19=${L2_ISO_DESC_19:=""}
+cfg -a L2_ISO_DESC_20=${L2_ISO_DESC_20:=""}
+cfg -a L2_ISO_DESC_21=${L2_ISO_DESC_21:=""}
+cfg -a L2_ISO_DESC_22=${L2_ISO_DESC_22:=""}
+cfg -a L2_ISO_DESC_23=${L2_ISO_DESC_23:=""}
+cfg -a L2_ISO_DESC_24=${L2_ISO_DESC_24:=""}
+cfg -a L2_ISO_DESC_25=${L2_ISO_DESC_25:=""}
+cfg -a L2_ISO_DESC_26=${L2_ISO_DESC_26:=""}
+cfg -a L2_ISO_DESC_27=${L2_ISO_DESC_27:=""}
+cfg -a L2_ISO_DESC_28=${L2_ISO_DESC_28:=""}
+cfg -a L2_ISO_DESC_29=${L2_ISO_DESC_29:=""}
+cfg -a L2_ISO_DESC_30=${L2_ISO_DESC_30:=""}
+cfg -a L2_ISO_DESC_31=${L2_ISO_DESC_31:=""}
+cfg -a L2_ISO_DESC_32=${L2_ISO_DESC_32:=""}
+
+##
+## System General
+##
+cfg -a SYS_NAME=${SYS_NAME:="nwa1123-ac"}
+cfg -a SYS_LOCATION=${SYS_LOCATION:=""}
+cfg -a SYS_CONTACT=${SYS_CONTACT:="support@zyxel.com.tw"}
+##ESENC Setting
+cfg -a ESENC_IPADDR=${ESENC_IPADDR:="0.0.0.0"}
+cfg -a ESENC_TRAPCONTROL=${ESENC_TRAPCONTROL:="0"}
+cfg -a ESENC_CPUUSEAGE=${ESENC_CPUUSEAGE:="80"}
+cfg -a ESENC_MEMUSEAGE=${ESENC_MEMUSEAGE:="80"}
+
+##
+## Statistics Interval
+##
+cfg -a STAT_INTVL_ACTION=${STAT_INTVL_ACTION:="stop"}  
+cfg -a STAT_INTVL_VAL=${STAT_INTVL_VAL:="5"}  
+
+##
+## LED function
+##
+cfg -a LED_CTRL_STATUS=${LED_CTRL_STATUS:="0"}
+
+##
+## Bypass FW checsum
+##
+cfg -a bypass_FW_check_1=${bypass_FW_check_1:="d47fe69bffe2ee48a70a121635863ac0"}
+cfg -a bypass_FW_check_2=${bypass_FW_check_2:="301f24472fff177245385090d22998bd"}
+cfg -a bypass_FW_check_3=${bypass_FW_check_3:="e1562ad1bffc5dc914e142418f882490"}
+
+##
+##Set reboot schedule configuration
+##
+cfg -a REBOOT_SCHEDULE=${REBOOT_SCHEDULE:=0}
+cfg -a REBOOT_WEEKLY=${REBOOT_WEEKLY:=0}
+cfg -a REBOOT_HOUR=${REBOOT_HOUR:=23}
+cfg -a REBOOT_MIN=${REBOOT_MIN:=59}
+
+##
+## Export the variables again to catch the defaults
+##
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+echo 1 > /tmp/cfg_flg
+rm /tmp/vars.$$
+
+
+#####################################################################################
+## The following parameters are board specific, and should not be modified
+#####################################################################################
+
+export ATH_use_eeprom=0
+# SET it to 1 if no "A" band support 
+# export AP_NO_A_BAND=1
+
+

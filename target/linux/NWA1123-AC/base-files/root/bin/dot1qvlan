@@ -1,0 +1,36 @@
+#!/bin/sh
+#########################################################################
+##  802.1Q Vlan Configuration
+#########################################################################
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+if [ -z "$1" ]; then
+    if [ "$DOT1Q_VLAN" = "1" ]; then
+        echo "Current 802.1Q vlan is enabled."
+    else
+        echo "Current 802.1Q vlan is disabled."
+    fi
+    exit 0
+fi
+
+if [ "$1" = "enable" ]; then
+    cfg -a DOT1Q_VLAN=1
+elif [ "$1" = "disable" ]; then
+    cfg -a DOT1Q_VLAN=0
+else
+    echo "Please input the value enable or disable."
+    exit 1
+fi
+
+cfg -c
+
+## apup procedure will do it
+#sh /etc/scripts/vlan_setvlan
+#sh /etc/scripts/acl_setrule
+apdown
+apup
+
+exit 0

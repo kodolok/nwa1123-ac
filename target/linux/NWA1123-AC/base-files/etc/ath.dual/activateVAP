@@ -1,0 +1,333 @@
+#!/bin/sh
+####################################################################
+## activateVAP
+##
+## This script is used to activate a VAP that was created earlier.
+## Activation involves bringing the interface up, associating with
+## a bridge, and configuring the security mode.  The VAP MUST EXIST
+## prior to calling the activate script.
+##
+## The form of the command is
+##
+## activateVAP <vap> <BR> <SsidProfile> <SecProfile> <RadProfile> <MacProfile>
+##
+## Where
+##         vap:  Vap ID (e.g. ath0)
+##          BR:  Bridge to join (or - if not bridged)
+## SsidProfile:  The index of SSID Profile used.
+##  SecProfile:  The index of security Profile used.
+##  RadProfile:  The index of Radius server Profile used.
+##  MacProfile:  The index of Mac-filter Profile used.
+##
+## Examples:
+##   Open Access Point
+##      activateVAP ath0 br0 NONE
+##   WPA Access Point
+##      activateVAP ath1 br0 WPA wpa2-psk.conf
+##   WEP Station
+##      activateVAP ath0 br0 WEP wep.conf
+##
+###################################################################
+
+. /etc/ath/apcfg
+
+if [ "${1}" = "" ]; then
+    echo "activateVAP usage"
+    echo "activateVAP VAPid:Radio bridge SsidProfile SecProfile RadProfile MacProfile"
+    echo
+    echo "vapid: e.g. ath0"
+    echo "bridge:  Name of bridge to add to,(typically br0)"
+    echo "SsidProfile: 1-9"
+    echo "SecProfile: 0-8, 0 for disable"
+    echo "RadProfile: 1-4"
+    echo "MacProfile: 0-8, 0 for disable"
+    exit
+fi
+
+BRIDGE=$2
+AP_INDEX=$3
+SEC_INDEX=$4
+RAD_INDEX=$5
+MAC_INDEX=$6
+
+APNAME=`echo $1 | cut -d ':' -f 1`
+RADIO=`echo $1 | cut -d ':' -f 2`
+
+RADIO_DIR="/tmp/.radio_conf_$RADIO"
+
+if [ "$RADIO" = "" ]; then
+    RADIO="0"
+else
+    RADIO_PROFILE=$(($RADIO+1))
+fi
+
+SECMODE="SEC_MODE_$4"
+SECTYPE="SEC_TYPE_$4"
+WEP_MGMT="SEC_WEP_KEY_MGMT_$4"
+eval SECMODE=\$$SECMODE
+eval SECTYPE=\$$SECTYPE
+eval WEP_MGMT=\$$WEP_MGMT
+
+KVER=`uname -r | cut -f 1 -d '-'`
+MODULE_PATH=/lib/modules/$KVER/net
+MODE=`iwconfig ${APNAME} | grep "Mode:Master"`
+HOSTAPD_VER=`hostapd -v 2>&1|grep hostapd|cut -f2 -d' '`
+
+## Mark profiles as used
+echo -e "AP_PROFILE${AP_INDEX} is used" >> $RADIO_DIR/ap_proflog_$RADIO_PROFILE
+echo -e "SEC_PROFILE${SEC_INDEX} is used" >> $RADIO_DIR/ap_proflog_$RADIO_PROFILE
+echo -e "RAD_PROFILE${RAD_INDEX} is used" >> $RADIO_DIR/ap_proflog_$RADIO_PROFILE
+echo -e "MAC_PROFILE${MAC_INDEX} is used" >> $RADIO_DIR/ap_proflog_$RADIO_PROFILE
+
+
+if [ "${AP_HIDESSID}" = "1" ]; then
+    echo "*** WARNING: invalid config WPS is enabled with hidden ssid !! ***"
+    echo "*** WARNING: WPS is disabled  ***"
+    WSCMODE=0
+fi
+
+if [ "${HOSTAPD_VER}" != "v0.5.9" ]; then
+    if [ "${SECMODE}" = "WEP" -a "${WSCMODE}" != "0" ]; then
+        echo "*** WARNING: WPS is enabled in WEP mode!! ***"
+        echo "*** WARNING: WPS is disabled  ***"
+        WSCMODE=0
+    fi
+
+    if [ "${SECMODE}" = "WPA" -a "${WSCMODE}" != "0" ]; then
+        if [ "${AP_CYPHER}" = "TKIP" ]; then
+            echo "*** WARNING: AP_SSID - WPS is enabled in TKIP only mode!! ***"
+            echo "*** WARNING: WPS has been disabled  ***"
+            WSCMODE=0
+        fi
+
+        i=2
+        while [ $i -le 15 ]
+        do
+            istkip=`eval expr match '$'AP_CYPHER_$i 'TKIP$' 2>/dev/null`
+            istkip=${istkip:="0"}
+            isssid=`eval expr length '$'AP_SSID_$i 2>/dev/null`
+            isssid=${isssid:="0"}
+            if [ "${isssid}" != "0" -a "${istkip}" != "0" ]; then
+                echo "*** WARNING: AP_SSID_$i - WPS is enabled in TKIP only mode!! ***"
+                echo "*** WARNING: WPS has been disabled  ***"
+                WSCMODE=0
+            fi
+            i=`expr $i + 1`
+        done
+    fi
+fi
+
+if [ "${WSCMODE}" = "1" -o "${WSCMODE}" = "2" ]; then
+    if [ "${SECMODE}" != "WPA" ]; then
+        echo "*** WARNING: WPS is enabled with No/Incorrect Security settings !! ***"
+    fi
+fi
+
+##
+## Create an AP index, based on the VAP (ath) number
+##
+
+ATHINDEX=`echo ${APNAME}| sed -e 's/[a-z]//g'`
+
+if [ "$ATHINDEX" != "0" ]; then
+    ATHINDEX=`expr ${ATHINDEX} + 1`
+fi
+
+##
+## First, let us see if the indicated VAP exists.  If not, it must be created
+##
+
+VAPLIST=`iwconfig | grep ${APNAME} | cut -d ' ' -f 1`
+
+if [ "${VAPLIST}" = "" ]; then
+    echo "VAP ${APNAME} must be created first!! (use makeVAP)"
+    exit
+fi
+
+##
+## Must determine if the scan modules need to be loaded.  Remember, only once!
+## This is in station mode if the MODE value is blank
+##
+
+STATIONSCAN=`lsmod | grep wlan_scan_sta`
+
+if [ "${MODE}" = "" -a "${STATIONSCAN}" = "" ]; then
+    
+    #
+    # Check for a specific MAC address that is specified.  Only valid for stations
+    #
+
+    if [ "${AP_REQ_MAC}" != "" ]; then
+        iwconfig $APNAME ap $AP_REQ_MAC
+    fi
+fi
+
+#
+# Bring the interface up at this point!!
+# configure bridge, or set an IP address for the WLAN interface
+#
+
+if [ "${BRIDGE}" != "none" -a "${BRIDGE}" != "-" ]; then
+    ifconfig ${APNAME} up
+    brctl addif ${BRIDGE} ${APNAME}
+    echo -e "\tinterface ${APNAME}" >> $RADIO_DIR/${BRIDGE}
+    #
+    # Add the arping command to ensure all nodes are updated on the network!
+    #
+    
+	arping -U -c 1 -I ${BRIDGE} $AP_IPADDR
+
+else
+    ifconfig ${APNAME} up ${WAN_IPADDR}
+fi
+
+##
+## LOG interface up
+##
+log_maintain " system Interface ${APNAME} service started. "
+
+
+#
+# We need to determine if WSC is enabled or not.  If not, we do the standard "stuff"
+#
+
+if [ "${WSCMODE}" = "1" -o "${WSCMODE}" = "2" ]; then
+	echo ">>>>> WPS ENABLED, ${SECFILE}"
+    iwpriv ${APNAME} wps 1 
+    ##
+    ## WSC VAP.  Determine the file correctly.
+    ##
+
+    if [ "${SECFILE}" = "EAP" ]; then
+        echo "Cannot use EAP modes with WPS"
+        exit 255
+    fi
+
+    if [ "${HOSTAPD_VER}" = "v0.5.9" ]; then
+        if [ "${VAPTIE}" != "" ]; then
+            echo ">>> VAP Tied: ${VAPTIE}"
+            fname="WSC_${VAPTIE}.conf"
+        else
+            fname="WSC_${APNAME}.conf"
+            fexist=`ls /tmp/wpa2 | grep ${APNAME}`
+            unconf=`cat /tmp/wpa2/WSC_${APNAME}.conf | grep "wps_configured=1"`
+            if [ "${fexist}" = "" -o "${unconf}" = "" ]; then
+                #
+                # We have to use this file "in place" to have WSC work
+                # properly.
+                #
+                echo ">>>>> WPS Translate, Index:${APINDEX}"
+                cfg -t${APINDEX} /etc/ath/WSC.conf > /tmp/wpa2/WSC_${APNAME}.conf
+            fi
+        fi
+    
+        echo -e "\t\tbss ${APNAME}" >> $RADIO_DIR/aplist$RADIO
+        echo -e "\t\t{" >> $RADIO_DIR/aplist$RADIO
+        echo -e "\t\t\tconfig /tmp/wpa2/${fname}" >> $RADIO_DIR/aplist$RADIO
+        echo -e "\t\t}" >> $RADIO_DIR/aplist$RADIO
+    else
+        if [ "${MODE}" = "" ]; then
+             #
+             # For client mode and WPS is Enabled use WSC_sta.conf
+             #
+             fname="WSC_sta.conf"
+             fexist=`ls /tmp/wpa2 | grep ${fname}`
+             if [ "${fexist}" = "" ]; then
+              cp /etc/ath/WSC_sta.conf /tmp/wpa2/
+            fi
+            echo -e "-c/tmp/wpa2/WSC_sta.conf -i${APNAME} -bbr0" >> $RADIO_DIR/sta_conf_filename
+        else 
+        # for new hostapd
+        fname="WSC_${APNAME}.conf"
+        fexist=`ls /tmp/wpa2 | grep ${APNAME}`
+        unconf=`cat /tmp/wpa2/WSC_${APNAME}.conf | grep "^wps_state=2"`
+        if [ "${fexist}" = "" -o "${unconf}" = "" ]; then
+            #
+            # We have to use this file "in place" to have WSC work
+            # properly.
+            #
+            echo ">>>>> WPS Translate, Index:${APINDEX}"
+            cfg -t${APINDEX} /etc/ath/WSC.conf > /tmp/wpa2/WSC_${APNAME}.conf
+        fi
+        echo -e "/tmp/wpa2/WSC_${APNAME}.conf \c\h" >> $RADIO_DIR/conf_filename
+    fi
+    fi
+else
+    ##
+    ## Non WSC VAP.  Use Standard Security
+    ##
+    if [ "${MODE}" != "" ]; then
+        ##
+        ## This is a master (AP) node
+        ##
+        ## This is the method using the "translation" mode of cgiMain to
+        ## create an appropriate security file for PSK or Enterprise mode
+        ##
+        
+        ## Common AP settings
+    TMP_AP_NATIVE_VLAN="AP_NATIVE_VLAN_$AP_INDEX"
+    eval TMP_AP_NATIVE_VLAN=\$$TMP_AP_NATIVE_VLAN
+
+    TMP_AP_VLAN="AP_VLAN_$AP_INDEX"
+    eval TMP_AP_VLAN=\$$TMP_AP_VLAN
+
+    if [ "${DOT1Q_VLAN}" = "1" -a "$TMP_AP_NATIVE_VLAN" = "0" ]; then
+        cfg -t${AP_INDEX} /etc/ath/ap.ap_bss.vlannative ${APNAME} > $RADIO_DIR/ap${APNAME}
+    elif [ "${DOT1Q_VLAN}" = "1" -a "${MGMT_VLAN}" = "0" -a "${MGMT_VLAN_ID}" = "${TMP_AP_VLAN}" ]; then
+        cfg -t${AP_INDEX} /etc/ath/ap.ap_bss.vlannative ${APNAME} > $RADIO_DIR/ap${APNAME}
+    else
+        cfg -t${AP_INDEX} /etc/ath/ap.ap_bss ${APNAME} > $RADIO_DIR/ap${APNAME}
+    fi
+#        cfg -t${AP_INDEX} /etc/ath/ap.ap_bss ${APNAME} > $RADIO_DIR/ap${APNAME}
+        #if [ "${SECMODE}" != "" -a "${SECMODE}" != "None" ]; then
+        if [ "${SECMODE}" = "WPA" ]; then
+            ## Security settings
+            cfg -t${SEC_INDEX} /etc/ath/${SECTYPE}_sec.ap_bss >> $RADIO_DIR/ap${APNAME}
+            ## RADIUS settings
+            if [ "${SECTYPE}" = "EAP" ]; then
+                cfg -t${RAD_INDEX} /etc/ath/${SECTYPE}_rad.ap_bss >> $RADIO_DIR/ap${APNAME}
+            fi
+        fi 
+        ## static WEP configuration
+        if [ "${WEP_MGMT}" = "static" ]; then
+            echo -e "${APNAME} ${SEC_INDEX}" >> $RADIO_DIR/ap_weplist
+        fi
+        
+        ## MAC filter
+        # cfg -t${MAC_INDEX} /etc/ath/mac.ap_bss >> $RADIO_DIR/ap${APNAME}
+        if [ "${MAC_INDEX}" != "0" ]; then
+            echo -e "${APNAME} ${MAC_INDEX}" >> $RADIO_DIR/ap_maclist
+        fi
+    
+        if [ "${HOSTAPD_VER}" = "v0.7.1" -o "${HOSTAPD_VER}" = "v0.7.2" -o "${HOSTAPD_VER}" = "v0.8.x" -o "${HOSTAPD_VER}" = "v2.0-devel" ]; then
+            echo -e "$RADIO_DIR/ap${APNAME} \c\h" >> $RADIO_DIR/conf_filename
+        else
+            echo -e "\t\tbss ${APNAME}" >> $RADIO_DIR/aplist0
+            echo -e "\t\t{" >> $RADIO_DIR/aplist0
+            echo -e "\t\t\tconfig $RADIO_DIR/ap${APNAME}" >> $RADIO_DIR/aplist0
+            echo -e "\t\t}" >> $RADIO_DIR/aplist0
+        fi
+    else
+        ##
+        ## This is a managed (station) node
+        ##
+        #cfg -t${ATHINDEX} /etc/ath/${SECTYPE}.sta ${APNAME} > $RADIO_DIR/sup${APNAME}
+        cfg -t${AP_INDEX} /etc/ath/ap.sta ${APNAME} > $RADIO_DIR/sup${APNAME}
+        cfg -t${RADIO_PROFILE} /etc/ath/ap_radio.sta >> $RADIO_DIR/sup${APNAME}
+        if [ "${SECMODE}" != "" ]; then
+            cfg -t${SEC_INDEX} /etc/ath/${SECTYPE}_sec.sta ${APNAME} >> $RADIO_DIR/sup${APNAME}
+        else
+            cfg -t /etc/ath/OPEN_sec.sta ${APNAME} >> $RADIO_DIR/sup${APNAME}
+        fi
+        
+        if [ "${HOSTAPD_VER}" = "v0.7.1" -o "${HOSTAPD_VER}" = "v0.7.2" -o "${HOSTAPD_VER}" = "v0.8.x" -o "${HOSTAPD_VER}" = "v2.0-devel" ]; then
+            echo -e "-c$RADIO_DIR/sup${APNAME} -i${APNAME} -bbr0" >> $RADIO_DIR/sta_conf_filename
+    
+        else
+            echo -e "\tsta ${APNAME}" >> $RADIO_DIR/stalist0
+            echo -e "\t{" >> $RADIO_DIR/stalist0
+            echo -e "\t\tconfig $RADIO_DIR/sup${APNAME}" >> $RADIO_DIR/stalist0
+            echo -e "\t}" >> $RADIO_DIR/stalist0
+       fi
+    fi
+fi

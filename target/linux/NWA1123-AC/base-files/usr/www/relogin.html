@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Pragma" content="no-cache">
+<script type="text/javascript">
+
+  function NN_getCookie( name ) {
+
+    var start = document.cookie.indexOf( name + "=" );
+    var len = start + name.length + 1;
+    if ( ( !start ) &&
+        ( name != document.cookie.substring( 0, name.length ) ) )
+    {
+      return null;
+    }
+    if ( start == -1 ) return null;
+    var end = document.cookie.indexOf( ";", len );
+    if ( end == -1 ) end = document.cookie.length;
+    return unescape( document.cookie.substring( len, end ) );
+  }
+
+  function NN_deleteCookie( name, path, domain ) {
+    if ( NN_getCookie( name ) ) document.cookie = name + "=" +
+      ( ( path ) ? ";path=" + path : "") +
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+  }
+  
+  NN_deleteCookie('AUTH', '/', '');
+  top.location.href = "../login/login.html";
+</script>
+</html>

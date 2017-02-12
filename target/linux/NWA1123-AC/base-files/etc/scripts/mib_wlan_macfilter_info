@@ -1,0 +1,78 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanMACFilter. 
+##
+## mib_wlan_radius_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ "${OID}" = "1" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        MAC_PRO_NAME_1=`cfg -v MAC_PRO_NAME_1`
+        echo "$MAC_PRO_NAME_1"
+    elif [ "${INDEX}" = "2" ]; then
+        MAC_PRO_NAME_2=`cfg -v MAC_PRO_NAME_2`
+        echo "$MAC_PRO_NAME_2"
+    elif [ "${INDEX}" = "3" ]; then
+        MAC_PRO_NAME_3=`cfg -v MAC_PRO_NAME_3`
+        echo "$MAC_PRO_NAME_3"
+    elif [ "${INDEX}" = "4" ]; then
+        MAC_PRO_NAME_4=`cfg -v MAC_PRO_NAME_4`
+        echo "$MAC_PRO_NAME_4"
+    elif [ "${INDEX}" = "5" ]; then
+        MAC_PRO_NAME_5=`cfg -v MAC_PRO_NAME_5`
+        echo "$MAC_PRO_NAME_5"
+    elif [ "${INDEX}" = "6" ]; then
+        MAC_PRO_NAME_6=`cfg -v MAC_PRO_NAME_6`
+        echo "$MAC_PRO_NAME_6"
+    elif [ "${INDEX}" = "7" ]; then
+        MAC_PRO_NAME_7=`cfg -v MAC_PRO_NAME_7`
+        echo "$MAC_PRO_NAME_7"
+    elif [ "${INDEX}" = "8" ]; then
+        MAC_PRO_NAME_8=`cfg -v MAC_PRO_NAME_8`
+        echo "$MAC_PRO_NAME_8"
+    fi
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    if [ "${INDEX}" = "1" ]; then
+        MAC_MODE_1=`cfg -v MAC_MODE_1`
+        echo "$MAC_MODE_1"
+    elif [ "${INDEX}" = "2" ]; then
+        MAC_MODE_2=`cfg -v MAC_MODE_2`
+        echo "$MAC_MODE_2"
+    elif [ "${INDEX}" = "3" ]; then
+        MAC_MODE_3=`cfg -v MAC_MODE_3`
+        echo "$MAC_MODE_3"
+    elif [ "${INDEX}" = "4" ]; then
+        MAC_MODE_4=`cfg -v MAC_MODE_4`
+        echo "$MAC_MODE_4"
+    elif [ "${INDEX}" = "5" ]; then
+        MAC_MODE_5=`cfg -v MAC_MODE_5`
+        echo "$MAC_MODE_5"
+    elif [ "${INDEX}" = "6" ]; then
+        MAC_MODE_6=`cfg -v MAC_MODE_6`
+        echo "$MAC_MODE_6"
+    elif [ "${INDEX}" = "7" ]; then
+        MAC_MODE_7=`cfg -v MAC_MODE_7`
+        echo "$MAC_MODE_7"
+    elif [ "${INDEX}" = "8" ]; then
+        MAC_MODE_8=`cfg -v MAC_MODE_8`
+        echo "$MAC_MODE_8"
+    fi
+    exit 0
+fi
+
+exit 0

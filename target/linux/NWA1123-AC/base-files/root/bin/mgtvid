@@ -1,0 +1,89 @@
+#!/bin/sh
+#########################################################################
+##  Management Vlan Configuration
+#########################################################################
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+if [ "$DOT1Q_VLAN" != "1" ]; then
+    echo "Please enable 802.1Q vlan first."
+    exit 1
+fi
+
+if [ -z "$1" ]; then
+    if [ "$MGMT_VLAN" = "1" ]; then
+        echo "Current management vlan id is $MGMT_VLAN_ID."
+    else
+        echo "Current management vlan id is 0."
+    fi
+    exit 2
+fi
+
+[ "$1" -ge 0 ] 2>/dev/null
+
+if [ $? -ge 1 ]; then
+    echo "$1 is NOT a valid interger."
+    exit 3
+fi
+
+##
+## Do not check if the VLAN existed or not.
+## We'll create one for management interface.
+##
+#vlan_found=0
+#if [ "$1" -eq 0 ]; then
+#    vlan_found=1
+#fi
+#
+#if [ "${vlan_found}" = "0" ]; then
+#    if [ "${AP_STARTMODE}" = "root-mbssid" ]; then 
+#        ITER_VLAN="AP_VLAN_$WDS_AP_PROFILE"
+#        eval ITER_VLAN=\$$ITER_VLAN
+#        if [ "_${ITER_VLAN}" != "_" ]; then
+#            if [ "${ITER_VLAN}" = "$1" ]; then
+#                vlan_found=1
+#            fi
+#        fi
+#    fi
+#fi
+#
+#if [ "${vlan_found}" = "0" ]; then
+#    my_vaps=`echo $VAP_LIST | sed 's/,/ /g'`
+#    for i in $my_vaps;
+#    do
+#        if echo "${i}" | grep -q '_'; then
+#            continue
+#        fi
+#        ITER_VLAN="AP_VLAN_$i"
+#        eval ITER_VLAN=\$$ITER_VLAN
+#        if [ "_${ITER_VLAN}" != "_" ]; then
+#            if [ "${ITER_VLAN}" = "$1" ]; then
+#                vlan_found=1
+#            fi
+#        fi
+#    done
+#fi
+#
+#if [ "${vlan_found}" = "0" ]; then
+#    echo "$1 is NOT a vaild vlan id."
+#    exit 4
+#fi
+
+if [ "$1" -eq 0 ]; then
+    cfg -a MGMT_VLAN=0
+else
+    cfg -a MGMT_VLAN=1
+    cfg -a MGMT_VLAN_ID=$1
+fi
+
+cfg -c
+
+## apup procedure will do it
+#sh /etc/scripts/vlan_setvlan
+#sh /etc/scripts/acl_setrule
+apdown
+apup
+
+exit 0

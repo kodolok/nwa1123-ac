@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <title>.::Welcome to the Web-Based Configurator::.</title>
+    <link href="css/expert.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/baseJS.js" ></script>
+    <script type="text/javascript" src="js/uimake.js" ></script>
+    <script type="text/javascript">
+    var mf_mode = {
+        "0":"Disabled",
+        "1":"Allow",
+        "2":"Deny"
+    };
+        
+    function init() {
+        var macMode;
+        macMode = NN_getById("mf_mode_1");
+        NN_val(macMode,mf_mode["~~MAC_MODE_1~"]);
+        macMode = NN_getById("mf_mode_2");
+        NN_val(macMode,mf_mode["~~MAC_MODE_2~"]);
+        macMode = NN_getById("mf_mode_3");
+        NN_val(macMode,mf_mode["~~MAC_MODE_3~"]);
+        macMode = NN_getById("mf_mode_4");
+        NN_val(macMode,mf_mode["~~MAC_MODE_4~"]);
+        macMode = NN_getById("mf_mode_5");
+        NN_val(macMode,mf_mode["~~MAC_MODE_5~"]);
+        macMode = NN_getById("mf_mode_6");
+        NN_val(macMode,mf_mode["~~MAC_MODE_6~"]);
+        macMode = NN_getById("mf_mode_7");
+        NN_val(macMode,mf_mode["~~MAC_MODE_7~"]);
+        macMode = NN_getById("mf_mode_8");
+        NN_val(macMode,mf_mode["~~MAC_MODE_8~"]);
+    }
+    </script>
+  </head>
+  <body onload="init();">
+    <div class="topgraph"></div>
+    <div id="tabs">
+      <ul>
+		    <li><a href="wlan_2dot4g" title="Wireless Settings - 2.4G"><span>Wireless Settings - 2.4G</span></a></li>
+		    <li><a href="wlan_5g" title="Wireless Settings - 5G"><span>Wireless Settings - 5G</span></a></li>
+        <li><a href="wlan_ssid" title="SSID"><span>SSID</span></a></li>
+        <li><a href="wlan_security" title="Security"><span>Security</span></a></li>
+        <li><a href="wlan_radius" title="RADIUS"><span>RADIUS</span></a></li>
+        <li><a href="wlan_l2iso" title="Layer-2 Isolation"><span>Layer-2 Isolation</span></a></li>
+        <li class="hightline"><a title="MAC Filter"><span>MAC Filter</span></a></li>
+      </ul>
+      <br class="clearfloat" />
+    </div>
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data">
+        <div class="undownLineTitle">MAC Filter Profiles</div>
+        <div class="tableframe" >
+          <table width="100%" cellpadding="0" cellspacing="0" >
+            <tr class="top_font" align="center" >
+              <td width="35">#</td>
+              <td>Profile Name</td>
+              <td>Filter Action</td>
+              <td width="100" >Edit</td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>1</td><td>~~MAC_PRO_NAME_1~</td><td id="mf_mode_1"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=1" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image1','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image1" width="18" height="18" border="0" id="Image1"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>2</td><td>~~MAC_PRO_NAME_2~</td><td id="mf_mode_2"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=2" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image2','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image2" width="18" height="18" border="0" id="Image2"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>3</td><td>~~MAC_PRO_NAME_3~</td><td id="mf_mode_3"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=3" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image3','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image3" width="18" height="18" border="0" id="Image3"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>4</td><td>~~MAC_PRO_NAME_4~</td><td id="mf_mode_4"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=4" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image4','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image4" width="18" height="18" border="0" id="Image4"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>5</td><td>~~MAC_PRO_NAME_5~</td><td id="mf_mode_5"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=5" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image5" width="18" height="18" border="0" id="Image5"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>6</td><td>~~MAC_PRO_NAME_6~</td><td id="mf_mode_6"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=6" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image6','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image6" width="18" height="18" border="0" id="Image6"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>7</td><td>~~MAC_PRO_NAME_7~</td><td id="mf_mode_7"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=7" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image7','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image7" width="18" height="18" border="0" id="Image7"  title="Edit"/></a></td>
+            </tr>
+            <tr class="table_font" align="center">
+              <td>8</td><td>~~MAC_PRO_NAME_8~</td><td id="mf_mode_8"></td>
+              <td>&nbsp;<a href="wlan_mf_modify?INDEX=8" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image8','','images/i_edit_on.gif',1)" ><img src="images/i_edit.gif" name="Image8" width="18" height="18" border="0" id="Image8"  title="Edit"/></a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>

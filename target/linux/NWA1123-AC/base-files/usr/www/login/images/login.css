@@ -1,0 +1,65 @@
+/* CSS Document */
+@import url("reset.css");
+.ext-el-mask{z-index:20000;position:absolute;top:0;left:0;-moz-opacity:0.4;opacity:.40;filter:alpha(opacity=50);background-color:#000000;width:100%;height:100%;zoom:1;}
+body { background-image:url(../images/advance_bg.gif);font-family:tahoma,arial,helvetica,sans-serif; font-size:12px; color:#000;}
+.note_m{position:absolute;width:388px;left: -3px;top: 325px;}
+.note{background-image:url(i_note.gif);padding-left:18px;font-weight:bold;background-repeat:no-repeat;margin-top:14px;font-size:12px; line-height:18px; background-position:left 2px;}
+.clearfloat {clear:both;height:0;font-size:1px;line-height:0px;}
+
+.l-wrap {margin-top:0px;position:relative; width:100%;}
+/*.logo {display:block;background-image:url(logo.gif);width:103px;height:29px;top:107px;position:absolute;left: 166px;}*/
+.related {display:block;position:absolute;left:166px;top:107px;}
+.logo {background-image:url(logo.gif);width:103px;height:29px;}
+.usg_icon{position:absolute;background:url(login_img.gif);width:136px;height:136px;left: 167px;top: 255px;}
+.section {display:block;position:absolute;left:351px;color:#000000;width:388px;top: 133px; z-index:200;}
+.section_bg{position:absolute; background-color:#36b9d2;width:438px;height:337px;z-index:20;left: 18px;top: 12px;filter:alpha(opacity=50); -moz-opacity: 0.5; opacity: 0.5;}
+.content_bg{position:absolute;background:url(content_bg.jpg);width:484px;height:418px;z-index:10;left: 307px;top: 92px;}
+.model {font-size:18px;font-weight:bold;color:#378ec9;}
+.content_line{ background:url(content_line.gif); width:388px; height:2px; display:block;filter:alpha(opacity=50); -moz-opacity: 0.5; opacity: 0.5;}
+.l-wrap .section label {color:#ffffff;}
+.l-wrap .section .suffixtext {color:#ffffff;font-size:12px;padding-left:4px;}
+.login_bg{position:relative; background:url(login_bg.jpg); width:1000px; height:570px; margin:0 auto;}
+
+.x-login {border:0;}
+.x-login-bwrap {color:#ffffff;font-size:12px;}
+.x-login label {font-size:12px;}
+.x-login-footer {padding:0;margin:0;}
+.x-login-footer  .x-panel-btns-ct {padding:0 0 5px 20px;margin:0;}
+.x-login .x-panel-body{background:none;}
+.loginpanel {border:0;}
+.statement {padding-top:10px;padding-bottom:10px;text-align:center;}
+.title {padding-top:10px;padding-bottom:10px;font-weight:bold;}
+.title  .error {background:url(../../../images/usg/window/icon-error.png) left center no-repeat;padding-left:36px;color:#a11110;font-size:14px;padding-top:8px;padding-bottom:6px;}
+.limit {padding:10px 0;text-align:left;}
+.showerror {color:#CC0000;font-size:12px;text-align:center;padding:2px 4px 4px 4px;font-weight:bold;}
+.epslist td {padding-top:2px;padding-bottom:2px;}
+.epslist input {font-family:tahoma,arial,helvetica,sans-serif;font-size:12px;padding-left:4px;padding-right:4px;}
+.warningIcon {background:url(icon_warning.gif) left center no-repeat; padding-left:21px;}
+.fialedText {font-weight:bold;color:#a11110;}
+.desc {padding:5px 0;}
+
+.accessblock {width:100%;text-align:center;}
+.showaccess {display:block;width:388px;text-align:left;margin:0 auto;}
+.showaccess .logo {display:block;background-image:url(../images/logo.gif);width:103px;height:29px;margin-top:10px;margin-left:10px;}
+.showaccess .model {font-size:18px;font-weight:bold;margin-top:13px;text-align:center;color:#ffffff;}
+.showaccess .statement {color:#000000;text-align:left;}
+
+.showaccess .access {display:block;}
+.access li {float:left;width:388px;padding-top:3px;color:#000000;}
+.access li .left {float:left;display:block;width:200px;line-height:18px;padding-right:3px;}
+.access li .right {float:right;display:block;width:180px;}
+.access li .right input {width:80px;font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;font-size:12px;}
+.access .button {font-size:12px;}
+
+
+.inputbox li {float:left;width:388px;padding-top:3px; margin:5px;}
+.inputbox li .left {float:left;display:block;width:160px;line-height:18px;padding-right:3px;}
+.inputbox li .right {float:left;display:block;width:200px;}
+.inputbox li .right input {width:125px;font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;font-size:12px;}
+
+.btn {margin-top:10px;}
+.btn input {font-size:12px;width:70px;margin-right:6px;height:22px;font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;}
+
+#optionDetail {background:#fff;padding:10px;font-size:12px;font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif;}
+#optionDetail p {margin-bottom:5px;}
+#optionDetail .desc {border-bottom:2px solid #e5eaf2; margin-bottom:8px;padding-bottom:6px;}

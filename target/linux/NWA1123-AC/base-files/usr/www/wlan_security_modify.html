@@ -1,0 +1,698 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=10"/>
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>.::Welcome to the Web-Based Configurator::.</title>
+<link href="css/expert.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+.w_se {width: 130px;}
+</style>
+<script type="text/javascript" src="js/baseJS.js"></script>
+<script type="text/javascript" src="js/uimake.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript">
+	function isAnyClientMode() {
+		var op1 = "~~AP_STARTMODE_1~";
+		var op2 = "~~AP_STARTMODE_2~";
+		if ((op1 == "client") || (op2 == "client"))
+		{
+			return true;
+		}
+
+		return false;
+	}
+	function GenerateKey()
+	{
+		var v = NN_val(NN_getById("passSeed")),
+				klen = (NN_val(NN_getById("SEC_WEP_KEY_LEN~#~")) == 5 ? 40 : 104),
+				seed = 0, keybyte, pp64, pseed = new Array(4),
+				key = new Array(4), i, j, k;
+		NN_val(NN_getById("SEC_WEP_KEY1~#~"), "");
+		NN_val(NN_getById("SEC_WEP_KEY2~#~"), "");
+		NN_val(NN_getById("SEC_WEP_KEY3~#~"), "");
+		NN_val(NN_getById("SEC_WEP_KEY4~#~"), "");
+		if (0 == v.length || v.length > 64 || klen == 0)
+			return;
+		if (klen == 40)
+		{
+			for (i = 0; i < v.length; i++)
+				pseed[i%4] ^= ascii.lastIndexOf(v.charAt(i));
+			seed += pseed[0];
+			seed += pseed[1] << 8;
+			seed += pseed[2] << 16;
+			seed += pseed[3] << 24;
+			for (j = 0; j < 4; j++)
+			{
+				k = "";
+				for(i=0; i<5; i++)
+				{
+					seed = (214013 * seed + 0x269EC3) & 0xFFFFFF;
+					keybyte = hexb(seed >> 16);
+					if (keybyte.length == 1)
+						k += "0" + keybyte;
+					else
+						k += keybyte;
+				}
+				key[j] = k;
+			}
+		}
+		else
+		{
+			k = "";
+			pp64 = "";
+			for (i = 0; i < 64; i++)
+				pp64 += v.charAt(i%(v.length));
+			k = MD5(pp64);
+			key[0] = k.toUpperCase().substr(0, klen/4);
+			key[1] = key[0];
+			key[2] = key[0];
+			key[3] = key[0];
+		}
+
+		NN_val(NN_getById("SEC_WEP_KEY1~#~"), key[0]);
+		NN_val(NN_getById("SEC_WEP_KEY2~#~"), key[1]);
+		NN_val(NN_getById("SEC_WEP_KEY3~#~"), key[2]);
+		NN_val(NN_getById("SEC_WEP_KEY4~#~"), key[3]);
+	}
+
+
+	var sec = {
+		"mode":"~~SEC_MODE#~",  /* None, WEP, WPA */
+		"wpa_ver":"~~SEC_WPA#~", /* 0:802.1x, 1:WPA, 2:WPA2, 3:MIX */
+		"sec_type":"~~SEC_TYPE#~", /* OPEN, WEP, PSK, EAP(Enterprise/802.1x) */
+		"wep_key_mgmt":"~~SEC_WEP_KEY_MGMT#~" /* none, static, dynamic */
+	};
+
+	var v_sec_mode = {
+		"None":0x0,
+		"WEP":0x1,
+		"WPA":0x2
+	};
+
+	var v_wpa_ver = {
+		"0":0x0,
+		"1":0x10,
+		"2":0x20,
+		"3":0x40
+	};
+
+	var v_sec_type = {
+		"OPEN":0x0,
+		"WEP":0x100,
+		"EAP":0x200,
+		"PSK":0x400
+	};
+
+	var v_wep_key_mgmt = {
+		"none":0x0,
+		"static":0x1000,
+		"dynamic":0x2000
+	};
+
+
+	var v_sec_var_set = {
+		"0x0":{"mode":"None","wpa":"0","type":"OPEN","wep":"none"},
+		"0x1":{"mode":"WEP","wpa":"0","type":"WEP","wep":"static"},
+		"0x222":{"mode":"WPA","wpa":"2","type":"EAP","wep":"none"},
+		"0x242":{"mode":"WPA","wpa":"3","type":"EAP","wep":"none"},
+		"0x422":{"mode":"WPA","wpa":"2","type":"PSK","wep":"none"},
+		"0x442":{"mode":"WPA","wpa":"3","type":"PSK","wep":"none"}
+	};
+
+	function checkWpaGroupRekey() {
+		var isChecked = NN_val(NN_getById("cSEC_WPA_GROUP_REKEY~#~"));
+		NN_val(NN_getById("SEC_WPA_GROUP_REKEY~#~"), (isChecked == true ? 1: 0));
+	}
+
+	function checkWepRekey() {
+		var isChecked = NN_val(NN_getById("cSEC_WEP_REKEY~#~"));
+		NN_val(NN_getById("SEC_WEP_REKEY~#~"), (isChecked == true ? 1: 0));
+	}
+
+	function initTestSecMode(testChoice) {
+		switch(testChoice)
+		{
+			case "0x1": /* WEP */
+				NN_val(NN_getById("seTestSecurityMode"), "1");
+				break;
+			case "0x222": /* WPA2-Enterprise */
+				NN_val(NN_getById("seTestSecurityMode"), "2");
+				NN_val(NN_getByName("raSecModeWpaGrp"), "0");
+				break;
+			case "0x242": /* WPA-MIX-Enterprise */
+				NN_val(NN_getById("seTestSecurityMode"), "3");
+				NN_val(NN_getByName("raSecModeWpaGrp"), "0");
+				break;
+			case "0x422": /* WPA2-Personal */
+				NN_val(NN_getById("seTestSecurityMode"), "2");
+				NN_val(NN_getByName("raSecModeWpaGrp"), "1");
+				break;
+			case "0x442": /* WPA-MIX-Personal */
+				NN_val(NN_getById("seTestSecurityMode"), "3");
+				NN_val(NN_getByName("raSecModeWpaGrp"), "1");
+				break;
+			default:
+				NN_val(NN_getById("seTestSecurityMode"), "0");
+		}
+	}
+
+	function doTestSecModeChange () {
+		var seObj = NN_getById("seTestSecurityMode");
+		var raObjVal = NN_val(NN_getByName("raSecModeWpaGrp"));
+		var retObj = NN_getById("testSecMode");
+		switch(seObj.value)
+		{
+			case "1": /* WEP */
+				NN_val(retObj, "0x1");
+				doSecurityModeChange(retObj.value);
+				break;
+			case "2": /* WPA2 */
+				if (raObjVal == "0") {
+					NN_val(retObj, "0x222");
+				} else {
+					NN_val(retObj, "0x422");
+				}
+				doSecurityModeChange(retObj.value);
+				break;
+			case "3": /* WPA-MIX */
+				if (raObjVal == "0") {
+					NN_val(retObj, "0x242");
+				} else {
+					NN_val(retObj, "0x442");
+				}
+				doSecurityModeChange(retObj.value);
+				break;
+			default: /* None */
+				NN_val(retObj, "0x0");
+				doSecurityModeChange(retObj.value);
+		}
+	}
+
+	function init() {
+		var sec_list = 0;
+
+		sec_list |= v_sec_mode[sec.mode];
+		if (sec.mode == "WPA") {
+			sec_list |= v_wpa_ver[sec.wpa_ver];
+			sec_list |= v_sec_type[sec.sec_type];
+			if(sec.wpa_ver == "0") {
+				sec_list |= v_wep_key_mgmt[sec.wep_key_mgmt];
+			}
+		}
+
+		var seObj = NN_getById("seSecurityMode");
+		//seObj.value = sec_list;
+		NN_val(seObj,sec_list);
+		initTestSecMode(seObj.value);
+		//alert(seObj.value);
+		doSecurityModeChange(seObj.value);
+
+		//NN_hideByClass("op_all");
+		//NN_showByClass("op_wep");
+
+	}
+	function doSecurityModeChange(choice) {
+		var seObj = NN_getById("seSecurityMode");
+		// var choice = seObj[seObj.selectedIndex].value;
+		var ap_mode = "~~AP_STARTMODE~";
+
+		NN_val(seObj, choice);
+		NN_hideByClass("op_all");
+		NN_disableByClass("dis_all");
+		switch(choice)
+		{
+			case "0x1": /* WEP */
+				NN_showByClass("op_wep");
+				NN_enableByClass("en_wep");
+				break;
+			case "0x222": /* WPA2-Enterprise */
+				if (isAnyClientMode()) {
+					NN_showByClass("op_wc_wpa2");
+					doEapTypeChange();
+					NN_enableByClass("en_wc_wpa2");
+				} else {
+					NN_showByClass("op_wpa2");
+					NN_enableByClass("en_wpa2");
+				}
+				NN_showByClass("op_psk");
+				break;
+			case "0x242": /* WPA-MIX-Enterprise */
+				NN_showByClass("op_wpa2");
+				NN_showByClass("op_psk");
+				NN_enableByClass("en_wpa2");
+				break;
+			case "0x422": /* WPA2-Personal */
+				if (isAnyClientMode()) {
+					NN_showByClass("op_wc_wpa2");
+					doEapTypeChange();
+				} else {
+					NN_showByClass("op_wpa2");
+				}
+				NN_showByClass("op_psk");
+				NN_enableByClass("en_psk");
+				break;
+			case "0x442": /* WPA-MIX-Personal */
+				NN_showByClass("op_wpa2");
+				NN_showByClass("op_psk");
+				NN_enableByClass("en_psk");
+				break;
+			default:
+				NN_hideByClass("op_all");
+				NN_disableByClass("dis_all");
+		}
+	}
+	function doEapTypeChange() {
+		NN_hideByClass("op_eaptype_all");
+		NN_disableByClass("dis_eaptype_all");
+		var seObj = NN_getById("seEapType");
+		var choice = seObj[seObj.selectedIndex].value;
+		if (choice == "TLS") {
+			NN_showByClass("op_eaptype_tls");
+		} else if (choice == "LEAP") {
+			NN_showByClass("op_eaptype_leap");
+			NN_enableByClass("en_eaptype_leap");
+		} else if (choice == "TTLS") {
+			NN_showByClass("op_eaptype_ttls");
+			NN_showByClass("op_eaptype_ttls_2", "inline");
+			NN_enableByClass("en_eaptype_ttls");
+			NN_enableByClass("op_eaptype_ttls_2");
+			NN_disableByClass("op_eaptype_peap_2");
+		} else if (choice == "PEAP") {
+			NN_showByClass("op_eaptype_peap");
+			NN_showByClass("op_eaptype_peap_2", "inline");
+			NN_enableByClass("en_eaptype_peap");
+			NN_enableByClass("op_eaptype_peap_2");
+			NN_disableByClass("op_eaptype_ttls_2");
+		} else {
+			NN_hideByClass("op_eaptype_all");
+		}
+	}
+	function doSubmit() {
+		var seObj = NN_getById("seSecurityMode");
+		var seDesc = NN_getById("seSecDesc");
+		var seMode = NN_getById("seSecMode");
+		var seWpa = NN_getById("seSecWpa");
+		var seType = NN_getById("seSecType");
+		var seWep = NN_getById("seWepMgmt");
+		var seAuth = NN_getById("seAuthMode");
+		var choice = seObj[seObj.selectedIndex].value;
+
+		NN_val(seDesc,seObj[seObj.selectedIndex].text);
+		NN_val(seMode,v_sec_var_set[choice]["mode"]);
+		NN_val(seWpa,v_sec_var_set[choice]["wpa"]);
+		NN_val(seType,v_sec_var_set[choice]["type"]);
+		NN_val(seWep,v_sec_var_set[choice]["wep"]);
+
+		if ( seMode.value == "WPA") {
+			seAuth.disabled = false;
+			NN_val(seAuth,1);
+		} 
+	}
+	function checkWepEncryKey() {
+		var securityMode = NN_val(NN_getById("seSecurityMode"));
+		if ((securityMode == "0x1")) { 
+			var index = parseInt(NN_val(NN_getByName("SEC_PRIMARY_KEY~#~"))) + 1;
+			var key = (NN_val(NN_getById("SEC_WEP_KEY"+ index +"~#~")));
+			var keyLen = NN_val(NN_getById("SEC_WEP_KEY_LEN~#~"));
+			var regEx5Ascii = /^[\x21-\x7E]{5}$/;
+			var regEx10Hex = /^[0-9a-fA-F]{10}$/;
+			var regEx13Ascii = /^[\x21-\x7E]{13}$/;
+			var regEx26Hex = /^[0-9a-fA-F]{26}$/;
+			NN_removeClass(NN_getById("SEC_WEP_KEY1~#~"), "invalidinput");
+			NN_removeClass(NN_getById("SEC_WEP_KEY2~#~"), "invalidinput");
+			NN_removeClass(NN_getById("SEC_WEP_KEY3~#~"), "invalidinput");
+			NN_removeClass(NN_getById("SEC_WEP_KEY4~#~"), "invalidinput");
+			if (keyLen == 5) {
+				if (regEx5Ascii.test(key)) {
+					return true;
+				}
+				if (regEx10Hex.test(key)) {
+					return true;
+				}
+			} else if (keyLen == 13) {
+				if (regEx13Ascii.test(key)) {
+					return true;
+				}
+				if (regEx26Hex.test(key)) {
+					return true;
+				}
+			}
+			NN_addClass(NN_getById("SEC_WEP_KEY"+ index +"~#~"), "invalidinput");
+			return false;
+		}
+		return true;
+	}
+	function formSubmit() {
+		var retVal = true;
+		if (!validate(NN_getById("SEC_PRO_NAME~#~"), V_STR, 1, 32)) {
+			retVal = false;
+		}
+		if (!checkWepEncryKey()) {
+			retVal = false;
+		}
+		var opMode = "~~AP_STARTMODE~";
+		var seMode = NN_val(NN_getById("seSecurityMode"));
+
+		if ((seMode == "0x222") || (seMode == "0x242")) {
+			if (isAnyClientMode()) {
+				var seObj = NN_getById("seEapType");
+				var choice = seObj[seObj.selectedIndex].value;
+				if (choice == "TLS") {
+					if (!validate(NN_getById("SEC_EAP_ID~#~"), V_STR, 1, 32))
+						retVal = false;
+					if (!validate(NN_getById("SEC_TLS_CERT~#~"), V_STRWSPACE, 1, 32))
+						retVal = false;
+				} else {
+					if (!validate(NN_getById("SEC_EAP_USER~#~"), V_STR, 1, 32))
+						retVal = false;
+				}
+				if (!validate(NN_getById("SEC_EAP_PSWD~#~"), V_STR, 1, 32))
+					retVal = false;
+			} else {
+				if (!validate(NN_getById("SEC_EAP_REAUTH_PER~#~"), V_INT, 0, 3600))
+					retVal = false;
+				if (!validate(NN_getById("SEC_WPA_GROUP_REKEY_PER~#~"), V_INT, 100, 3600))
+					retVal = false;
+			}
+		} else if ((seMode == "0x422") || (seMode == "0x442")) {
+			var regExAscii = /^[\x20-\x7E]{8,63}$/;
+			NN_removeClass(NN_getById("PSK_KEY~#~"), "invalidinput");
+			if (!regExAscii.test(NN_val(NN_getById("PSK_KEY~#~")))) {
+				NN_addClass(NN_getById("PSK_KEY~#~"), "invalidinput");
+				retVal = false;
+			}
+		}
+		doSubmit();
+		return retVal;
+	}
+</script>
+</head>
+<body onload="init();">
+<FORM METHOD=POST onsubmit="return formSubmit();">
+<input type="hidden" name="INDEX" value=~~INDEX~>
+<input type="hidden" id="seSecDesc" name="SEC_DESC~#~" value="~~SEC_DESC#~">
+<input type="hidden" id="seSecMode" name="SEC_MODE~#~" value="~~SEC_MODE#~">
+<input type="hidden" id="seSecWpa" name="SEC_WPA~#~" value=~~SEC_WPA#~>
+<input type="hidden" id="seSecType" name="SEC_TYPE~#~" value=~~SEC_TYPE#~>
+<input type="hidden" id="seWepMgmt" name="SEC_WEP_KEY_MGMT~#~" value=~~SEC_WEP_KEY_MGMT#~>
+<input type="hidden" id="testSecMode" name="testSecMode" value="0x0">
+<div class="topgraph">
+</div>
+<div id="tabs">
+	<ul>
+		<li class="hightline"><a title="Security"><span>Security</span></a></li>
+	</ul>
+	<br class="clearfloat"/>
+</div>
+<div class="table_top">
+</div>
+<div id="table">
+	<div class="data">
+		<div class="undownLineTitle">
+			 Security Settings
+		</div>
+		<div class="w_text">
+			<ul>
+				<li class="left_table">Profile Name:</li>
+				<li class="right_table">
+				<input type="text" name="SEC_PRO_NAME~#~" id="SEC_PRO_NAME~#~" value="~~SEC_PRO_NAME#~" size="20" maxlength="32"/>
+				</li>
+			</ul>
+		</div>
+		<div class="w_text" style="display: none;">
+			<ul>
+				<li class="left_table">Security Mode:</li>
+				<li class="right_table">
+				<select id="seSecurityMode" class="w_se" onchange="doSecurityModeChange();">
+					<option value=0x0>None</option>
+					<option value=0x1>WEP</option>
+					<option value=0x222>WPA2</option>
+					~eAP_STARTMODE_1!client~~eAP_STARTMODE_2!client~<option value=0x242>WPA2-MIX</option>
+					<option value=0x422>WPA2-PSK</option>
+					~eAP_STARTMODE_1!client~~eAP_STARTMODE_2!client~<option value=0x442>WPA2-PSK-MIX</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<div class="w_text">
+			<ul>
+				<li class="left_table">Security Mode:</li>
+				<li class="right_table">
+				<select id="seTestSecurityMode" class="w_se" onchange="doTestSecModeChange();">
+					<option value="0">None</option>
+					<option value="1">WEP</option>
+					<option value="2">WPA2</option>
+					~eAP_STARTMODE_1!client~~eAP_STARTMODE_2!client~<option value="3">WPA2-MIX</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<!-- Start of WEP="0x1" -->
+		<div class="w_text op_all op_wep">
+			<ul>
+				<li class="left_table">Authentication Type:</li>
+				<li class="right_table">
+				<select id="seAuthMode" name="SEC_WEP_MODE~#~" class="w_se dis_all en_wep">
+					<option value=1 ~sSEC_WEP_MODE#:1~>Open</option>
+					<option value=2 ~sSEC_WEP_MODE#:2~>Shared</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<div class="w_text op_all op_wep">
+			<ul>
+				<li class="left_table">Data Encryption:</li>
+				<li class="right_table">
+				<select name="SEC_WEP_KEY_LEN~#~" id="SEC_WEP_KEY_LEN~#~" class="w_se dis_all en_wep">
+					<option value=5 ~sSEC_WEP_KEY_LEN#:5~>64-bit WEP</option>
+					<option value=13 ~sSEC_WEP_KEY_LEN#:13~>128-bit WEP</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<div class="op_all op_wep">
+			<div class="w_text">
+				<ul>
+					<li class="left_table">Passphrase:</li>
+					<li class="right_table">
+					<input type="text" id="passSeed" size="20" maxlength="16" /><input type="button" id="genPassphrase" value="Generate" onclick="GenerateKey();"/>(max. 16 alphanumeric, printable characters)</li>
+				</ul>
+			</div>
+			<div class="w_text">
+				<span class="i_note">Note:</span>
+			</div>
+			<div class="i_noteframe">
+				<span class="i_note_a">Enter a passphrase to automatically generate a WEP key or leave it blank if you want to manually enter the WEP key.</span>
+			</div>
+			<div class="spaceair">
+			</div>
+			<div class="w_text">
+				<ul>
+					<li class="left_table">
+					<input type="radio" class="dis_all en_wep" name="SEC_PRIMARY_KEY~#~" value="0" ~cSEC_PRIMARY_KEY#:0~/> Key 1:
+					<li>
+					<li class="right_table">
+					<input type="text" name="SEC_WEP_KEY1~#~" id="SEC_WEP_KEY1~#~" value="~~SEC_WEP_KEY1#~" size="38" maxlength="26" class="dis_all en_wep"/>
+					</li>
+				</ul>
+			</div>
+			<div class="w_text">
+				<ul>
+					<li class="left_table">
+					<input type="radio" class="dis_all en_wep" name="SEC_PRIMARY_KEY~#~" value="1" ~cSEC_PRIMARY_KEY#:1~/> Key 2:
+					<li>
+					<li class="right_table">
+					<input type="text" name="SEC_WEP_KEY2~#~" id="SEC_WEP_KEY2~#~" value="~~SEC_WEP_KEY2#~" size="38" maxlength="26" class="dis_all en_wep"/>
+					</li>
+				</ul>
+			</div>
+			<div class="w_text">
+				<ul>
+					<li class="left_table">
+					<input type="radio" class="dis_all en_wep" name="SEC_PRIMARY_KEY~#~" value="2" ~cSEC_PRIMARY_KEY#:2~/> Key 3:
+					<li>
+					<li class="right_table">
+					<input type="text" name="SEC_WEP_KEY3~#~" id="SEC_WEP_KEY3~#~" value="~~SEC_WEP_KEY3#~" size="38" maxlength="26" class="dis_all en_wep"/>
+					</li>
+				</ul>
+			</div>
+			<div class="w_text">
+				<ul>
+					<li class="left_table">
+					<input type="radio" class="dis_all en_wep" name="SEC_PRIMARY_KEY~#~" value="3" ~cSEC_PRIMARY_KEY#:3~/> Key 4:
+					<li>
+					<li class="right_table">
+					<input type="text" name="SEC_WEP_KEY4~#~" id="SEC_WEP_KEY4~#~" value="~~SEC_WEP_KEY4#~" size="38" maxlength="26" class="dis_all en_wep"/>
+					</li>
+				</ul>
+			</div>
+			<div class="w_text">
+				<span class="i_note">Note:</span>
+			</div>
+			<div class="i_noteframe op_all op_wep">
+				<span class="i_note_a">64-bit WEP: Enter 5 ASCII characters or 10 hexadecimal characters (0-9, A-F)</span>
+			</div>
+			<div class="i_noteframe op_all op_wep">
+				<span class="i_note_a">128-bit WEP: Enter 13 ASCII characters or 26 hexadecimal characters (0-9, A-F)</span>
+			</div>
+			<div class="spaceair">
+			</div>
+		</div>
+		<!-- End of WEP="0x1" -->
+		<!-- Start of WPA2 -->
+		<br class="clearfloat op_all op_wpa2 op_wc_wpa2 op_psk"/>
+		<div class="db_title w_text op_all op_wpa2 op_wc_wpa2 op_psk" style="margin-bottom: 5px;">
+			<input value="0" type="radio" name="raSecModeWpaGrp" id="raSecModeWpa1x" checked="checked" onchange="doTestSecModeChange();"/> 802.1X Setting
+		</div>
+		<div class="w_text2 op_all op_wpa2 op_wc_wpa2">
+			<ul>
+				<li class="left_table">RADIUS :</li>
+				<li class="right_table">
+				<select name="AP_RAD_PROFILE~#~" style="width:120px" class="dis_all en_wpa2 en_wc_wpa2">
+					<option value="1" ~sAP_RAD_PROFILE#:1~>~~RAD_PRO_NAME_1~</option>
+					<option value="2" ~sAP_RAD_PROFILE#:2~>~~RAD_PRO_NAME_2~</option>
+					<option value="3" ~sAP_RAD_PROFILE#:3~>~~RAD_PRO_NAME_3~</option>
+					<option value="4" ~sAP_RAD_PROFILE#:4~>~~RAD_PRO_NAME_4~</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<div class="w_text2 op_all op_wc_wpa2">
+			<ul>
+				<li class="left_table">Data Encryption:</li>
+				<li class="right_table">
+				<select name="SEC_WPA_PAIRWISE~#~" id="" class="w_se dis_all en_wc_wpa2">
+					<option value="CCMP">AES</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<br class="clearfloat op_all op_wc_wpa op_wc_wpa2"/>
+		<div class="title w_text2 op_all op_wc_wpa op_wc_wpa2" style="margin-bottom: -5px; margin-top: 10px;">
+			IEEE802.1X Authentication
+		</div>
+		<div class="w_text2 op_all op_wc_wpa op_wc_wpa2">
+			<ul>
+				<li class="left_table">Eap Type :
+				<li>
+				<li class="right_table">
+				<select name="SEC_EAP_TYPE~#~" id="seEapType" onchange="doEapTypeChange();" class="dis_all en_wc_wpa2">
+					<option value="TLS" ~sSEC_EAP_TYPE#:TLS~>TLS</option>
+					<option value="LEAP" ~sSEC_EAP_TYPE#:LEAP~>LEAP</option>
+					<option value="TTLS" ~sSEC_EAP_TYPE#:TTLS~>TTLS</option>
+					<option value="PEAP" ~sSEC_EAP_TYPE#:PEAP~>PEAP</option>
+				</select>
+				<select name="SEC_EAP_PHASE2~#~" id="" class="op_all op_eaptype_all op_eaptype_ttls_2">
+					<option value=MSCHAPv2 ~sSEC_EAP_PHASE2#:MSCHAPv2~>MSCHAPv2</option>
+					<option value=MSCHAP ~sSEC_EAP_PHASE2#:MSCHAP~>MSCHAP</option>
+					<option value=PAP ~sSEC_EAP_PHASE2#:PAP~>PAP</option>
+					<option value=CHAP ~sSEC_EAP_PHASE2#:CHAP~>CHAP</option>
+				</select>
+				<select name="SEC_EAP_PHASE2~#~" id="" class="op_all op_eaptype_all op_eaptype_peap_2">
+					<option value=MSCHAPv2 ~sSEC_EAP_PHASE2#:MSCHAPv2~>MSCHAPv2</option>
+					<option value=GTC ~sSEC_EAP_PHASE2#:GTC~>GTC</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+		<br class="clearfloat op_all op_wc_wpa op_wc_wpa2"/>
+		<div class="title w_text2 op_all op_wc_wpa op_wc_wpa2" style="margin-bottom: -5px; margin-top: 10px;">
+			User Information
+		</div>
+		<div class="w_text2 op_all op_eaptype_all op_eaptype_tls">
+			<ul>
+				<li class="left_table">Login Name:
+				<li>
+				<li class="right_table">
+				<input type="text" name="SEC_EAP_ID~#~" id="SEC_EAP_ID~#~" value="~~SEC_EAP_ID#~" size="20" maxlength="32" class="dis_all en_wc_wpa2" />
+				</li>
+			</ul>
+		</div>
+		<br class="clearfloat op_all op_eaptype_all op_eaptype_tls"/>
+		<div class="title w_text2 op_all op_eaptype_all op_eaptype_tls" style="margin-bottom: -5px; margin-top: 10px;">
+			Certificate 
+		</div>
+		<div class="w_text2 op_all op_eaptype_all op_eaptype_tls">
+			<ul>
+				<li class="left_table">User Certificate:
+				<li>
+				<li class="right_table">
+				<input type="text" name="SEC_TLS_CERT~#~" id="SEC_TLS_CERT~#~" value="~~SEC_TLS_CERT#~" size="20" maxlength="32" class="dis_all en_wc_wpa2"/>
+				</li>
+			</ul>
+		</div>
+		<div class="w_text2 op_all op_eaptype_all op_eaptype_leap op_eaptype_ttls op_eaptype_peap">
+			<ul>
+				<li class="left_table">Username :
+				<li>
+				<li class="right_table">
+				<input type="text" name="SEC_EAP_USER~#~" id="SEC_EAP_USER~#~" value="~~SEC_EAP_USER#~" size="20" maxlength="32" class="dis_all dis_eaptype_all en_eaptype_leap en_eaptype_ttls en_eaptype_peap"/>
+				</li>
+			</ul>
+		</div>
+		<div class="w_text2 op_all op_eaptype_all op_eaptype_tls op_eaptype_leap op_eaptype_ttls op_eaptype_peap">
+			<ul>
+				<li class="left_table">Password :
+				<li>
+				<li class="right_table">
+				<input type="password" name="SEC_EAP_PSWD~#~" id="SEC_EAP_PSWD~#~" value="~~SEC_EAP_PSWD#~" size="20" maxlength="32" class="dis_all en_wc_wpa2" />
+				</li>
+			</ul>
+		</div>
+		<!-- Start of WPA2!Client -->
+		<div class="op_all op_wpa2">
+			<br class="clearfloat"/>
+			<div class="title w_text2" style="margin-bottom: -5px; margin-top: 10px;">
+				Rekey Options
+			</div>
+			<div class="w_text2">
+				<ul>
+					<li class="left_table">Reauthentication Time
+					<li>
+					<li class="right_table">
+					<input type="text" name="SEC_EAP_REAUTH_PER~#~" id="SEC_EAP_REAUTH_PER~#~" value="~~SEC_EAP_REAUTH_PER#~" size="20" maxlength="4" class="dis_all en_wpa2" /> Seconds (max. 0-3600) </li>
+				</ul>
+			</div>
+			<div class="op_all op_wpa2">
+				<div class="w_text2">
+					<ul>
+						<li class="left_table">Enable Group-Key Update
+						<li>
+						<li class="right_table">
+								<input type="checkbox" id="cSEC_WPA_GROUP_REKEY~#~" value="1" onclick="checkWpaGroupRekey();" class="dis_all en_wpa2" ~cSEC_WPA_GROUP_REKEY#:1~/>
+								<input type="hidden" name="SEC_WPA_GROUP_REKEY~#~" id="SEC_WPA_GROUP_REKEY~#~" value="0" class="dis_all en_wpa2" />
+								Every <input type="text" name="SEC_WPA_GROUP_REKEY_PER~#~" id="SEC_WPA_GROUP_REKEY_PER~#~" value="~~SEC_WPA_GROUP_REKEY_PER#~" size="20" maxlength="4"  class="dis_all en_wpa2"/> Seconds (max. 100-3600)
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- End of WPA2!Client -->
+		<!-- Start of WPA+PSK="422 442" -->
+		<br class="clearfloat op_all op_wpa2 op_wc_wpa2 op_psk">
+		<div class="db_title w_text op_all op_wpa2 op_wc_wpa2 op_psk" style="margin-bottom: 5px;">
+			<input value="1" type="radio" name="raSecModeWpaGrp" id="raSecModeWpaPsk" onchange="doTestSecModeChange();"/> Pre-Shared Key
+		</div>
+		<div class="w_text2 op_all op_wpa2 op_wc_wpa2 op_psk">
+			<ul>
+				<li class="left_table">Pre-Shared Key
+				<li>
+				<li class="right_table">
+				<input type="text" name="PSK_KEY~#~" id="PSK_KEY~#~" value="~~PSK_KEY#~" size="20" maxlength="63" class="dis_all en_psk"/> (8-63 ASCII Characters) </li>
+			</ul>
+		</div>
+		<!-- End of WPA+PSK="422 442" -->
+	</div>
+	<div class="table_button">
+		<center>
+			<input class="table_button_l" name="Back" type="button" id="Back" value="Back" onclick="document.location.href='wlan_security'"/>
+			<input class="table_button_m" name="COMMIT" value="Apply" type="submit"/>
+			<input class="table_button_r" name="cancel" value="Cancel" type="button" onclick="document.location.replace('wlan_security_modify?INDEX=~~INDEX~');" />
+			<input name="EXECUTE" value="wlan_security_modify" type="hidden" />
+		</center>
+	</div>
+</div>
+</body>
+</html>
+

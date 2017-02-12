@@ -1,0 +1,38 @@
+#!/bin/sh
+####################################################################
+## SYSTEM script
+## 
+## This script is used to import the text cfg file. 
+##
+## sys_import_conf
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the file."
+    exit 1
+fi
+CONF_FILE=$1
+MODEL_NAME=`cut -d _ -f 1 /etc/firmware_info`
+MODEL_STRING="#Model Name:$MODEL_NAME"
+PAR=""
+VAL=""
+if [ -f $CONF_FILE ]; then
+    CONF_MODEL=`sed -n 1p $CONF_FILE`
+    if [ "$CONF_MODEL" = "$MODEL_STRING" ]; then
+        cfg -x 
+    else
+        exit 2
+    fi
+    while read line ;do
+        TOKEN=`echo $line | grep =`
+        if [ "$TOKEN" != "" ]; then
+            PAR=`echo $line | awk -F'=' '{print $1}'`
+            VAL=`echo "$line" | awk -F'=' '{print $2}'`
+            cfg -a ${PAR}="${VAL}"
+        fi
+    done < $CONF_FILE
+    cfg -c
+    exit 0
+else
+	exit 2
+fi

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+i=1
+while [ $i -le 32 ]
+do
+    ITER_MAC="L2_ISO_MAC_$i"
+    eval ITER_MAC=\$$ITER_MAC
+
+    ITER_DESC="L2_ISO_DESC_$i"
+    eval ITER_DESC=\$$ITER_DESC
+
+    if [ "$i" -eq "32" ]; then
+        echo "{\"id\":\"$i\", \"mac\":\"$ITER_MAC\", \"descr\":\"$ITER_DESC\"}"
+    else
+        echo "{\"id\":\"$i\", \"mac\":\"$ITER_MAC\", \"descr\":\"$ITER_DESC\"},"
+    fi
+
+    i=$(($i+1))
+done

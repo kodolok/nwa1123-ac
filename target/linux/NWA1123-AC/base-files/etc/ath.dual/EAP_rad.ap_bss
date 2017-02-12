@@ -1,0 +1,13 @@
+own_ip_addr=~~AP_IPADDR~
+~eRAD_AUTH_PRI_SERVER#:Active~auth_server_addr=~~RAD_AUTH_PRI_SERVER_IP#~
+~eRAD_AUTH_PRI_SERVER#:Active~auth_server_port=~~RAD_AUTH_PRI_SERVER_PORT#~
+~eRAD_AUTH_PRI_SERVER#:Active~auth_server_shared_secret=~~RAD_AUTH_PRI_SERVER_SECRET#~
+~eRAD_ACCT_PRI_SERVER#:Active~acct_server_addr=~~RAD_ACCT_PRI_SERVER_IP#~
+~eRAD_ACCT_PRI_SERVER#:Active~acct_server_port=~~RAD_ACCT_PRI_SERVER_PORT#~
+~eRAD_ACCT_PRI_SERVER#:Active~acct_server_shared_secret=~~RAD_ACCT_PRI_SERVER_SECRET#~
+~eRAD_AUTH_SEC_SERVER#:Active~auth_server_addr=~~RAD_AUTH_SEC_SERVER_IP#~
+~eRAD_AUTH_SEC_SERVER#:Active~auth_server_port=~~RAD_AUTH_SEC_SERVER_PORT#~
+~eRAD_AUTH_SEC_SERVER#:Active~auth_server_shared_secret=~~RAD_AUTH_SEC_SERVER_SECRET#~
+~eRAD_ACCT_SEC_SERVER#:Active~acct_server_addr=~~RAD_ACCT_SEC_SERVER_IP#~
+~eRAD_ACCT_SEC_SERVER#:Active~acct_server_port=~~RAD_ACCT_SEC_SERVER_PORT#~
+~eRAD_ACCT_SEC_SERVER#:Active~acct_server_shared_secret=~~RAD_ACCT_SEC_SERVER_SECRET#~

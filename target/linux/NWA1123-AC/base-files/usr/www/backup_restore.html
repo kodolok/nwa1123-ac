@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    
+    .input-pos {
+     margin-bottom: 2px;
+    }
+    .input-file {
+      width: 240px;
+      width: 250px\0;
+      width: 250px\9;
+      position: absolute;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .btn.disabled,
+    .btn[disabled] {
+      cursor: default;
+      background-image: none;
+      background-color: #e6e6e6;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .input-file:hover .btn,
+    .input-pos:hover .btn {
+      color: #333333;
+      text-decoration: none;
+      background-color: #e6e6e6;
+      background-position: 0 -15px;
+      -webkit-transition: background-position 0.1s linear;
+      -moz-transition: background-position 0.1s linear;
+      -ms-transition: background-position 0.1s linear;
+      -o-transition: background-position 0.1s linear;
+      transition: background-position 0.1s linear;
+    }
+  </style>  
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    var startSec = 180;
+    var timerId = 0;
+    function countdownFactoryDefault() {
+      startSec -= 1;
+      if (startSec < 0) {
+        clearInterval(timerId);
+        forceLogout();
+        top.location.href =  location.protocol + "//192.168.1.2";
+      } else {
+        document.getElementById("clockFactoryDefault").innerHTML = startSec;
+      }
+    }
+    function countdownRestore() {
+      startSec -= 1;
+      if (startSec < 0) {
+        clearInterval(timerId);
+        document.getElementById("restoreDescr").innerHTML = "Please attempt to access ap again.";
+      } else {
+        document.getElementById("clockRestore").innerHTML = startSec;
+      }
+    }
+    function goCountdownFactoryDefault() {
+      NN_showByClass("dvMsgFactoryDefault");
+      NN_hideByClass("dvContent");
+      timerId = setInterval("countdownFactoryDefault();", 1 * 1000);
+      setTimeout("NN_stopLoading();", 5 * 1000);
+    }
+    function goCountdownRestore() {
+      NN_showByClass("dvMsgRestore");
+      NN_hideByClass("dvContent");
+      timerId = setInterval("countdownRestore();", 1 * 1000);
+      setTimeout("NN_stopLoading();", 20 * 1000);
+    }
+    function init() {
+      NN_hideByClass("dvMsgRestore");
+      NN_hideByClass("dvMsgFactoryDefault");
+    }
+    function changeFilePath (path) {
+      var regax = /(\.cfg)$/i;
+      if (!regax.exec(path)) {
+        document.getElementById("txtFilePath").value = "";
+        document.getElementById("txtFile").value = "";
+        alert("File extension not supported.");
+      } else {
+        document.getElementById("txtFilePath").value = path;
+      }
+      if (document.getElementById("txtFilePath").value != "") {
+        document.getElementById("applyConfig").removeAttribute("disabled");
+      } else {
+        document.getElementById("applyConfig").setAttribute("disabled", "disabled");
+      }
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Configuration File"><span>Configuration File</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data dvContent">
+      <div class="undownLineTitle">
+        Backup Configuration
+      </div>
+      <div class="w_text">
+        Click <input name="BACKUP" value="Backup" type="button" onclick="location.href='config.cfg'" /> to save the current
+        configuration of your system to your computer.
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Restore Configuration
+      </div>
+      <div class="w_text">
+        To restore a previously saved configuration file to your system, browse to the location of the configuration
+        file and click Upload.
+      </div>
+      <form enctype="multipart/form-data" method="post">
+        <div class="w_text">
+          <div class="input-pos">
+            <input class="input-file" id="txtFile" name="configfile" type="file" size="30" onchange="changeFilePath(this.value);" />
+            <div>
+              <input disabled="disabled" id="txtFilePath" size="28" type="text">
+              <input type="button" id="fakeBtn" value="Browse" />
+            </div>
+          </div>
+          <input id="applyConfig" disabled="disabled" class="btn" type="submit" value="Upload" onclick="goCountdownRestore();" />
+          <!-- File Path: <input type="file" name="configfile" /> <input type="submit" value="Upload" onclick="goCountdownRestore();" /> -->
+        </div><br class="clearfloat" />
+      </form>
+      <div class="undownLineTitle">
+        Back to Factory Defaults
+      </div>
+      <form method="post">
+      <div class="w_text">
+        Click <input name="FACTORY_DEFAULT" value="Reset" onclick="goCountdownFactoryDefault();" type="submit" /> to
+        clear all user-entered configuration information and return to factory defaults. After resetting, the
+      </div>
+      </form>
+      <div class="w_text">
+        - Password will be 1234
+      </div>
+      <div class="w_text">
+        - LAN IP address will be 192.168.1.2
+      </div>
+    </div>
+    <div class="data dvMsgFactoryDefault">
+      <div class="undownLineTitle">
+        Rebooting...
+      </div>
+      <div class="w_text">
+        AP is rebooting now, system will back to factory defaults.<br />
+        As there will be no indication of when the process is complete, please wait for <span id="clockFactoryDefault" class="css_clock">180</span> seconds before attempting to access AP again.
+      </div>
+    </div>
+    <div class="data dvMsgRestore">
+      <div class="undownLineTitle">
+        Rebooting...
+      </div>
+      <div class="w_text">
+        <span id="restoreDescr">AP is rebooting now.<br />
+        As there will be no indication of when the process is complete, please wait for <span id="clockRestore" class="css_clock">180</span> seconds before attempting to access AP again.</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

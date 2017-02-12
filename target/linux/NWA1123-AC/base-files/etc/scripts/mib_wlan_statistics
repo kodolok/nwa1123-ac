@@ -1,0 +1,173 @@
+#!/bin/sh
+
+#if DEBUG is set 1, print detail WIFI statistics information on console
+#DEBUG=1
+
+#LINE_NUM=0
+
+#Get Retry Counts from iwconfig
+RETRY_CNT_1=`iwconfig 2>/dev/null | read_iwconfig.sh WLAN1 | grep RETRY | cut -d '"' -f 4`
+RETRY_CNT_2=`iwconfig 2>/dev/null | read_iwconfig.sh WLAN2 | grep RETRY | cut -d '"' -f 4`
+
+if [ -z "$RETRY_CNT_1" ]
+then
+    RETRY_CNT_1=0
+fi
+
+if [ -z "$RETRY_CNT_2" ]
+then
+    RETRY_CNT_2=0
+fi
+
+#Get TX/RX Counts from /proc/net/dev
+RX_CNT_1=`cat /proc/net/dev | read_dev.sh WLAN1 | grep RX | cut -d '"' -f 4`
+TX_CNT_1=`cat /proc/net/dev | read_dev.sh WLAN1 | grep TX | cut -d '"' -f 4`
+RX_CNT_2=`cat /proc/net/dev | read_dev.sh WLAN2 | grep RX | cut -d '"' -f 4`
+TX_CNT_2=`cat /proc/net/dev | read_dev.sh WLAN2 | grep TX | cut -d '"' -f 4`
+
+if [ -z "$RX_CNT_1" ]
+then
+    RX_CNT_1=0
+fi
+
+if [ -z "$TX_CNT_1" ]
+then
+    TX_CNT_1=0
+fi
+
+if [ -z "$RX_CNT_2" ]
+then
+    RX_CNT_2=0
+fi
+
+if [ -z "$TX_CNT_2" ]
+then
+    TX_CNT_2=0
+fi
+
+#Get Failed Counts from athstats
+FAILED_CNT_1=`athstats -i wifi0 | grep "tx failed 'cuz too many retries" | cut -d ' ' -f 1`
+FAILED_CNT_2=`athstats -i wifi1 | grep "tx failed 'cuz too many retries" | cut -d ' ' -f 1`
+
+if [ -z "$FAILED_CNT_1" ]
+then
+    FAILED_CNT_1=0
+fi
+
+if [ -z "$FAILED_CNT_2" ]
+then
+    FAILED_CNT_2=0
+fi
+
+#Get ACK Failure Count from athstats
+ACKFAIL_CNT_1=`athstats -i wifi0 | grep "tx frames with no ack marked" | cut -d ' ' -f 1`
+ACKFAIL_CNT_2=`athstats -i wifi1 | grep "tx frames with no ack marked" | cut -d ' ' -f 1`
+
+if [ -z "$ACKFAIL_CNT_1" ]
+then
+    ACKFAIL_CNT_1=0
+fi
+
+if [ -z "$ACKFAIL_CNT_2" ]
+then
+    ACKFAIL_CNT_2=0
+fi
+
+#WLAN1
+# echo "Start to output the 802.11 statistics info into a temp file: 80211stats"$$
+rm -f /tmp/80211stat.$$
+80211stats -i ath0 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath1 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath2 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath3 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath4 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath5 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath6 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath7 2>/dev/null >> /tmp/80211stat.$$
+
+RX_FRAMES_CNT_1=0
+TX_FRAMES_CNT_1=0
+
+# process each line in temp file
+while read line
+do
+
+#    LINE_NUM=$(($LINE_NUM+1))
+#    echo "got #"$LINE_NUM" : "$line
+    FIND_RX_FRAMES=`echo $line | grep "frames successfully received" | cut -d ' ' -f 1`
+    if [ "$FIND_RX_FRAMES" ]
+    then
+        RX_FRAMES_CNT_1=$((${RX_FRAMES_CNT}+${FIND_RX_FRAMES}))
+    fi
+
+    FIND_TX_FRAMES=`echo $line | grep "frames successfully transmitted" | cut -d ' ' -f 1`
+    if [ "$FIND_TX_FRAMES" ]
+    then
+        TX_FRAMES_CNT_1=$((${TX_FRAMES_CNT}+${FIND_TX_FRAMES}))
+    fi
+
+#     echo -n $line
+
+done < /tmp/80211stat.$$
+
+rm -f /tmp/80211stat.$$
+
+#WLAN2
+# echo "Start to output the 802.11 statistics info into a temp file: 80211stats"$$
+rm -f /tmp/80211stat.$$
+80211stats -i ath8 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath9 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath10 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath11 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath12 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath13 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath14 2>/dev/null >> /tmp/80211stat.$$
+80211stats -i ath15 2>/dev/null >> /tmp/80211stat.$$
+
+RX_FRAMES_CNT_2=0
+TX_FRAMES_CNT_2=0
+
+# process each line in temp file
+while read line
+do
+
+#    LINE_NUM=$(($LINE_NUM+1))
+#    echo "got #"$LINE_NUM" : "$line
+    FIND_RX_FRAMES=`echo $line | grep "frames successfully received" | cut -d ' ' -f 1`
+    if [ "$FIND_RX_FRAMES" ]
+    then
+        RX_FRAMES_CNT_2=$((${RX_FRAMES_CNT}+${FIND_RX_FRAMES}))
+    fi
+
+    FIND_TX_FRAMES=`echo $line | grep "frames successfully transmitted" | cut -d ' ' -f 1`
+    if [ "$FIND_TX_FRAMES" ]
+    then
+        TX_FRAMES_CNT_2=$((${TX_FRAMES_CNT}+${FIND_TX_FRAMES}))
+    fi
+
+#     echo -n $line
+
+done < /tmp/80211stat.$$
+
+rm -f /tmp/80211stat.$$
+
+# echo "Start to Output All Wifi Statistics for SNMP"
+# The output format is: 
+# FailedCount,RetryCount,ACKFailureCount,ReceivedFragmentCount,TransmittedFrameCount,ReceivedPktCount,TransmittedPktCount
+
+
+if [ "$DEBUG" -eq 1 ]
+then
+    echo "FailedCount="$FAILED_CNT
+    echo "RetryCount="$RETRY_CNT
+    echo "ACKFailureCount="$ACKFAIL_CNT
+    echo "ReceivedFragmentCount="$RX_FRAMES_CNT
+    echo "TransmittedFrameCount="$TX_FRAMES_CNT
+    echo "ReceivedPktCount="$RX_CNT
+    echo "TransmittedPktCount="$TX_CNT
+else
+    echo $FAILED_CNT_1","$RETRY_CNT_1","$ACKFAIL_CNT_1","$RX_FRAMES_CNT_1","$TX_FRAMES_CNT_1","$RX_CNT_1","$TX_CNT_1
+    echo $FAILED_CNT_2","$RETRY_CNT_2","$ACKFAIL_CNT_2","$RX_FRAMES_CNT_2","$TX_FRAMES_CNT_2","$RX_CNT_2","$TX_CNT_2
+fi
+
+exit 0

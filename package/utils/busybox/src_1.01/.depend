@@ -1,0 +1,1066 @@
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libpwdgrp/pwd_grp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libpwdgrp/pwd_grp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/shadow_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/shadow_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/loadfont.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/loadfont.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/dumpkmap.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/dumpkmap.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/deallocvt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/deallocvt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/loadkmap.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/loadkmap.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/openvt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/openvt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/reset.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/reset.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/clear.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/clear.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/setkeycodes.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/setkeycodes.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/chvt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/console-tools/chvt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/mt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/mt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/rx.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/rx.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/ethreg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/ethreg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/athrs_ctrl.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/athrs_ctrl.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/strings.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/strings.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/factoryreset.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/factoryreset.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/time.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/time.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/last.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/last.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/watchdog.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/watchdog.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/adjtimex.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/adjtimex.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/hdparm.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/hdparm.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hdparm/get/identity.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hdparm/hdio/getset/dma.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hdparm/hdio/unregister/hwif.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hdparm/hdio/scan/hwif.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hdparm/hdio/tristate/hwif.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hdparm/hdio/drive/reset.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/dc.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/dc.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/devfsd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/devfsd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/devfsd/modload.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/devfsd/verbose.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/debug.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/devfsd/fg/np.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/file.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/modules/devfs.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/crond.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/crond.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/crond/call/sendmail.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/crontab.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/crontab.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/makedevs.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/miscutils/makedevs.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/uncompress.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/uncompress.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/dpkg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/dpkg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/deb/tar/gz.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/deb/tar/bz2.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/unzip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/unzip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/bunzip2.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/bunzip2.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/rpm2cpio.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/rpm2cpio.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/cpio.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/cpio.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/ar.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/ar.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/rpm.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/rpm.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/decompress_uncompress.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/decompress_uncompress.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/config.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/config.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/decompress_bunzip2.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/decompress_bunzip2.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/open_transformer.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/open_transformer.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/header_verbose_list.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/header_verbose_list.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/seek_by_jump.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/seek_by_jump.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/unarchive/tape.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_cpio.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_cpio.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_tar.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_tar.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/gnu/extensions.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/oldgnu/compatability.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_ar.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_ar.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ar/long/filenames.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/seek_by_char.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/seek_by_char.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/init_handle.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/init_handle.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_extract_all.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_extract_all.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_extract_to_buffer.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_extract_to_buffer.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_all.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_all.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_skip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_skip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_list_reassign.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_list_reassign.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/deb/tar/gz.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/deb/tar/bz2.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_reject_list.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_reject_list.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_tar_bz2.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_tar_bz2.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/decompress_unzip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/decompress_unzip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/config.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/config.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/archive_xread_all.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/archive_xread_all.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/header_skip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/header_skip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_list.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/filter_accept_list.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_tar_gz.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/get_header_tar_gz.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/find_list_entry.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/find_list_entry.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/header_list.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/header_list.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_extract_to_stdout.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_extract_to_stdout.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_align.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/data_align.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/unpack_ar_archive.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/unpack_ar_archive.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/archive_xread_all_eof.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/archive_xread_all_eof.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/check_header_gzip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/libunarchive/check_header_gzip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/dpkg_deb.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/dpkg_deb.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/deb/tar/gz.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/deb/tar/bz2.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/gzip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/gzip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/gunzip.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/gunzip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/gunzip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/gunzip/uncompress.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/tar.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/archival/tar.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/create.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/from.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/gzip.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/compress.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/bzip2.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tar/long/options.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/applets/applets.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/applets/applets.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/usage.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/usage.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/applets.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/applets.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/applets.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/applets.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/suid.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/suid/config.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/suid/config/quiet.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/file.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/applets/busybox.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/applets/busybox.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/installer.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/init.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/autowidth.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/reboot.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/reboot.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/init.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/init_shared.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/init_shared.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/initrd.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/init.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/halt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/halt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/init.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/mesg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/mesg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/poweroff.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/poweroff.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/init.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/init.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/init/init.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/syslogd.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/init/coredumps.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/extra/quiet.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/init/swapon.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/use/inittab.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/initrd.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/top.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/top.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/use/termios.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/renice.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/renice.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/sysctl.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/sysctl.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/pidof.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/pidof.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/ps.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/ps.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/kill.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/kill.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/killall.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/free.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/free.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/uptime.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/procps/uptime.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/awk.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/awk.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/awk/math.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/vi.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/vi.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/optimize/cursor.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/use/signals.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/crashme.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/dot/cmd.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/yankmark.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/readonly.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/search.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/colon.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/win/resize.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/setopts.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/vi/set.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/patch.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/patch.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/sed.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/editors/sed.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/modprobe.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/modprobe.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/2/6/modules.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/insmod.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/insmod.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/2/4/modules.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/2/6/modules.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/insmod/loadinkmem.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/insmod/version/checking.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/use/list.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/list/archtype.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/use/single.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/use/plt/entries.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/use/got/entries.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/use/plt/list.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/got/entry/size.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/plt/entry/size.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/check/tainted/module.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/insmod/ksymoops/symbols.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/insmod/load/map.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/insmod/load/map/full.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/lsmod.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/lsmod.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/check/tainted/module.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/query/module/interface.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/rmmod.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/modutils/rmmod.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/2/6/modules.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/query/module/interface.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ping6.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ping6.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/ping6.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/ping.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/nslookup.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/nslookup.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/inetd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/inetd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/inetd/support/biltin/echo.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/inetd/support/biltin/discard.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/inetd/support/biltin/time.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/inetd/support/biltin/daytime.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/inetd/support/biltin/chargen.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/telnet.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/telnet.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/telnet/ttype.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/telnet/autologin.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/autowidth.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ipcalc.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ipcalc.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipcalc/fancy.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/netstat.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/netstat.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/route.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/route.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/route.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ping.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ping.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/ping.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/iplink.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/iplink.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/httpd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/httpd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/lfs.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/usage/from/inetd/only.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/basic/auth.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/cgi.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/config/with/mime/types.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/encode/url/str.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/set/remote/port/to/env.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/auth/md5.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/reload/config/sighup.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/httpd/setuid.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/hostname.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/hostname.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ipaddr.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ipaddr.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/ll_addr.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/ll_addr.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/ip_parse_common_args.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/ip_parse_common_args.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/iplink.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/iplink.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/iptunnel.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/iptunnel.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/iproute.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/iproute.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/ipaddress.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/ipaddress.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/libnetlink.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/libnetlink.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/utils.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/libiproute/utils.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/nameif.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/nameif.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/vconfig.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/vconfig.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/iptunnel.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/iptunnel.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/arping.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/arping.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/iproute.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/iproute.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/traceroute.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/traceroute.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/traceroute/verbose.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/traceroute.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/traceroute/so/debug.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/nc.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/nc.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ip.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ip.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ip/address.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ip/route.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ip/link.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ip/tunnel.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ftpgetput.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ftpgetput.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ftpget.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ftpput.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ifupdown.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ifupdown.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifupdown/mapping.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifupdown/ip.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifupdown/ipx.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifupdown/ipv6.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifupdown/ipv4.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ifconfig.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/ifconfig.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/slip.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/broadcast/plus.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/vlan/igmp.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/s26qos.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/hw.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/memstart/ioaddr/irq.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ifconfig/status.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/tftp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/tftp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tftp/blocksize.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tftp/debug.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tftp/get.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tftp/put.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/brctl.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/brctl.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/telnetd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/telnetd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/login.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/telnetd/inetd.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/devpts.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/telnetd/no/daemonize.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/wget.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/networking/wget.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/wget/statusbar.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/wget/authentication.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/wget/ip6/literal.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/findutils/grep.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/findutils/grep.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/grep/context.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/grep/egrep/alias.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/grep/fgrep/alias.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/findutils/find.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/findutils/find.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/find/type.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/find/perm.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/find/mtime.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/find/xdev.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/find/newer.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/find/inum.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/findutils/xargs.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/findutils/xargs.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/xargs/support/confirmation.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/xargs/support/quotes.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/xargs/support/termopt.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/xargs/support/zero/term.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/adduser.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/adduser.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/addgroup.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/vlock.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/vlock.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/delline.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/delline.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/deluser.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/deluser.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/delgroup.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/delgroup.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/deluser.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/addgroup.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/addgroup.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/adduser.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/getty.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/getty.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/utmp.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/syslogd.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/wtmp.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/login.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/login.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/utmp.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/securetty.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/wheel/group.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/wtmp.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/chpasswd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/chpasswd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/su.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/su.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/utmp.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/sulogin.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/sulogin.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/passwd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/loginutils/passwd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uname.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uname.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/rmdir.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/rmdir.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/md5_sha1_sum.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/md5_sha1_sum.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/md5/sha1/sum/check.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/md5sum.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/sha1sum.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cmp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cmp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/libcoreutils/cp_mv_stat.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/libcoreutils/cp_mv_stat.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/libcoreutils/xgetoptfile_sort_uniq.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/libcoreutils/xgetoptfile_sort_uniq.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/libcoreutils/getopt_mk_fifo_nod.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/libcoreutils/getopt_mk_fifo_nod.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uuencode.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uuencode.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tee.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tee.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/tee/use/block/io.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/ls.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/ls.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/timestamps.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/sortfiles.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/followlinks.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/human/readable.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/filetypes.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/color.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/autowidth.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/recursive.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ls/username.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/install.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/install.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/true.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/true.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chown.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chown.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cat.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cat.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/sort.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/sort.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uudecode.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uudecode.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/seq.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/seq.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tr.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tr.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/who.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/who.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/hostid.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/hostid.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/ln.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/ln.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/head.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/head.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/head.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mkfifo.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mkfifo.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tail.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tail.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/tail.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uniq.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/uniq.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/expr.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/expr.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chroot.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chroot.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/test.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/test.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/test/64.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/yes.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/yes.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cut.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cut.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/df.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/df.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/human/readable.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/env.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/env.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/od.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/od.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/dump.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/dump.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/whoami.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/whoami.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/length.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/length.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/dd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/dd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chgrp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chgrp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/basename.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/basename.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/usleep.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/usleep.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/du.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/du.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/human/readable.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/du/defalt/blocksize/1k.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tty.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/tty.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mv.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mv.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cal.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cal.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/date.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/date.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/date/isofmt.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/dirname.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/dirname.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/realpath.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/realpath.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/echo.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/echo.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/echo.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/cp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/stty.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/stty.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/wc.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/wc.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/pwd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/pwd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/sync.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/sync.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/id.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/id.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/dos2unix.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/dos2unix.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/logname.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/logname.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/false.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/false.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/printf.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/printf.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/rm.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/rm.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/sleep.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/sleep.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fancy/sleep.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mkdir.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mkdir.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/watch.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/watch.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mknod.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/mknod.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/touch.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/touch.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/fold.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/fold.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chmod.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/coreutils/chmod.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/mktemp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/mktemp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/start_stop_daemon.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/start_stop_daemon.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/readlink.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/readlink.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/run_parts.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/run_parts.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/pipe_progress.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/pipe_progress.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/which.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/debianutils/which.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/ash.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/ash.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/job/control.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/alias.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/optimize/for/size.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/math/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/cmdcmd.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/getopts.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/extra/quiet.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/mail.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/math/support/64.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash/random/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/savehistory.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/editing.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/standalone/shell.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/tab/completion.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/msh.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/msh.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/editing.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/extra/quiet.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/standalone/shell.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/hush.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/hush.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/editing.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/standalone/shell.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/extra/quiet.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/cmdedit.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/cmdedit.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/../shell/cmdedit.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/../shell/cmdedit.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/tab/completion.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/editing.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/username/completion.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/getusername/and/homedir.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/history.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/nonprintable/inverse/put.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/ash.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/savehistory.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/lash.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/shell/lash.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/locale/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/lash/pipe/n/redirects.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/fancy/prompt.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/lash/job/control.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/command/editing.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/standalone/shell.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sh/extra/quiet.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/hexdump.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/hexdump.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/dump.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/dump.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/losetup.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/losetup.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/pivot_root.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/pivot_root.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/rdate.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/rdate.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/mkswap.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/mkswap.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/umount.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/umount.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mount/force.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mount/loop.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mtab/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fdflush.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fdflush.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/more.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/more.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/use/termios.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/swaponoff.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/swaponoff.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/mkfs_minix.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/mkfs_minix.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/minix2.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/freeramdisk.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/freeramdisk.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/dmesg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/dmesg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fdisk.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fdisk.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sun/label.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sgi/label.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/aix/label.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/osf/label.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fdisk/writable.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fdisk/advanced.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/weird/partition/types.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fdisk/blksize.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fsck_minix.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fsck_minix.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/minix2.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fdformat.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fdformat.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/mount.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/mount.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/nfsmount.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mount/loop.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mtab/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fbset.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/fbset.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fbset/fancy.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/fbset/readmode.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/getopt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/getopt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/nfsmount.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/nfsmount.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/hwclock.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/util-linux/hwclock.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/hwclock/longoptions.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/logger.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/logger.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/syslogd.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/klogd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/klogd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/logread.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/logread.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/logread/reduced/locking.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/syslogd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/sysklogd/syslogd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/rotate/logfile.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/remote/log.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipc/syslog.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipc/syslog/buffer/size.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vdprintf.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vdprintf.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/procps.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/procps.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/make_directory.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/make_directory.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xreadlink.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xreadlink.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/restricted_shell.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/restricted_shell.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/chomp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/chomp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgetlarg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgetlarg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/isdirectory.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/isdirectory.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/speed_table.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/speed_table.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/last_char_is.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/last_char_is.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/find_root_device.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/find_root_device.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/devfs.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/get_line_from_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/get_line_from_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/wfopen.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/wfopen.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/change_identity.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/change_identity.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_read.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_read.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/full_read.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/full_read.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/syscalls.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/syscalls.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getug.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getug.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/remove_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/remove_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getpwnam.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getpwnam.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/pw_encrypt.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/pw_encrypt.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/sha1/passwords.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/human_readable.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/human_readable.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_msg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_msg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xregcomp.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xregcomp.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xconnect.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xconnect.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_strtol.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_strtol.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vperror_msg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vperror_msg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/create_icmp6_socket.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/create_icmp6_socket.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/loop.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/loop.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/bb_asprintf.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/bb_asprintf.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/print_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/print_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/get_terminal_width_height.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/get_terminal_width_height.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/autowidth.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getpwuid.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getpwuid.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgetularg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgetularg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_write.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_write.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/find_mount_point.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/find_mount_point.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/fgets_str.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/fgets_str.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/full_write.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/full_write.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/parse_number.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/parse_number.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgethostbyname.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgethostbyname.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/simplify_path.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/simplify_path.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/inode_hash.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/inode_hash.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getgrnam.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getgrnam.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/pwd_.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/read_package_field.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/read_package_field.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/qmodule.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/qmodule.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/get_console.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/get_console.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/device_open.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/device_open.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/wfopen_input.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/wfopen_input.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/kernel_version.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/kernel_version.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_nomsg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_nomsg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/fflush_stdout_and_exit.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/fflush_stdout_and_exit.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/verror_msg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/verror_msg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/interface.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/interface.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/clean/up.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/parse_mode.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/parse_mode.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/mtab.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/mtab.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/run_parts.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/run_parts.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgetcwd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgetcwd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/error_msg_and_die.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/error_msg_and_die.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getgrgid.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/my_getgrgid.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/grp_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/recursive_action.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/recursive_action.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/default_error_retval.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/default_error_retval.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/mtab_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/mtab_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mtab/support.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/mtab/filename.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/fclose_nonstdin.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/fclose_nonstdin.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/llist_add_to.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/llist_add_to.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/unarchive.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/concat_path_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/concat_path_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vfork_daemon_rexec.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vfork_daemon_rexec.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vherror_msg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/vherror_msg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/copy_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/copy_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/preserve/hardlinks.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/messages.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/messages.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/getopt_ulflags.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/getopt_ulflags.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/login.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/login.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/herror_msg_and_die.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/herror_msg_and_die.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/module_syscalls.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/module_syscalls.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/inet_common.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/inet_common.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/inet_common.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_strncpy.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/safe_strncpy.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/concat_subpath_file.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/concat_subpath_file.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xfuncs.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xfuncs.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/trim.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/trim.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/create_icmp_socket.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/create_icmp_socket.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/setup_environment.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/setup_environment.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_msg_and_die.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_msg_and_die.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/warn_ignoring_args.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/warn_ignoring_args.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_nomsg_and_die.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/perror_nomsg_and_die.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/copyfd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/copyfd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/error_msg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/error_msg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/skip_whitespace.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/skip_whitespace.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgethostbyname2.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/xgethostbyname2.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/ipv6.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/find_pid_by_name.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/find_pid_by_name.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/ask_confirmation.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/ask_confirmation.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/printf.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/printf.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/process_escape_sequence.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/process_escape_sequence.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/pwd2spwd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/pwd2spwd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/shadow_.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/shadow_.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/herror_msg.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/herror_msg.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/correct_password.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/correct_password.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/feature/shadowpasswds.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/dump.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/dump.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/dump.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/dump.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/obscure.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/obscure.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/hash_fd.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/hash_fd.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/busybox.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/sha1sum.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/md5sum.h)
+/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/run_shell.o: /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/libbb/run_shell.c \
+ /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h $(dep_/home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/package/utils/busybox/src_1.01/include/libbb.h) \
+   $(wildcard /home/sam/ZyXEL/V211AAOX0C0_GPL/NWA1123-AC/config/selinux.h)

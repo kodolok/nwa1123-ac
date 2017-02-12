@@ -1,0 +1,23 @@
+#!/bin/sh
+#########################################################################
+##  TFTP F/W upgrade
+##  This file used to TFTP F/W upgrade
+#########################################################################
+
+cd /tmp/upload
+
+if [ ! -n "$1" ]
+then
+    echo "Please input the TFTP server's IP address.."
+    exit 0
+fi
+
+if [ ! -n "$2" ]
+then
+    echo "Please input the F/W image file name.."
+    exit 0
+fi
+
+tftp -g $1 -l $2 -r $2
+sys_fwupgrade $2
+exit 0

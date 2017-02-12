@@ -1,0 +1,80 @@
+#!/bin/sh
+
+trap 'echo "Please use exit to logout this system !"' 1 2 15
+
+LOGIN_PASS=1
+LOGIN_COUNT=0
+
+until [ "$LOGIN_PASS" = "Access granted." ]
+do
+    echo -n "Login: " 
+    if test -t 0; then
+        DAY=`uptime | awk '{print $1}'`
+        HOUR=`uptime | awk '{print $3}' | awk '{FS=":"}{print $1}'`
+        MIN=`uptime | awk '{print $3}' | awk '{FS=":"}{print $2}'`
+        SEC=`uptime | awk '{print $3}' | awk '{FS=":"}{print $3}'`
+        START=`expr $DAY \* 86400 + $HOUR \* 3600 + $MIN \* 60 + $SEC`
+    	read -t 600 USERID
+        DAY=`uptime | awk '{print $1}'`
+        HOUR=`uptime | awk '{print $3}' | awk '{FS=":"}{print $1}'`
+        MIN=`uptime | awk '{print $3}' | awk '{FS=":"}{print $2}'`
+        SEC=`uptime | awk '{print $3}' | awk '{FS=":"}{print $3}'`
+        NOW=`expr $DAY \* 86400 + $HOUR \* 3600 + $MIN \* 60 + $SEC`
+        TIMEOUT=`expr $NOW - $START`
+        if [ $TIMEOUT -ge 600 ]
+        then
+            echo "timeout!!!"
+            exit 0
+        fi
+    else
+    	exit 0
+    fi
+
+    echo -n "Password: " 
+    stty -echo
+    if test -t 0; then
+        DAY=`uptime | awk '{print $1}'`
+        HOUR=`uptime | awk '{print $3}' | awk '{FS=":"}{print $1}'`
+        MIN=`uptime | awk '{print $3}' | awk '{FS=":"}{print $2}'`
+        SEC=`uptime | awk '{print $3}' | awk '{FS=":"}{print $3}'`
+        START=`expr $DAY \* 86400 + $HOUR \* 3600 + $MIN \* 60 + $SEC`
+        read -t 600 PASSWD
+        DAY=`uptime | awk '{print $1}'`
+        HOUR=`uptime | awk '{print $3}' | awk '{FS=":"}{print $1}'`
+        MIN=`uptime | awk '{print $3}' | awk '{FS=":"}{print $2}'`
+        SEC=`uptime | awk '{print $3}' | awk '{FS=":"}{print $3}'`
+        NOW=`expr $DAY \* 86400 + $HOUR \* 3600 + $MIN \* 60 + $SEC`
+        TIMEOUT=`expr $NOW - $START`
+        if [ $TIMEOUT -ge 600 ]
+        then
+            echo "timeout!!!"
+            exit 0
+        fi
+    else
+        exit 0
+    fi
+    stty echo
+
+    LOGIN_PASS=`chkpwd "$USERID" "$PASSWD"`
+
+    echo ""
+    if [  "$LOGIN_PASS" = "Access denied." ]
+    then
+        echo $LOGIN_PASS
+        log_maintain "telnet login failure"
+        LOGIN_COUNT=`expr $LOGIN_COUNT + 1`
+        if [ $LOGIN_COUNT = 3 ]
+        then
+            exit 0
+        fi
+    fi
+
+done
+log_maintain "telnet login successful"
+if [ "$USERID" = "root" ]
+then
+    /bin/sh
+    exit 0
+fi
+
+/sbin/cli

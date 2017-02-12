@@ -1,0 +1,242 @@
+#!/bin/sh
+####################################################################
+## WEB script
+## 
+## This script is used to get the SSID profile info. 
+##
+## webget_ssid_prof_info 
+##
+####################################################################
+
+chkSsidVal(){
+    SSID_VAL="`echo "$1" | sed -e 's/\\\\/\\\\x5c/g' -e 's/\"/\\\\x22/g' -e 's/</\\\\x3c/g' -e 's/>/\\\\x3e/g'`"
+}
+
+APMODE=`cfg -v AP_STARTMODE_$1`
+CH_STR=`cfg -v AP_PRIMARY_CH_$1`
+
+if [ $1 = 2 ]; then
+    INTF_NAME="WLAN-5G"
+    FIRST_IF=8
+    SECOND_IF=9
+else
+    INTF_NAME="WLAN-2.4G"
+    FIRST_IF=0
+    SECOND_IF=1
+fi
+
+WLAN_STATUS=`cfg -v WLAN_UP_$1`
+if [ "${WLAN_STATUS}" != "1" ]; then
+    echo -n []
+    exit
+fi
+
+echo -n [
+    
+if [ "${APMODE}" = "root-mbssid" -o "${APMODE}" = "repeater" ]; then
+        AP_IDX=`cfg -v WDS_AP_PROFILE_$1`
+    
+        ITER_SSID="AP_SSID_$AP_IDX"
+        ITER_SEC_PROFILE="AP_SEC_PROFILE_$AP_IDX"
+        ITER_VLAN="AP_VLAN_$AP_IDX"
+        TMP_SSID_VAL="`cfg -v $ITER_SSID`"
+        chkSsidVal "$TMP_SSID_VAL"
+        SEC_PROFILE_VAL=`cfg -v $ITER_SEC_PROFILE`
+        VLAN_VAL=`cfg -v $ITER_VLAN`
+        
+        SEC_DESC="SEC_DESC_$SEC_PROFILE_VAL"
+        SEC_DESC_VAL=`cfg -v $SEC_DESC`
+        
+        ATH_IF="ath$FIRST_IF"
+        BSSID=`get_if_hwaddr $ATH_IF`
+        STA_COUNT=`sys_get_vapstacount $FIRST_IF`
+        
+        TMP_STR=`iwlist $ATH_IF channel 2> /dev/null | grep 'Current Frequency'`
+        CH_STR=`expr "$TMP_STR" : '.*Channel \(.*\))'`
+        ## repeater status
+        ATH_STR=`iwconfig ath$SECOND_IF 2> /dev/null`
+        STATUS_STR=`iwconfig ath$SECOND_IF 2> /dev/null | grep 'Not-Associated'`
+#		STATUS_STR=`athstats ath$SECOND_IF 2> /dev/null | grep ':BE '`
+        
+        echo -n {
+        echo -n \"interface\":\""$INTF_NAME"\",
+        echo -n \"ssid\":\""$SSID_VAL"\",
+        echo -n \"bssid\":\""$BSSID"\",
+        echo -n \"channel\":\""$CH_STR"\",
+        if [ "$SEC_DESC_VAL" != "" ]; then 
+            echo -n \"security\":\""$SEC_DESC_VAL"\",
+        else
+            echo -n \"security\":\""Disabled"\",
+        fi
+        
+        if [ "$SEC_DESC_VAL" = "None" -o "$SEC_PROFILE_VAL" = "0" ]; then
+					SEC_OPEN="1"
+				else
+					SEC_OPEN="0"
+				fi
+        
+        ## repeater status
+        if [ "$ATH_STR" != "" ]; then
+            if [ "$STATUS_STR" != "" ]; then
+            	echo -n \"status\":\""Scanning"\",
+						elif [ "$SEC_OPEN" = "1" ]; then
+							echo -n \"status\":\""Connected"\",
+            else
+	 						if [ -f /tmp/wlan_status ]; then
+	                #echo -n \"status\":\""Not Connected"\",
+	                echo -n \"status\":\""Connected"\",
+	            else
+	                #echo -n \"status\":\""Connected"\",
+	                echo -n \"status\":\""Not Connected"\",
+	            fi
+            fi
+        else
+            ## no such device
+            echo -n \"status\":\""Disabled"\",
+        fi
+        
+        VLAN_ENABLED=`cfg -v DOT1Q_VLAN`
+        
+        if [ "$VLAN_ENABLED" != "0" ]; then 
+            echo -n \"vlan\":\""$VLAN_VAL"\",
+        else
+            echo -n \"vlan\":\""Disabled"\",
+        fi
+        echo -n \"stacount\":\""$STA_COUNT"\"
+
+        echo -n }
+
+fi
+
+if [ "${APMODE}" = "client" ]; then
+        AP_IDX=`cfg -v STA_AP_PROFILE_$1`
+    
+        ITER_SSID="AP_SSID_$AP_IDX"
+        ITER_SEC_PROFILE="AP_SEC_PROFILE_$AP_IDX"
+        TMP_SSID_VAL="`cfg -v $ITER_SSID`"
+        chkSsidVal "$TMP_SSID_VAL"
+        SEC_PROFILE_VAL=`cfg -v $ITER_SEC_PROFILE`
+        
+        SEC_DESC="SEC_DESC_$SEC_PROFILE_VAL"
+        SEC_DESC_VAL=`cfg -v $SEC_DESC`
+        
+        if [ "$SEC_DESC_VAL" = "None" -o "$SEC_PROFILE_VAL" = "0" ]; then
+					SEC_OPEN="1"
+				else
+					SEC_OPEN="0"
+				fi
+
+        ATH_IF="ath$FIRST_IF"
+        
+        TMP_STR=`iwlist $ATH_IF channel 2> /dev/null | grep 'Current Frequency'`
+        CH_STR=`expr "$TMP_STR" : '.*Channel \(.*\))'`
+        ATH_STR=`iwconfig $ATH_IF 2> /dev/null`
+        STATUS_STR=`iwconfig $ATH_IF 2> /dev/null | grep 'Not-Associated'`
+		#CONNECT_STR=`ifconfig $ATH_IF 2> /dev/null | grep 'RUNNING'`
+		#CONNECT_STR=`athstats $ATH_IF 2> /dev/null | grep ':BE '`
+        #STATUS_STR=`expr "$TMP_STR" : '.*Access Point: \([:0-9a-zA-Z]*\)'`
+        
+        
+        echo -n {
+        echo -n \"interface\":\""$INTF_NAME"\",
+        echo -n \"ssid\":\""$SSID_VAL"\",
+        echo -n \"channel\":\""$CH_STR"\",
+        if [ "$SEC_DESC_VAL" != "" ]; then 
+            echo -n \"security\":\""$SEC_DESC_VAL"\",
+        else
+            echo -n \"security\":\""Disabled"\",
+        fi
+		
+        if [ "$ATH_STR" != "" ]; then
+            if [ "$STATUS_STR" != "" ]; then
+                echo -n \"status\":\""Scanning"\"
+			elif [ "$SEC_OPEN" = "1" ]; then
+					echo -n \"status\":\""Connected"\"
+			else
+#				CONNECT_SEC=`athstats $ATH_IF 2> /dev/null | grep ':VO '`
+#				if [ "$CONNECT_STR" != "" -a "$CONNECT_SEC" != "" ]; then
+				if [ -f /tmp/wlan_status ]; then
+					echo -n \"status\":\""Connected"\"
+				else
+					echo -n \"status\":\""Not Connected"\"
+				fi
+			fi
+        else
+            ## no such device
+            echo -n \"status\":\""Disabled"\"
+        fi
+        echo -n }
+
+fi
+
+if [ "${APMODE}" = "mbssid" ]; then
+    my_vaps=`cfg -v VAP_LIST_$1 | sed 's/,/ /g'`
+fi
+if [ "${APMODE}" = "root-mbssid" ]; then
+    my_vaps=`cfg -v VAP_LIST_$1 | awk -F, '{print $1,$2,$3,$4}'`
+fi
+
+if [ "${APMODE}" = "root-mbssid" -o "${APMODE}" = "mbssid" ]; then
+    if [ "${APMODE}" = "root-mbssid" ]; then 
+        NUM_VAP=1
+    else
+        NUM_VAP=0
+    fi
+    for i in $my_vaps;
+    do
+        if echo "${i}" | grep -q '_'; then
+            continue
+        fi
+        
+        ITER_SSID="AP_SSID_$i"
+        ITER_SEC_PROFILE="AP_SEC_PROFILE_$i"
+        ITER_VLAN="AP_VLAN_$i"
+        TMP_SSID_VAL="`cfg -v $ITER_SSID`"
+        chkSsidVal "$TMP_SSID_VAL"
+        SEC_PROFILE_VAL=`cfg -v $ITER_SEC_PROFILE`
+        VLAN_VAL=`cfg -v $ITER_VLAN`
+        
+        SEC_DESC="SEC_DESC_$SEC_PROFILE_VAL"
+        SEC_DESC_VAL=`cfg -v $SEC_DESC`
+        
+        ATH_IF="ath$(($NUM_VAP+$FIRST_IF))"
+        BSSID=`get_if_hwaddr $ATH_IF`
+        STA_COUNT=`sys_get_vapstacount $(($NUM_VAP+$FIRST_IF))`
+
+        TMP_STR=`iwlist $ATH_IF channel 2> /dev/null | grep 'Current Frequency'`
+        CH_STR=`expr "$TMP_STR" : '.*Channel \(.*\))'`
+        
+        if [ "${NUM_VAP}" != "0" ]; then
+            echo -n ,
+        fi
+        echo -n {
+        if [ "${NUM_VAP}" = "0" ]; then
+        		echo -n \"interface\":\""$INTF_NAME"\",
+        else
+        		echo -n \"interface\":\"""\",
+        fi
+        echo -n \"ssid\":\""$SSID_VAL"\",
+        echo -n \"bssid\":\""$BSSID"\",
+        echo -n \"channel\":\""$CH_STR"\",
+        if [ "$SEC_DESC_VAL" != "" ]; then 
+            echo -n \"security\":\""$SEC_DESC_VAL"\",
+        else
+            echo -n \"security\":\""Disabled"\",
+        fi
+        
+        VLAN_ENABLED=`cfg -v DOT1Q_VLAN`
+        
+        if [ "$VLAN_ENABLED" != "0" ]; then 
+            echo -n \"vlan\":\""$VLAN_VAL"\",
+        else
+            echo -n \"vlan\":\""Disabled"\",
+        fi
+        echo -n \"stacount\":\""$STA_COUNT"\"
+        
+        echo -n }
+    
+        NUM_VAP=$(($NUM_VAP+1))
+    done
+fi
+
+echo -n ]

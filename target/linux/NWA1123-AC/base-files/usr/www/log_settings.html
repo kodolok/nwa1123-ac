@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+  function init() {
+    var strSubject = "~~SMTP_SUBJECT~";
+    NN_val(NN_getById("displaySubject"), strSubject);
+    NN_val(NN_getById("SMTP_SUBJECT"), strSubject);
+    checkSmtpAuthStatus();
+    checkLogRemoteStatus();
+    initScheduleTable();
+  }
+  function initScheduleTable() {
+    var opt = NN_val(NN_getById("LOG_SCHEDULE"));
+    NN_hideByClass("hide_sch");
+    NN_disableByClass("dis_sch");
+    if (opt == "2") {
+      // Daily
+      NN_showByClass("show_time");
+      NN_enableByClass("en_time");
+      NN_showByClass("show_clearlog");
+      NN_enableByClass("en_clearlog");
+    } else if (opt == "3") {
+      // Weekly
+      NN_showByClass("show_time");
+      NN_enableByClass("en_time");
+      NN_showByClass("show_day");
+      NN_enableByClass("en_day");
+      NN_showByClass("show_clearlog");
+      NN_enableByClass("en_clearlog");
+    } else if ((opt == "0") || (opt == "1")) {
+      NN_showByClass("show_clearlog");
+      NN_enableByClass("en_clearlog");
+    }
+  }
+  function onScheduleChange() {
+    initScheduleTable();
+  }
+  function onSmtpEncryChange() {
+    var defVal = NN_getById("SMTP_TLS");
+    if (defVal.value == "2") {
+      NN_val(NN_getById("SMTP_PORT"), "587");
+    } else if(defVal.value == "1") {
+      NN_val(NN_getById("SMTP_PORT"), "465");
+    } else {
+      NN_val(NN_getById("SMTP_PORT"), "25");
+    }
+  }
+  function checkSmtpAuthStatus() {
+    var isChecked = NN_val(NN_getById("cSMTP_AUTH"));
+    NN_val(NN_getById("SMTP_AUTH"), (isChecked == true ? 1: 0));
+    if (isChecked == true) {
+      NN_enableByClass("c_smtpauth");
+    } else {
+      NN_disableByClass("c_smtpauth");
+    }
+  }
+  function checkLogRemoteStatus() {
+    var isChecked = NN_val(NN_getById("cLOG_REMOTE"));
+    NN_val(NN_getById("LOG_REMOTE"), (isChecked == true ? 1: 0));
+    if (isChecked == true) {
+      NN_enableByClass("c_logremote");
+    } else {
+      NN_disableByClass("c_logremote");
+    }
+  }
+  function checkLogClearStatus() {
+    var isChecked = NN_val(NN_getById("cLOG_CLEAR"));
+    NN_val(NN_getById("LOG_CLEAR"), (isChecked == true ? 1: 0));
+  }
+  function checkLogCateMaintStatus() {
+    var isChecked = NN_val(NN_getById("cLOG_CATE_MAINT"));
+    NN_val(NN_getById("LOG_CATE_MAINT"), (isChecked == true ? 1: 0));
+  }
+  function checkLogCateDot1xStatus() {
+    var isChecked = NN_val(NN_getById("cLOG_CATE_DOT1X"));
+    NN_val(NN_getById("LOG_CATE_DOT1X"), (isChecked == true ? 1: 0));
+  }
+  function checkLogCateWirelessStatus() {
+    var isChecked = NN_val(NN_getById("cLOG_CATE_WIRELESS"));
+    NN_val(NN_getById("LOG_CATE_WIRELESS"), (isChecked == true ? 1: 0));
+  }
+  function formSubmit() {
+    var retVal = true;
+    var obj = NN_getById('SMTP_SERVER');
+    if (NN_val(obj) == "") { NN_removeClass(obj, 'invalidinput'); } 
+    else { if (!validate(obj, V_STR, 1, 32)) { if (!validate(obj, V_IP)) { retVal = false; } } }
+
+    obj = NN_getById('SMTP_PORT');
+    if (NN_val(obj) == "") NN_removeClass(obj, 'invalidinput');
+    else if (!validate(obj, V_INT, 1, 65535)) { retVal = false; }
+
+    obj = NN_getById('displaySubject');
+    if (NN_val(obj) == "") NN_removeClass(obj, 'invalidinput'); 
+    else if (!validate(obj, V_STRWSPACE, 1, 32)) { retVal = false; }
+    
+    NN_val(NN_getById("SMTP_SUBJECT"), NN_val(NN_getById("displaySubject")));
+
+    obj = NN_getById('SMTP_LOG_TO');
+    if (NN_val(obj) == "") NN_removeClass(obj, 'invalidinput'); 
+    else if (!validate(obj, V_STR, 1, 32)) { retVal = false; }
+
+    /* smtp auth */
+    if (NN_val(NN_getById("cSMTP_AUTH")) == true) {
+      if (!validate(NN_getById("SMTP_USER"), V_STR, 1, 32)) retVal = false;
+      if (!validate(NN_getById("SMTP_PWD"), V_STR, 1, 32)) retVal = false;
+    }
+    /* syslog logging */
+    if (NN_val(NN_getById("cLOG_REMOTE")) == true) {
+      if (!validate(NN_getById("LOG_SERVER"), V_STR, 1, 32)) {
+        if (!validate(NN_getById("LOG_SERVER"), V_IP)) {
+          retVal = false;
+        }  
+      }
+      if (!validate(NN_getById("LOG_PORT"), V_INT, 1, 65535)) retVal = false;
+    }
+    /* send log */
+    if (!validate(NN_getById("LOG_HOUR"), V_INT, 0, 23)) retVal = false;
+
+	var tmp_time;
+	tmp_time = eval(NN_val(NN_getById("LOG_MIN")));
+	if (!(tmp_time >= 0 && tmp_time < 10))
+	{
+		if (!validate(NN_getById("LOG_MIN"), V_INT, 0, 59)) retVal = false;
+	}
+
+    return retVal;
+  }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Log Settings"><span>Log Settings</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post" onsubmit="return formSubmit();">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        E-mail Log Settings
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Mail Server :</li>
+          <li class="right_table"><input size="32" maxlength="32" name="SMTP_SERVER" id="SMTP_SERVER" value="~~SMTP_SERVER~" type="text" /> (Outgoing SMTP Server NAME or IP Address)</li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">SSL/TLS Encryption :</li>
+          <li class="right_table"><select name="SMTP_TLS" id="SMTP_TLS" size="1" style="width: 150px;" onchange="onSmtpEncryChange();">
+            <option value="0" ~sSMTP_TLS:0~> None </option>
+            <option value="1" ~sSMTP_TLS:1~> SSL/TLS </option>
+            <option value="2" ~sSMTP_TLS:2~> STARTTLS </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Mail Server Port :</li>
+          <li class="right_table"><input size="32" maxlength="5" name="SMTP_PORT" id="SMTP_PORT" value="~~SMTP_PORT~" type="text" />
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Mail Subject :</li>
+          <li class="right_table"><input size="32" maxlength="32" id="displaySubject" value="" type="text" />
+            <input type="hidden" name="SMTP_SUBJECT" id="SMTP_SUBJECT" value="" />  
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Send Log to :</li>
+          <li class="right_table"><input size="32" maxlength="32" name="SMTP_LOG_TO" id="SMTP_LOG_TO" value="~~SMTP_LOG_TO~" type="text" /> (E-Mail Address)</li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">SMTP Authentication:</li>
+          <li class="right_table">
+            <input type="checkbox" name="cSMTP_AUTH" id="cSMTP_AUTH" value="1" ~cSMTP_AUTH:1~ onclick="checkSmtpAuthStatus();" />
+            <input type="hidden" name="SMTP_AUTH" id="SMTP_AUTH" value="~~SMTP_AUTH~" />
+            Enabled
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">User Name :</li>
+          <li class="right_table"><input size="32" maxlength="32" name="SMTP_USER" id="SMTP_USER" value="~~SMTP_USER~" type="text" class="c_smtpauth" /></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Password :</li>
+          <li class="right_table"><input size="32" maxlength="32" name="SMTP_PWD" id="SMTP_PWD" value="~~SMTP_PWD~" type="password" class="c_smtpauth" /></li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Syslog Logging
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Syslog Logging :</li>
+          <li class="right_table">
+            <input type="checkbox" name="cLOG_REMOTE" id="cLOG_REMOTE" value="1" ~cLOG_REMOTE:1~ onclick="checkLogRemoteStatus();" />
+            <input type="hidden" name="LOG_REMOTE" id="LOG_REMOTE" value="~~LOG_REMOTE~" />
+            Enabled
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Syslog Server :</li>
+          <li class="right_table"><input size="32" maxlength="32" name="LOG_SERVER" id="LOG_SERVER" value="~~LOG_SERVER~" type="text" class="c_logremote" /> (Server NAME or IP Address)</li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Syslog Port Number :</li>
+          <li class="right_table"><input size="5" maxlength="5" name="LOG_PORT" id="LOG_PORT" value="~~LOG_PORT~" type="text" class="c_logremote" /></li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Send Log
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Log Schedule :</li>
+          <li class="right_table"><select name="LOG_SCHEDULE" id="LOG_SCHEDULE" size="1" style="width: 150px;" onchange="onScheduleChange();">
+            <option value="0" ~sLOG_SCHEDULE:0~> When Log is Full </option>
+            <option value="1" ~sLOG_SCHEDULE:1~> Hourly </option>
+            <option value="2" ~sLOG_SCHEDULE:2~> Daily </option>
+            <option value="3" ~sLOG_SCHEDULE:3~> Weekly </option>
+            <option value="4" ~sLOG_SCHEDULE:4~> None </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text show_day hide_sch">
+        <ul>
+          <li class="left_table">Day for Sending Log :</li>
+          <li class="right_table"><select name="LOG_WEEKLY" id="LOG_WEEKLY" size="1" style="width:150px" class="dis_sch en_day">
+            <option value="0" ~sLOG_WEEKLY:0~> Sunday </option>
+            <option value="1" ~sLOG_WEEKLY:1~> Monday </option>
+            <option value="2" ~sLOG_WEEKLY:2~> Tuesday </option>
+            <option value="3" ~sLOG_WEEKLY:3~> Wednesday </option>
+            <option value="4" ~sLOG_WEEKLY:4~> Thursday </option>
+            <option value="5" ~sLOG_WEEKLY:5~> Friday </option>
+            <option value="6" ~sLOG_WEEKLY:6~> Saturday </option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text show_time hide_sch">
+        <ul>
+          <li class="left_table">Time for Sending Log :</li>
+          <li class="right_table">
+          <input size="2" maxlength="2" name="LOG_HOUR" id="LOG_HOUR" value="~~LOG_HOUR~" type="text" class="dis_sch en_time" /> (Hour) 
+          <input size="2" maxlength="2" name="LOG_MIN" id="LOG_MIN" value="~~LOG_MIN~" type="text" class="dis_sch en_time" /> (Minute)</li>
+        </ul>
+      </div>
+      <div class="w_text hide_sch show_clearlog">
+        <ul>
+          <li class="left_table">Clear log after sending mail</li>
+          <li class="right_table">
+            <input type="checkbox" class="dis_sch en_clearlog" name="cLOG_CLEAR" id="cLOG_CLEAR" value="1" ~cLOG_CLEAR:1~ onclick="checkLogClearStatus();" />
+            <input type="hidden" class="dis_sch en_clearlog" name="LOG_CLEAR" id="LOG_CLEAR" value="~~LOG_CLEAR~" />
+            Enabled
+          </li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Log Category
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">
+            <input type="checkbox" name="cLOG_CATE_MAINT" id="cLOG_CATE_MAINT" value="1" ~cLOG_CATE_MAINT:1~ onclick="checkLogCateMaintStatus();" />
+            <input type="hidden" name="LOG_CATE_MAINT" id="LOG_CATE_MAINT" value="~~LOG_CATE_MAINT~" />
+            System Maintenance
+          </li>
+          <li class="right_table">
+            <input type="checkbox" name="cLOG_CATE_DOT1X" id="cLOG_CATE_DOT1X" value="1" ~cLOG_CATE_DOT1X:1~ onclick="checkLogCateDot1xStatus();" />
+            <input type="hidden" name="LOG_CATE_DOT1X" id="LOG_CATE_DOT1X" value="~~LOG_CATE_DOT1X~" />
+            802.1x
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">
+            <input type="checkbox" name="cLOG_CATE_WIRELESS" id="cLOG_CATE_WIRELESS" value="1" ~cLOG_CATE_WIRELESS:1~ onclick="checkLogCateWirelessStatus();" />
+            <input type="hidden" name="LOG_CATE_WIRELESS" id="LOG_CATE_WIRELESS" value="~~LOG_CATE_WIRELESS~" />
+            Wireless
+          </li>
+          <li class="right_table">
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_button">
+      <center>
+        <input name="SENDLOG" value="E-Mail Log Now" type="submit" class="table_button_l" />
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_m" /> 
+        <input name="cancel" value= "Cancel" type="button" onclick="document.location.replace('log_settings');" class="table_button_r" />
+        <input type="hidden" name="EXECUTE" value="log_settings" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

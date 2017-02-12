@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="js/baseJS.js"></script>
+  <script type="text/javascript" src="js/uimake.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript">
+    $.ajaxSetup({ cache: false });
+    var stats = [];
+    var initStat = "~~STAT_INTVL_ACTION~";
+    var timerId = null;
+    function init() {
+		var intvl = NN_val(NN_getById("STAT_INTVL_VAL"));
+		NN_val(NN_getById("STAT_RINTVL_VAL"),intvl);
+      if (initStat == "stop") {
+        doStatInfoTable();
+      } else {
+        startPoll();
+      }
+    }
+    function removeOldStatInfo() {
+      $("#statTable tr").not('.top_font').remove();
+    }
+    function doStatInfoTable() {
+      $.get('genstatistics').done(function(data) {
+        stats = $.parseJSON(data);
+        if (stats[0]["DESCRIPTION"] != null) {
+          var elTa = NN_getById("statTable");
+          for (var i = 0; i < stats.length; i++) {
+            var newRow = elTa.insertRow(elTa.rows.length); 
+            newRow.appendChild(uiMake('td', stats[i]["DESCRIPTION"]));
+            newRow.appendChild(uiMake('td', stats[i]["WMODE"]));
+            newRow.appendChild(uiMake('td', stats[i]["CHANNEL"]));
+            newRow.appendChild(uiMake('td', stats[i]["RX"]));
+            newRow.appendChild(uiMake('td', stats[i]["TX"]));
+            newRow.appendChild(uiMake('td', stats[i]["RETRY"]));
+            newRow.className = "table_font";
+            newRow.align = "center";
+          }          
+        }
+      });
+    }
+    function setPollInterval() {
+      if (!validate(NN_getById("STAT_INTVL_VAL"), V_INT, 1, 65534))
+      {
+        return false;
+      }
+      document.forms[0].submit();
+      return true;
+    }
+    function startPoll() {
+      var intvl = NN_val(NN_getById("STAT_RINTVL_VAL"));
+      timerId = setTimeout("doRefresh()", (intvl * 1000)); 
+      return true;
+    }
+    function doRefresh() {
+      removeOldStatInfo();
+      doStatInfoTable();
+      startPoll();
+    }
+    function stopPoll() {
+      clearInterval(timerId);
+      return true;
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Statistics "><span>Statistics</span></a></li>
+    </ul>
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        View Status
+      </div>
+      <div class="w_text">
+        <form method="post" onsubmit="return setPollInterval();">
+        <input type="hidden" name="EXECUTE" value="statistics" />
+        <b>Poll Interval(s) :</b> <input maxlength="5" size="5" name="STAT_INTVL_VAL" id="STAT_INTVL_VAL" value="~~STAT_INTVL_VAL~" /> (1-65534) sec &nbsp;&nbsp;
+        <input type="hidden" id="STAT_RINTVL_VAL">
+		<input type="hidden" name="STAT_INTVL_ACTION" id="STAT_INTVL_ACTION" value="auto" />
+        <input type="hidden" name="COMMIT" value="Apply" />
+        <input type="button" value="Auto Refresh" onclick="setPollInterval();" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <input type="button" value="Stop" onclick="stopPoll();" />
+        </form>
+      </div>
+      <div class="tableframe">
+        <table width="100%" cellpadding="0" cellspacing="0" id="statTable">
+          <tr class="top_font" align="center">
+            <td>Description</td>
+            <td>802.11 Mode</td>
+            <td>Channel ID</td>
+            <td>RX Pkts</td>
+            <td>TX Pkts</td>
+            <td>Retry Count</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

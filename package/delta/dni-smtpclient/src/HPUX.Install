@@ -1,0 +1,71 @@
+Package name:     smtpclient
+Version number:   1.0.0
+Original author:  Ralf S. Engelschall <rse@engelschall.com>
+Original URL:     http://www.engelschall.com/sw/smtpclient/
+HP-UX URL:        http://hpux.connect.org.uk/hppd/cgi-bin/search?package=&term=smtpclient-
+Install tree:     /opt/smtpclient
+Report bugs to:   lavasani@connect.org.uk
+Tested on:        HP 9000/780/C160 running HP-UX 11.00
+C compiler used:  Version A.11.01.21505.GP
+Purpose:
+A minimal SMTP client. This program is a minimal SMTP client that takes an
+email message body and passes it on to a SMTP server (default is the MTA on the
+local host). Since it is completely self-supporting, it is especially suitable
+for use in restricted environments.
+Date archived:    Fri  1 Dec 2000
+
+-------------------------------------------------------------------------------
+
+Tested platform:
+
+	HP-UX ness B.11.00 A 9000/780 2004670718 two-user license
+
+Package name:
+
+		smtpclient
+Version:
+
+		1.0.0
+
+Homepage:
+
+		http://www.engelschall.com/sw/smtpclient/
+
+Ftp:
+
+
+Authors:
+
+		Ralf S. Engelschall(rse@engelschall.com)		
+
+
+Added:
+	./configure
+
+Changed:
+
+
+Compile:
+
+
+		./configure
+		make
+		make install
+
+Run:
+
+
+Dependency:
+
+
+Note:
+
+
+
+
+Archived:
+Mehdi Lavasani
+lavasani@connect.org.uk
+
+Date:
+1/12/00

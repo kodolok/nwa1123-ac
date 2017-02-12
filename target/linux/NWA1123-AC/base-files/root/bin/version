@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+
+cat /etc/firmware_name
+exit 0

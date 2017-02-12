@@ -1,0 +1,579 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=10" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>[nwa1123-ac]</title>
+<link href="css/expert.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/baseJS.js"></script>
+<script type="text/javascript" src="js/uimake.js"></script>
+<script type="text/javascript" src="js/cookies.js"></script>
+<script type="text/javascript">
+var ipInfo = ~`webget_ip_getifinfo`~;
+var cpuUsage = "~`cpu_usage.sh`~" + "%";
+var memUsage = "~`mem_usage.sh`~" + "%";
+var uptime = ~`webget_uptime_show`~;
+var currtime = ~`webget_time_show`~;
+var firmwareVer = "~`cat /etc/firmware_name`~";
+var serialNum = "~`sys_get_serialnum`~";
+var opMode = {"WLAN1":"~~AP_STARTMODE_1~","WLAN2":"~~AP_STARTMODE_2~"};
+var ssids = {"WLAN1":~`webget_ssid_prof_info 1`~, "WLAN2":~`webget_ssid_prof_info 2`~};
+var ifStatus = {"LAN":~`webget_intf_info LAN`~,"WLAN1":~`webget_intf_info WLAN1`~,"WLAN2":~`webget_intf_info WLAN2`~};
+var timerId;
+var timeZoneList = {
+      "0":"GMT-12:00", "1":"GMT-11:00", "2":"GMT-10:00", "3":"GMT-09:00", "4":"GMT-08:00", "5":"GMT-07:00", "6":"GMT-07:00", "7":"GMT-07:00", "8":"GMT-06:00", "9":"GMT-06:00",
+      "10":"GMT-06:00", "11":"GMT-06:00", "12":"GMT-05:00", "13":"GMT-05:00", "14":"GMT-05:00", "15":"GMT-04:00", "16":"GMT-04:00", "17":"GMT-03:30", "18":"GMT-03:00", "19":"GMT-03:00", 
+      "20":"GMT-02:00", "21":"GMT-01:00", "22":"GMT+00:00", "23":"GMT+00:00", "24":"GMT+01:00", "25":"GMT+01:00", "26":"GMT+01:00", "27":"GMT+01:00", "28":"GMT+01:00", "29":"GMT+02:00", 
+      "30":"GMT+02:00", "31":"GMT+02:00", "32":"GMT+02:00", "33":"GMT+03:00", "34":"GMT+03:00", "35":"GMT+03:30", "36":"GMT+04:00", "37":"GMT+04:00", "38":"GMT+04:30", "39":"GMT+05:00", 
+      "40":"GMT+05:00", "41":"GMT+05:30", "42":"GMT+05:45", "43":"GMT+06:00", "44":"GMT+06:00", "45":"GMT+06:00", "46":"GMT+06:30", "47":"GMT+07:00", "48":"GMT+07:00", "49":"GMT+08:00", 
+      "50":"GMT+08:00", "51":"GMT+08:00", "52":"GMT+08:00", "53":"GMT+09:00", "54":"GMT+09:00", "55":"GMT+09:30", "56":"GMT+10:00", "57":"GMT+10:00", "58":"GMT+10:00", "59":"GMT+11:00", 
+      "60":"GMT+12:00", "61":"GMT+12:00", "62":"GMT+13:00" 
+    }
+
+document.title = "[nwa1123-ac] (" + document.domain + ")";
+
+function startRefresh(sec) {
+  Set_Cookie( "RefreshIntvl", sec, "", "/", location.hostname, "");
+  timerId = setTimeout('document.location.replace("dashboard")', sec * 1000); 
+}
+function stopRefresh() {
+  Set_Cookie( "RefreshIntvl", "0", "", "/", location.hostname, "");
+  clearTimeout(timerId);
+}
+function onRefreshClick() {
+  document.location.replace("dashboard");
+}
+function onRefreshChange() {
+  var sec = NN_val(NN_getById("refreshInterval"));
+  if (sec != 0) { 
+    startRefresh(sec);
+  } else {
+    stopRefresh();
+  }
+}
+function initRefresh() {
+  var sec = Get_Cookie("RefreshIntvl");
+  if (sec) {
+    NN_val(NN_getById("refreshInterval"), sec);
+    if (sec != 0) 
+      startRefresh(sec);
+  }
+}
+
+function opModeStr(str) {
+  if (str) {
+    if (str == "mbssid") return "MBSSID";
+    if (str == "root-mbssid") return "Root AP";
+    if (str == "repeater") return "Repeater";
+    if (str == "client") return "Client";
+  }
+  return str;
+}
+function wlanRateStr(status, str) {
+  if (status == "DOWN") 
+    return "N/A";
+  return str;
+}
+function lanRateStr(status, str) { 
+  var newStr, tempStr;
+  if (status == "DOWN")
+    return "N/A";
+  if (str) {
+    tempStr = str.split("/");
+    if (tempStr[1] == "Full-duplex") {
+      newStr = tempStr[0] + "/Full Duplex";
+    }
+    else if (tempStr[1] == "Half-duplex") {
+      newStr = tempStr[0] + "/Half Duplex";
+    }
+    else {
+      newStr = str;
+    }
+  }
+  return newStr;
+}
+function getWlan1Status() {
+  if (ifStatus["WLAN1"]["status"].toLowerCase() == "up") {
+    return opMode["WLAN1"];
+  }
+  return "down";
+}
+function getWlan2Status() {
+  if (ifStatus["WLAN2"]["status"].toLowerCase() == "up") {
+    return opMode["WLAN2"];
+  }
+  return "down";
+}
+function initSysInfo() {
+  NN_val(NN_getById("serNum"), serialNum.split("=")[1]);
+  NN_val(NN_getById("firmwareVer"), firmwareVer);
+  NN_val(NN_getById("opModeWlan1"), opModeStr(opMode["WLAN1"]));
+  NN_val(NN_getById("opModeWlan2"), opModeStr(opMode["WLAN2"]));
+
+  initEthInfo();
+  initWlanInfo();
+}
+function initEthInfo() {
+  uiFillOutForm(ipInfo);  
+}
+function initWlanInfo() {
+  var op1 = getWlan1Status(), op2 = getWlan2Status();
+  NN_hideByClass("hide_wlaninfo");
+  if (op1 == "client") {
+    NN_showByClass("show_client", "table-row");
+    var chkSpcClient = ssids["WLAN1"][0]["ssid"];
+    NN_val(NN_getById("clientSsid"), chkSpcClient.replace(/ /g, '\u00a0'));
+    NN_val(NN_getById("clientChannel"), ssids["WLAN1"][0]["channel"]);
+    NN_val(NN_getById("clientStatus"), ssids["WLAN1"][0]["status"]);
+    NN_val(NN_getById("clientSecurity"), ssids["WLAN1"][0]["security"]);
+  } else if  (op2 == "client") {
+    NN_showByClass("show_client", "table-row");
+    var chkSpcClient = ssids["WLAN2"][0]["ssid"];
+    NN_val(NN_getById("clientSsid"), chkSpcClient.replace(/ /g, '\u00a0'));
+    NN_val(NN_getById("clientChannel"), ssids["WLAN2"][0]["channel"]);
+    NN_val(NN_getById("clientStatus"), ssids["WLAN2"][0]["status"]);
+    NN_val(NN_getById("clientSecurity"), ssids["WLAN2"][0]["security"]);
+  } else {
+    if (op1 != "down") {
+      NN_showByClass("show_2dot4g", "table-row");
+      NN_val(NN_getById("wlan1Channel"), ifStatus["WLAN1"]["channel"]);
+      if (op1 == "repeater") {
+        NN_showByClass("show_2dot4g_repeater", "table-row");
+        NN_val(NN_getById("wlan1Status"), ssids["WLAN1"][0]["status"]);
+      }
+    }
+    if (op2 != "down") {
+      NN_showByClass("show_5g", "table-row");
+      NN_val(NN_getById("wlan2Channel"), ifStatus["WLAN2"]["channel"]);
+      if (op2 == "repeater") 
+        NN_showByClass("show_5g_repeater", "table-row");
+        NN_val(NN_getById("wlan2Status"), ssids["WLAN2"][0]["status"]);
+    }
+  }
+  
+}
+function initSysStatus() {
+  NN_getById("cpuUsageChart").width = cpuUsage;
+  NN_getById("memUsageChart").width = memUsage;
+  NN_val(NN_getById("cpuUsageVal"), cpuUsage);
+  NN_val(NN_getById("memUsageVal"), memUsage);
+
+  var upTimeStr = uptime["UpTime"].replace(/up/i, " Up ");
+  NN_val(NN_getById("systemUpTime"), upTimeStr);
+  var currTimeStr = currtime["Year"] + "-" + currtime["Mon"] + "-" + currtime["Day"] + " " + currtime["Hour"] + ":" +currtime["Min"] + ":" + currtime["Sec"];
+  currTimeStr += " " + timeZoneList["~~NTP_TIME_ZONE~"];
+  NN_val(NN_getById("currentTime"), currTimeStr);
+}
+function initIfStatus() {
+  var elTa = NN_getById("ifStatusTable");
+  var newRow;
+  var lan = ifStatus["LAN"], 
+      wlan1 = ifStatus["WLAN1"], 
+      wlan2 = ifStatus["WLAN2"];
+  newRow = elTa.insertRow(elTa.rows.length - 1); 
+  newRow.appendChild(uiMake('td', "LAN"));
+  newRow.appendChild(uiMake('td', lan["status"].toUpperCase()));
+  newRow.appendChild(uiMake('td', "--"));
+  newRow.appendChild(uiMake('td', lanRateStr(lan["status"].toUpperCase(), lan["rate"])));
+  newRow.className = "table_font";
+            
+  newRow = elTa.insertRow(elTa.rows.length - 1); 
+  newRow.appendChild(uiMake('td', "WLAN-2.4G"));
+  newRow.appendChild(uiMake('td', wlan1["status"].toUpperCase()));
+  newRow.appendChild(uiMake('td', wlan1["channel"]));
+  newRow.appendChild(uiMake('td', wlanRateStr(wlan1["status"].toUpperCase(), wlan1["rate"])));
+  newRow.className = "table_font";
+
+  newRow = elTa.insertRow(elTa.rows.length - 1); 
+  newRow.appendChild(uiMake('td', "WLAN-5G"));
+  newRow.appendChild(uiMake('td', wlan2["status"].toUpperCase()));
+  newRow.appendChild(uiMake('td', wlan2["channel"]));
+  newRow.appendChild(uiMake('td', wlanRateStr(wlan2["status"].toUpperCase(), wlan2["rate"])));
+  newRow.className = "table_font";
+}
+function initSsidStatus() {
+  var op1 = getWlan1Status(), op2 = getWlan2Status();
+  function _initStatus(radio) {
+    var elTa = NN_getById("ssidStatusTable");
+    var rows = ssids[radio];
+    var rowsNum = rows.length;
+    if (rowsNum > 0) {
+      for (var i = 0; i < rowsNum; i++) {
+        if (rows[i]["ssid"] == undefined)
+          continue;
+        var newRow = elTa.insertRow(elTa.rows.length - 1); 
+        var chkSpcChar = rows[i]["ssid"];
+        newRow.appendChild(uiMake('td', rows[i]["interface"]));
+        newRow.appendChild(uiMake('td', chkSpcChar.replace(/ /g, '\u00a0')));
+        newRow.appendChild(uiMake('td', rows[i]["bssid"]));
+        newRow.appendChild(uiMake('td', rows[i]["security"]));
+        newRow.appendChild(uiMake('td', rows[i]["vlan"]));
+        newRow.appendChild(uiMake('td', rows[i]["stacount"]));
+        newRow.className = "table_font";
+      }        
+    }
+  }
+
+  if ((op1 == "client") || (op2 == "client")) {
+    NN_hideByClass("hide_ssidstatus");
+  } else {
+    _initStatus("WLAN1");
+    _initStatus("WLAN2");
+  }
+}
+
+function init() {
+  initSysInfo();
+  initSysStatus();
+  initIfStatus();
+  initSsidStatus();
+  initRefresh();
+}
+</script>
+</head>
+<body onload="init();" style="overflow-y:auto; overflow-x:hidden;">
+  <div id="wrapper">
+    <div id="top">
+      <div class="logo"><img src="images/advance_logo.jpg" width="102" height="29" /></div>
+      <div class="modelname">
+        NWA1123-AC
+      </div>
+      <div class="quick_link">
+        <ul>
+          <li class="about" onclick="MM_showHideLayers('popup?mainFrame','','show','popup4_table?mainFrame','','show')">
+          <a href="#" title="About" onclick="OpenNewWindow('about','418','226','Loading');">About</a></li>
+          <li class="logout"><a href="javascript:checkLogout();" title="Logout" style="color:#78C7FE;">Logout</a></li>
+          <li class="line">&nbsp;</li>
+          <li>Welcome: Admin</li>
+        </ul>
+      </div>
+    </div>
+    <div id="blueline">
+      <span>&nbsp;</span>
+    </div>
+  </div>
+  <div id="contentframe">
+    <div class="mainconent">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="100%" valign="top">
+            <div class="contentdata">
+              <div class="content_title">
+                DASHBOARD
+              </div>
+              <div class="refresh">
+                <ul>
+                  <li class="refresh_left"></li>
+                  <li class="refresh_center">
+                    <table width="350" border="0" cellpadding="0" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td width="90%" background="home_data/refresh_bg.gif" height="26">Refresh Interval:
+                          <select size="1" name="refreshInterval" id="refreshInterval" onchange="onRefreshChange()">
+                            <option value="0"> None </option>
+                            <option value="5"> 5 seconds </option>
+                            <option value="10"> 10 seconds </option>
+                            <option value="15"> 15 seconds </option>
+                            <option value="20"> 20 seconds </option>
+                            <option value="25"> 25 seconds </option>
+                            <option value="30"> 30 seconds </option>
+                          </select><input value="Refresh Now" onclick="onRefreshClick();" type="button" /></td>
+                          <td align="center" background="home_data/refresh_bg.gif"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </li>
+                  <li class="refresh_right"></li>
+                </ul>
+              </div>
+            </div>
+            <table width="98%" border="0" cellpadding="0" cellspacing="0" align="center" class="dashboard_bottom">
+              <tr>
+                <td width="50%" valign="top">
+                  <table width="97%" align="center" cellpadding="0" cellspacing="0" class="table_frame">
+                    <tr>
+                      <td height="26" colspan="2">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="25" class="table_title"><img src="images/db_info.png" width="16" height="16" /></td>
+                            <td height="26" class="table_title">System Information</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr class="table_font">
+                      <td width="45%">System Name:</td>
+                      <td id="systemName">~~SYS_NAME~</td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>WLAN Operating Mode:</td>
+                      <td></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- 2.4G:</td>
+                      <td id="opModeWlan1"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- 5G:</td>
+                      <td id="opModeWlan2"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>Firmware Version:</td>
+                      <td id="firmwareVer"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>Serial Number:</td>
+                      <td id="serNum"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>Ethernet Information:</td>
+                      <td></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;- LAN MAC Address:</td>
+                      <td id="HWAddr"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;- IPv4 Address:</td>
+                      <td id="V4Addr"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;- Subnet Mask:</td>
+                      <td id="V4Mask"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;- Gateway IP Address:</td>
+                      <td id="GWAddr"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;- IPv6 Address:</td>
+                      <td></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- Link Local:</td>
+                      <td id="V6AddrLink"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- Global:</td>
+                      <td id="V6AddrGlobal"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>WLAN Information:</td>
+                      <td></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_2dot4g">
+                      <td>&nbsp;&nbsp;- 2.4G:</td>
+                      <td></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_2dot4g">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- Channel:</td>
+                      <td id="wlan1Channel"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_2dot4g_repeater">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- Status:</td>
+                      <td id="wlan1Status"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_5g">
+                      <td>&nbsp;&nbsp;- 5G:</td>
+                      <td></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_5g">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- Channel:</td>
+                      <td id="wlan2Channel"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_5g_repeater">
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;- Status:</td>
+                      <td id="wlan2Status"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_client">
+                      <td>&nbsp;&nbsp;- SSID:</td>
+                      <td id="clientSsid"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_client">
+                      <td>&nbsp;&nbsp;- Channel:</td>
+                      <td id="clientChannel"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_client">
+                      <td>&nbsp;&nbsp;- Status:</td>
+                      <td id="clientStatus"></td>
+                    </tr>
+                    <tr class="table_font hide_wlaninfo show_client">
+                      <td>&nbsp;&nbsp;- Security Mode:</td>
+                      <td id="clientSecurity"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;&nbsp;</td>
+                      <td></td>
+                    </tr>
+                  </table>
+                  <table width="97%" align="center" cellpadding="0" cellspacing="0" class="table_frame">
+                    <tr>
+                      <td height="26">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="25" class="table_title"><img src="images/db_iss.png" width="16" height=
+                            "16" /></td>
+                            <td height="26" class="table_title">Summary</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>Statistics <a href="#" onclick=
+                      "MM_openBrWindow('statisticstop','','scrollbars=yes,width=770,height=430')">(Details...)</a></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>Association List <a href="#" onclick=
+                      "MM_openBrWindow('association_list','','scrollbars=yes,width=770,height=430')">(Details...)</a></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>View Log <a href="#" onclick=
+                      "MM_openBrWindow('log_viewlog','','scrollbars=yes,width=770,height=430')">(Details...)</a></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td valign="top">
+                  <table width="97%" align="center" cellpadding="0" cellspacing="0" class="table_frame">
+                    <tr>
+                      <td height="26" colspan="3">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="25" class="table_title"><img src="images/db_resource.png" width="16" height=
+                            "16" /></td>
+                            <td height="26" class="table_title">System Status</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr class="table_font">
+                      <td width="54%">System Up Time:</td>
+                      <td colspan="2" id="systemUpTime"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>Current Date/Time:</td>
+                      <td colspan="2" id="currentTime"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>System Resource:</td>
+                      <td colspan="2"></td>
+                    </tr>
+                    <tr class="percentage">
+                      <td class="percentage">&nbsp;&nbsp;- CPU Usage:</td>
+                      <td width="37%" valign="middle" class="percentage">
+                        <table width="100%" height="18" border="1" cellpadding="0" cellspacing="0" style="border:1px #7895c8 solid; margin-bottom:3px;">
+                          <tr>
+                            <td background="images/i_percentage_center.gif">
+                              <table id="cpuUsageChart" width="" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td height="18" background="images/i_percentage_blue.gif">&nbsp;</td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td width="9%" valign="middle" style="color:#0b70fc; padding-left:5px;" class="percentage" id="cpuUsageVal"></td>
+                    </tr>
+                    <tr class="percentage">
+                      <td class="percentage">&nbsp;&nbsp;- Memory Usage:</td>
+                      <td valign="middle" class="percentage">
+                        <table width="100%" height="18" border="1" cellpadding="0" cellspacing="0" style=
+                        " border:1px #7895c8 solid; margin-bottom:3px;">
+                          <tr>
+                            <td background="images/i_percentage_center.gif">
+                              <table id="memUsageChart" width="" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td height="18" background="images/i_percentage_blue.gif">&nbsp;</td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td valign="middle" style="color:#0b70fc; padding-left:5px;" class="percentage" id="memUsageVal"></td>
+                    </tr>
+                    <tr class="table_font">
+                      <td colspan="3">&nbsp;</td>
+                    </tr>
+                  </table>
+                  <table width="97%" id="ifStatusTable" align="center" cellpadding="0" cellspacing="0" class="table_frame">
+                    <tr>
+                      <td height="26" colspan="4">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="25" class="table_title"><img src="images/db_iss.png" width="16" height=
+                            "16" /></td>
+                            <td height="26" class="table_title">Interface Status</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr class="top_font">
+                      <td>Interface</td>
+                      <td>Status</td>
+                      <td>Channel</td>
+                      <td>Rate</td>
+                    </tr>
+                    <tr class="table_font">
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </table>
+                  <div class="hide_ssidstatus show_ssidstatus">
+                    <table width="97%" align="center" cellpadding="0" cellspacing="0" class="table_frame" id="ssidStatusTable">
+                      <tr>
+                        <td height="26" colspan="6">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="25" class="table_title"><img src="images/db_apinfo.png" width="16" height="16" /></td>
+                              <td height="26" class="table_title">SSID Status</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr class="top_font">
+                        <td>Interface</td>
+                        <td>SSID</td>
+                        <td>BSSID</td>
+                        <td>Security</td>
+                        <td>VLAN</td>
+                        <td>Station</td>
+                      </tr>
+                      <tr class="table_font">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br />
+    <div class="leftdashboard">
+      <ul>
+        <li class="i_dashboard" title="Dashboard">&nbsp;</li>
+      </ul>
+    </div>
+    <div class="submenu3">
+      <ul>
+        <li>&nbsp;</li>
+        <li class="i_monitor"><a href="../monitor.html" title="Monitor" target="_parent"></a></li>
+        <li class="i_config"><a href="../configuration.html" title="Configuration" target="_parent"></a></li>
+        <li class="i_maintenance"><a href="../maintenance.html" title="Maintenance" target="_parent"></a></li>
+      </ul><br class="clearfloat" />
+    </div>
+  </div>
+</body>
+</html>

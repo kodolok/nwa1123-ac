@@ -1,0 +1,43 @@
+#!/bin/sh
+####################################################################
+## CGI script
+## 
+## This script is used to update the SSID settings. 
+##
+## cgi_wlan_ssid_modify <SsidProfile>
+##
+##  SsidProfile:  The index of SSID Profile used.
+##
+####################################################################
+NEED_RESTART=0
+
+if [ -f /tmp/.radio_conf_0/ap_proflog_1 ]; then
+    PROF_ACTIVED=`grep AP_PROFILE$1 /tmp/.radio_conf_0/ap_proflog_1`
+    if [ "${PROF_ACTIVED}" != "" ]; then
+        ## The profile is in used.
+        IF_STATUS=`cfg -v WLAN_UP_1`
+        
+        if [ "${IF_STATUS}" = "1" ]; then
+            NEED_RESTART=1
+        fi
+    fi
+fi
+
+if [ -f /tmp/.radio_conf_1/ap_proflog_2 ]; then
+    PROF_ACTIVED=`grep AP_PROFILE$1 /tmp/.radio_conf_1/ap_proflog_2`
+    if [ "${PROF_ACTIVED}" != "" ]; then
+        ## The profile is in used.
+        IF_STATUS=`cfg -v WLAN_UP_2`
+        
+        if [ "${IF_STATUS}" = "1" ]; then
+            NEED_RESTART=1
+        fi
+    fi
+fi
+
+if [ "${NEED_RESTART}" = "1" ]; then
+    apdown
+    apup
+    sys_set_l2_isolation
+	acl_setrule
+fi

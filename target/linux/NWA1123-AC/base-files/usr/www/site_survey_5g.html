@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>[nwa1123-ac]</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="js/baseJS.js"></script>
+  <script type="text/javascript" src="js/uimake.js"></script>
+  <script type="text/javascript">
+    var sites = [~`site_survey_5g.sh web`~];
+
+    function getQualityImageSrc(quality) {
+      var i = parseInt(quality);
+      if (0 <= i && i <= 20)
+        src = 'images/signal_1.gif';
+      else if (20 < i && i <= 40)
+        src = 'images/signal_2.gif';
+      else if (40 < i && i <= 60)
+        src = 'images/signal_3.gif';
+      else if (60 < i && i <= 80)
+        src = 'images/signal_4.gif';
+      else if (80 < i && i <= 100)
+        src = 'images/signal_5.gif';
+      return src;
+    }
+
+    function init() {
+      var elTa = NN_getById("surveyTable");
+      for (var i = 0; i < sites.length; i++) {
+        var newRow = elTa.insertRow(elTa.rows.length);         
+        newRow.appendChild(uiMake('td', ['input', {'type':'radio', 'name':'COMMIT', 'id': 'index' + i, 'value':sites[i]["SSID"]}]));
+        newRow.appendChild(uiMake('td', {'id':'select' + i}, sites[i]["SSID"])); // The escape can't show normal, don't replace.
+        newRow.appendChild(uiMake('td', sites[i]["CHANNEL"]));
+        newRow.appendChild(uiMake('td', sites[i]["MAC"]));
+        newRow.appendChild(uiMake('td', sites[i]["MODE"]));
+        newRow.appendChild(uiMake('td', ['img', {'src': getQualityImageSrc(sites[i]["QUALITY"])}], sites[i]["QUALITY"]));
+        newRow.appendChild(uiMake('td', sites[i]["SECURITY"]));
+        newRow.className = "table_font";
+        newRow.align = "center";
+        NN_getById('index' + i).onclick = function () {
+          window.opener.siteSurveySubmit(this.value);
+        };
+      }
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Site Survey"><span>Site Survey</span></a></li>
+    </ul>
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        Site Survey
+      </div>
+      <div class="tableframe">
+        <table width="100%" cellpadding="0" cellspacing="0" id="surveyTable">
+          <tr class="top_font" align="center">
+            <td>Select</td>
+            <td>SSID</td>
+            <td>Channel</td>
+            <td>MAC Address</td>
+            <td>Wireless Mode</td>
+            <td>Signal Strength</td>
+            <td>Security</td>
+          </tr>
+        </table>
+      </div>
+      <div class="table_button">
+        <center>
+          <input name="refresh" value="Refresh" type="button" onclick="document.location.replace('site_survey_waiting');"/>
+        </center>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

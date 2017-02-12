@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <title>.::Welcome to the Web-Based Configurator::.</title>
+    <link href="css/expert.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/baseJS.js" ></script>
+    <script type="text/javascript" src="js/uimake.js"></script>
+    <script type="text/javascript">
+      var ssid_enabled = {
+        "ssid_hide":"~~AP_HIDESSID#~",  /* 0:broadcast, 1:hide */
+        "ibss_traffic":"~~AP_IBSS#~"    /* 0:blocking, 1:forwarding */
+      };
+      function checkClientModeItem() {
+        var isClientMode = "~#~";
+        if (isClientMode == "_33" || isClientMode == "_34") {
+          NN_hideByClass("chkClientOpt");
+          NN_getById("cAP_HIDESSID~#~").checked = false;
+          NN_getById("cAP_HIDESSID~#~").disabled = true;
+          NN_getById("cAP_IBSS~#~").checked = false;
+          NN_getById("cAP_IBSS~#~").disabled = true;
+          NN_getById("cAP_L2_ISO~#~").checked = false;
+          NN_getById("cAP_L2_ISO~#~").disabled = true;
+        }
+        if ("~~AP_STARTMODE_1~" == "repeater" && "_" + "~~WDS_AP_PROFILE_1~" == "~#~" )
+        {
+          NN_getById("cAP_L2_ISO~#~").checked = false;
+          NN_getById("cAP_L2_ISO~#~").disabled = true;
+        }
+        if ("~~AP_STARTMODE_2~" == "repeater" && "_" + "~~WDS_AP_PROFILE_2~" == "~#~" )
+        {
+          NN_getById("cAP_L2_ISO~#~").checked = false;
+          NN_getById("cAP_L2_ISO~#~").disabled = true;
+        }
+      }
+      function checkHideSsid() {
+        var isChecked = NN_val(NN_getById("cAP_HIDESSID~#~"));
+        NN_val(NN_getById("AP_HIDESSID~#~"), (isChecked == true ? 1: 0));
+      }
+      function checkIbss() {
+        var isChecked = NN_val(NN_getById("cAP_IBSS~#~"));
+        NN_val(NN_getById("AP_IBSS~#~"), (isChecked == true ? 0: 1));
+      }
+      function checkNativeVlan() {
+        var isChecked = NN_val(NN_getById("cAP_NATIVE_VLAN~#~"));
+        NN_val(NN_getById("AP_NATIVE_VLAN~#~"), (isChecked == true ? 1: 0));
+      }
+      function checkL2Iso() {
+        var isChecked = NN_val(NN_getById("cAP_L2_ISO~#~"));
+        NN_val(NN_getById("AP_L2_ISO~#~"), (isChecked == true ? 1: 0));
+        if (isChecked == true) {
+          NN_val(NN_getById("AP_IBSS~#~"), 0);
+          NN_getById("cAP_IBSS~#~").checked = true;   
+          NN_getById("cAP_IBSS~#~").disabled = true;
+        }
+        else
+        {
+          NN_getById("cAP_IBSS~#~").disabled = false;
+        }
+      }
+      function check1qStatus() {
+        var status = "~~DOT1Q_VLAN~";
+        if (status == "1") {
+          NN_getById("AP_VLAN~#~").disabled = false;
+          NN_getById("cAP_NATIVE_VLAN~#~").disabled = false;
+          NN_getById("AP_NATIVE_VLAN~#~").disabled = false;
+        }
+        checkNativeVlan();
+      }
+      function init() {
+        check1qStatus();
+        checkHideSsid();
+        checkIbss();
+        checkL2Iso();
+        checkClientModeItem();
+      }
+      function formSubmit() {
+        var retVal = true;
+        if (!validate(NN_getById("AP_PRO_NAME~#~"), V_STR, 1, 32)) retVal = false;
+        if (!validate(NN_getById("AP_SSID~#~"), V_STRWSPACE, 1, 32)) retVal = false;
+        if (!validate(NN_getById("AP_VLAN~#~"), V_INT, 1, 4094)) retVal = false;
+        if (!validate(NN_getById("AP_STA_NUM~#~"), V_INT, 1, 64)) retVal = false;
+        return retVal;
+      }
+    </script>
+  </head>
+  <body onload="init();">
+  <FORM METHOD=POST onsubmit="return formSubmit();">
+  <input type="hidden" name="INDEX" value=~~INDEX~>
+    <div class="topgraph"></div>
+    <div id="tabs">
+      <ul>
+        <li class="hightline"><a title="SSID"><span>SSID</span></a></li>
+      </ul>
+      <br class="clearfloat" />
+    </div>
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data">
+        <div class="undownLineTitle">Profile Settings</div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Profile Name :</li>
+            <li class="right_table">
+            <input type="text" name="AP_PRO_NAME~#~" id="AP_PRO_NAME~#~" value="~~AP_PRO_NAME#~" size="20" maxlength="32" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">SSID :</li>
+            <li class="right_table">
+            <input type="text" name="AP_SSID~#~" id="AP_SSID~#~" value="~~AP_SSID#~" size="20" maxlength="32" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Security :</li>
+            <li class="right_table">
+            <select name="AP_SEC_PROFILE~#~" style="width:120px">
+              <option value="0" ~sAP_SEC_PROFILE#:0~>Disabled</option>
+              <option value="1" ~sAP_SEC_PROFILE#:1~>~~SEC_PRO_NAME_1~</option>       
+              <option value="2" ~sAP_SEC_PROFILE#:2~>~~SEC_PRO_NAME_2~</option>
+              <option value="3" ~sAP_SEC_PROFILE#:3~>~~SEC_PRO_NAME_3~</option>
+              <option value="4" ~sAP_SEC_PROFILE#:4~>~~SEC_PRO_NAME_4~</option>
+              <option value="5" ~sAP_SEC_PROFILE#:5~>~~SEC_PRO_NAME_5~</option>
+              <option value="6" ~sAP_SEC_PROFILE#:6~>~~SEC_PRO_NAME_6~</option>
+              <option value="7" ~sAP_SEC_PROFILE#:7~>~~SEC_PRO_NAME_7~</option>
+              <option value="8" ~sAP_SEC_PROFILE#:8~>~~SEC_PRO_NAME_8~</option>
+            </select>
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">MAC Filtering :</li>
+            <li class="right_table">
+            <select name="AP_MAC_PROFILE~#~" style="width:120px">
+              <option value="0" ~sAP_MAC_PROFILE#:0~>Disabled</option>
+              <option value="1" ~sAP_MAC_PROFILE#:1~>~~MAC_PRO_NAME_1~</option>
+              <option value="2" ~sAP_MAC_PROFILE#:2~>~~MAC_PRO_NAME_2~</option>
+              <option value="3" ~sAP_MAC_PROFILE#:3~>~~MAC_PRO_NAME_3~</option>
+              <option value="4" ~sAP_MAC_PROFILE#:4~>~~MAC_PRO_NAME_4~</option>
+              <option value="5" ~sAP_MAC_PROFILE#:5~>~~MAC_PRO_NAME_5~</option>
+              <option value="6" ~sAP_MAC_PROFILE#:6~>~~MAC_PRO_NAME_6~</option>
+              <option value="7" ~sAP_MAC_PROFILE#:7~>~~MAC_PRO_NAME_7~</option>
+              <option value="8" ~sAP_MAC_PROFILE#:8~>~~MAC_PRO_NAME_8~</option>
+            </select>
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">QoS :</li>
+            <li class="right_table">
+            <select name="AP_QOS~#~" style="width:120px">
+              <option value="None" ~sAP_QOS#:None~>None</option>
+              <option value="WMM" ~sAP_QOS#:WMM~>WMM</option>
+              <option value="WMM_VOICE" ~sAP_QOS#:WMM_VOICE~>WMM_VOICE</option>
+              <option value="WMM_VIDEO" ~sAP_QOS#:WMM_VIDEO~>WMM_VIDEO</option>
+              <option value="WMM_BACKGROUND" ~sAP_QOS#:WMM_BACKGROUND~>WMM_BACKGROUND</option>
+              <option value="WMM_BESTEFFORT" ~sAP_QOS#:WMM_BESTEFFORT~>WMM_BESTEFFORT</option>
+            </select>
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">BSSID VLAN ID:</li>
+            <li class="right_table">
+            <input type="text" name="AP_VLAN~#~" id="AP_VLAN~#~" value="~~AP_VLAN#~" size="20" maxlength="4" disabled="disabled" /> (1-4094)
+            </li>
+          </ul>
+        </div>
+        <div class="w_text chkClientOpt">
+          <ul>
+            <li class="left_table">Number of Wireless Stations Allowed to Associate:</li>
+            <li class="right_table">
+            <input type="text" name="AP_STA_NUM~#~" id="AP_STA_NUM~#~" value="~~AP_STA_NUM#~" size="20" maxlength="2" /> (1-64)
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table"> Hidden SSID
+            </li>
+            <li class="right_table">
+            <input type="checkbox" id="cAP_HIDESSID~#~" value="1" onclick="checkHideSsid();" ~cAP_HIDESSID#:1~/> Enabled
+            <input type="hidden" name="AP_HIDESSID~#~" id="AP_HIDESSID~#~" value="0" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table"> Intra-BSS Traffic Blocking
+            </li>
+            <li class="right_table">
+            <input type="checkbox" id="cAP_IBSS~#~" value="0" onclick="checkIbss();" ~cAP_IBSS#:0~/> Enabled
+            <input type="hidden" name="AP_IBSS~#~" id="AP_IBSS~#~" value="1" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table"> Enable Layer-2 Isolation
+            </li>
+            <li class="right_table">
+            <input type="checkbox" id="cAP_L2_ISO~#~" value="1" onclick="checkL2Iso();" ~cAP_L2_ISO#:1~/> Enabled
+            <input type="hidden" name="AP_L2_ISO~#~" id="AP_L2_ISO~#~" value="1" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table"> SSID VLAN
+            </li>
+            <li class="right_table">
+            <input type="checkbox" id="cAP_NATIVE_VLAN~#~" value="1" disabled="disabled" onclick="checkNativeVlan();" ~cAP_NATIVE_VLAN#:1~/> Enabled
+            <input type="hidden" name="AP_NATIVE_VLAN~#~" id="AP_NATIVE_VLAN~#~" value="1" disabled="disabled" />
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="table_button">
+        <center>
+        <center>
+          <input class="table_button_l" name="Back" type="button" id="Back" value="Back" onclick="document.location.href='wlan_ssid'"/>
+          <input class="table_button_m" name="COMMIT" value="Apply" type="submit" />
+          <input class="table_button_r" name="cancel" value="Cancel" type="button" onclick="document.location.replace('wlan_ssid_modify?INDEX=~~INDEX~');" />
+		      <input name="EXECUTE" value="wlan_ssid_modify" type="hidden" />
+        </center>
+        </center>
+      </div>
+    </div>
+
+  </body>
+
+</html>

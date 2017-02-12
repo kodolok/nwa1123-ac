@@ -1,0 +1,23 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to update the Wireless settings. 
+##
+## mib_wlan_settings
+##
+####################################################################
+
+if [ -f /sbin/snmpd ]; then
+    killall snmpd
+fi
+
+apdown
+apup
+sys_set_l2_isolation
+
+if [ -f /sbin/snmpd ]; then
+    snmpd
+fi
+
+exit 0

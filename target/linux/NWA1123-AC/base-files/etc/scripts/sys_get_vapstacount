@@ -1,0 +1,24 @@
+#!/bin/sh
+######################################################
+##
+## This script is used to get VAP station count
+##
+## sys_get_vapstacount <VAP_Index>
+##
+## VAP_Index:  The index of VAP.
+######################################################
+
+IDX=$1
+VAPCMD=`iwconfig ath$IDX 2> /dev/null | grep ath$IDX`
+CNT=0
+
+if [ "$VAPCMD" != "" ]; then
+    CNT=`wlanconfig ath$IDX list sta 2> /dev/null | wc -l`
+
+    if [ $CNT -gt 0 ]; then
+        CNT=$(($CNT-1))
+    fi
+fi
+
+echo $CNT
+exit 0

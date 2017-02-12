@@ -1,0 +1,47 @@
+#!/bin/sh
+
+usage() 
+{
+    echo
+    echo "Usage: sys_set_hwinfo <name> <value>"
+    echo "  <name>  : serialnum/countrycode/eth0mac/wifi0mac/wifi1mac"
+    echo "  <value> : The value of <name>"
+    echo
+    echo "Example:"
+    echo "  sys_set_hwinfo serialnum S110D9000002"
+    echo "  sys_set_hwinfo eth0mac 00:37:ff:00:00:04"
+    
+}
+
+#dd if=/dev/mtdblock6 of=/tmp/mtdblock6 bs=64k count=1 2>/dev/null
+strings /dev/mtdblock6 > /tmp/mtdblock6
+
+NAME=$1
+VALUE=$2
+
+case ${NAME} in
+    serialnum|countrycode)
+        if grep ${NAME} /tmp/mtdblock6 >/dev/null 2>&1; then
+            sed -i "s/${NAME}=[0-9a-zA-Z]*/${NAME}=${VALUE}/g" /tmp/mtdblock6
+        else
+            echo -n "${NAME}=${VALUE} " >> /tmp/mtdblock6
+        fi
+        ;;
+    eth0mac|wifi0mac|wifi1mac)
+        if grep ${NAME} /tmp/mtdblock6 >/dev/null 2>&1; then
+            sed -i "s/${NAME}=[0-9a-zA-Z:]*/${NAME}=${VALUE}/g" /tmp/mtdblock6
+        else
+            echo -n "${NAME}=${VALUE} " >> /tmp/mtdblock6
+        fi
+        ;;
+    *)
+        usage
+        exit 255
+        ;;
+esac
+
+#dd if=/tmp/mtdblock6 of=/dev/mtdblock6 bs=64k count=1 2>/dev/null
+mtd erase mtd6 >/dev/null 2>&1
+mtd write /tmp/mtdblock6 mtd6 >/dev/null 2>&1
+
+exit 0

@@ -1,0 +1,56 @@
+#!/bin/sh 
+#
+#ntp start script
+#
+#
+ROOT_FILE=/var/spool/cron/crontabs/root
+. /etc/ath/apcfg
+#SYS_NAME=`cfg -v SYS_NAME| sed -e 's/\\\\/\\\\\\\\\\\\\\\\/g' -e 's/\"/\\\\\\\\"/g'`
+sleep 1
+if [ "$NTP_STATUS" = "1" ] #NTP enable
+then
+   if [ "$NTP_SERVER_TYPE" = "1" ] #manual ntp ip
+   then
+   killall -q ntpclient
+
+   ntpclient -h $NTP_SERVER_IP -i 86400 -s -l > /dev/null&
+   else
+   killall -q ntpclient
+   ntpclient -h $NTP_SERVER -i 86400 -s -l > /dev/null&
+   fi
+   
+   if [ "$1" != "min" -a "$1" != "day" ];then
+       [ ! -f /tmp/ntp_update ] || rm /tmp/ntp_update
+       killall -q crond
+       crontab -l | grep -v cgi_ntp_start > /tmp/crontab
+       echo "*/1 * * * * /etc/scripts/cgi_ntp_start min" >> /tmp/crontab
+       if [ -f /tmp/crontab ];then
+       mv /tmp/crontab $ROOT_FILE
+       fi
+       crond &
+   else
+	   if [ "$1" = "min" ];then
+	   	if [ -f /tmp/ntp_update ];then
+	       killall -q crond
+	       crontab -l | grep -v cgi_ntp_start > /tmp/crontab
+	       echo "0 0 * * * /etc/scripts/cgi_ntp_start day" >> /tmp/crontab
+	       if [ -f /tmp/crontab ];then
+	       	mv /tmp/crontab $ROOT_FILE
+	       fi
+	       crond &	    	
+	    fi
+	   fi
+   fi
+else
+  killall -q crond
+  crontab -l | grep -v cgi_ntp_start > /tmp/crontab
+  if [ -f /tmp/crontab ];then
+  	mv /tmp/crontab $ROOT_FILE
+  fi
+  crond &
+  killall -q ntpclient
+  date -s $NTP_MON$NTP_DAY$NTP_HOUR$NTP_MIN$NTP_YEAR.$NTP_SEC
+  log_maintain "$SYS_NAME update time"
+  [ ! -f /tmp/ntp_update ] || rm /tmp/ntp_update
+fi
+exit 0

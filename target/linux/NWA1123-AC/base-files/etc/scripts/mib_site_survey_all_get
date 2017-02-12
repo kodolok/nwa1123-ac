@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+INDEX=$2
+
+if [ "`ifconfig ath0 2>/dev/null`" ]
+then
+   if [ "`ifconfig ath8 2>/dev/null`" ]
+   then
+       iwlist ath0 scanning 2>/dev/null | mib_site_survey_get $OID $INDEX
+       #echo -e "\n"
+       iwlist ath8 scanning 2>/dev/null | mib_site_survey_get $OID $INDEX
+   else
+       iwlist ath0 scanning 2>/dev/null | mib_site_survey_get $OID $INDEX
+   fi
+else
+   if [ "`ifconfig ath8 2>/dev/null`" ]
+   then
+       iwlist ath8 scanning 2>/dev/null | mib_site_survey_get $OID $INDEX
+   fi
+fi
+
+exit 0

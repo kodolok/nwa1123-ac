@@ -1,0 +1,103 @@
+config TARGET_MODELNAME
+	string "Define the model name"
+    	depends on TARGET_NWA1123_AC
+    	default "NWA1123-AC"
+
+config TARGET_MANUFACTURER
+    	string "Define the manufacturer"
+    	depends on TARGET_NWA1123_AC
+    	default "ZyXEL COMMUNICATIONS CORP."
+    
+config TARGET_MANUFACTURER_URL
+    	string "Define the manufacturer URL"
+    	depends on TARGET_NWA1123_AC
+    	default "http://www.zyxel.com/"
+    
+config TARGET_SUPPORT_URL
+    	string "Define the target's support URL"
+    	depends on TARGET_NWA1123_AC
+    	default "http://www.zyxel.com/"
+
+config TARGET_FRIENDLY_NAME
+    	string "Define the target friendly name"
+    	depends on TARGET_NWA1123_AC
+    	default "NWA1123-AC"
+
+config TARGET_DESCRIPTION
+    	string "Define the target description"
+    	depends on TARGET_NWA1123_AC
+    	default "11ac Dual band Wireless AP"
+
+config TARGET_PLATFORM
+    	string "Define the platform"
+        	depends on TARGET_NWA1123_AC
+    	default "qualcomm" if PLATFORM_VENDER_QCA
+    
+config TARGET_PLATFORM_BOARD
+    	string "Define the platform demo board"
+    	depends on TARGET_NWA1123_AC
+    	default "ar934x"
+    
+config TARGET_ar934x
+    	bool "Define the platform target board"
+    	default y if TARGET_NWA1123_AC
+    	
+config TARGET_PROJECT_NAME
+	string "Define the project name"
+    	depends on TARGET_NWA1123_AC
+    	default "nwa1123ac"
+    	
+config TARGET_BOARD_TYPE
+	string "Define the board type"
+    	depends on TARGET_NWA1123_AC
+    	default "db12x"
+    	
+config TARGET_ETH_CONFIG
+	string "Define the ethernet config"
+    	depends on TARGET_NWA1123_AC
+    	default "_f1e"
+    	
+config TARGET_BUILD_CONFIG
+	string "Define the build config"
+    	depends on TARGET_NWA1123_AC
+    	default "_mi124"
+    	
+config TARGET_FS_SIZE
+    	int "Define the target filesystem size"
+    	depends on TARGET_NWA1123_AC
+    	default "8388608"
+
+config TARGET_FW_MAJOR_VER
+    	string "Define the firmware major version"
+    	depends on TARGET_NWA1123_AC
+    	default "2"
+
+config TARGET_FW_MINOR_VER
+    	string "Define the firmware minor version"
+    	depends on TARGET_NWA1123_AC
+    	default "10"
+    	
+config TARGET_PRODUCT_ID
+    	string "Define the PRODUCT ID"
+    	depends on TARGET_NWA1123_AC
+    	default "AAOX"
+    	
+config TARGET_FW_PATCH_NO
+    	string "Define the firmware patch no"
+    	depends on TARGET_NWA1123_AC
+    	default "0"
+    	
+config TARGET_FW_RELEASE_VERSION
+    	string "Define the firmware release version"
+    	depends on TARGET_NWA1123_AC
+    	default "B5"
+    	
+config TARGET_BUSYBOX_VERSION
+    	string "Define the busybox release version"
+    	depends on TARGET_NWA1123_AC
+    	default "1.01"
+    	
+config TARGET_SNMP_VERSION
+    	string "Define the SNMP release version"
+    	depends on TARGET_NWA1123_AC
+    	default "5.7"

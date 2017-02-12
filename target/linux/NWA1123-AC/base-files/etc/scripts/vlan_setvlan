@@ -1,0 +1,408 @@
+#!/bin/sh
+#########################################################################
+##  Vlan Configuration
+#########################################################################
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+WAN_IF=${WAN_IF:=eth0}
+ACT_VLAN_BAND="$1"
+
+IPADDRESS=`cfg -v AP_IPADDR`
+NETMASK="netmask 255.255.255.0"
+
+NATIVE_VID=`cfg -v MGMT_VLAN_ID`
+#native bridge
+BR_NA="br0"
+PROFILE_NUMS=8
+
+##################################################################################
+## configure_vap
+##
+## shell function to configure the vap for vlan
+## arguments
+##   $1 - $APNAME - name of the interface eg. ath0
+##   $2 - $BRNAME - name of the bridge eg. br2
+## call as
+##     configure_vap ath0 br0
+##
+configure_vap() {
+    VAPNAME=$1
+    VBRNAME=$2
+
+    ##
+    ## add eth0 to br0
+    ##
+
+    found=`brctl show | grep $WAN_IF`
+    if [ "$found" = "" ]; then
+        brctl addif $VBRNAME $WAN_IF
+    fi
+
+    ##
+    ## add athx to br0
+    ##
+
+    brctl addif $VBRNAME $VAPNAME
+
+    ##
+    ## interface up
+    ##
+
+    ifconfig $WAN_IF up
+    ifconfig $VAPNAME up
+    ifconfig $VBRNAME up
+}
+## end configure_vap
+
+
+##################################################################################
+## configure_vlanvap
+##
+## shell function to configure the vap for vlan
+## arguments
+##   $1 - $APNAME - name of the interface eg. ath0
+##   $2 - $BRNAME - name of the bridge eg. br2
+##   $3 - $VLANID - Id of the VLAN, eg 2
+##   $4 - $VAPIDX - Index of the VAP, eg 2
+## call as
+##     configure_vlanvap ath0 br2 2
+##
+configure_vlanvap() {
+    VAPNAME=$1
+    VBRNAME=$2
+    VVLANID=$3
+	#VAPIDX=$4
+	VAPIDX=$(($4+1))
+	
+	if [ $VAPIDX -gt $PROFILE_NUMS ]; then
+	    TMP_VAP_5G_INDEX=$(($VAPIDX-$PROFILE_NUMS))
+	    my_vaps=$VAP_LIST_2
+	    index=0
+	    for i in $my_vaps;
+	    do
+	        if echo "${i}" | grep -q '_'; then
+                continue
+	        fi
+	
+	        index=$(($index+1))
+
+	        if [ "$TMP_VAP_5G_INDEX" = "$index" ]; then
+	            TMP_PROFILE_INDEX=${i}
+	            break
+	        fi
+	    done
+	
+	
+	else
+		my_vaps=$VAP_LIST_1
+	    index=0
+	    for i in $my_vaps;
+	    do
+	        if echo "${i}" | grep -q '_'; then
+                continue
+	        fi
+
+    	    index=$(($index+1))
+
+	        if [ "$VAPIDX" = "$index" ]; then
+	            TMP_PROFILE_INDEX=${i}
+	            break
+	        fi
+	    done
+	
+	
+	fi
+	
+	VAP_NATIVE=`cfg -v AP_NATIVE_VLAN_${TMP_PROFILE_INDEX}`
+
+	#MGMT_VLAN="0" >> 0 : enable, 1: disable
+	
+	if [ "$VAP_NATIVE" = "0" ]; then
+		configure_vap ath$4 br0
+		return
+	fi
+	
+	
+	#if [ "${MGMT_VLAN}" = "0" -a "$VAP_NATIVE" = "1" ]; then	
+	#	cb=`brctl show | grep ${BR_NA}`
+	#	if [ "X$cb" = "X" ]; then
+	#		brctl delif br0 $WAN_IF
+	#		brctl addbr $BR_NA
+	#		ifconfig $WAN_IF 0.0.0.0
+	#		ifconfig $BR_NA $IPADDRESS up
+	#		brctl addif $BR_NA $WAN_IF
+	#	fi		
+	#fi
+		
+    ##
+    ## create bridge interface
+    ##
+    ifconfig $VBRNAME 1,2> /dev/null
+    if [ "$?" != "0" ]; then
+		ck=`brctl show | grep "${VBRNAME}	"`
+		if [ "X$ck" = "X" ]; then			
+			brctl addbr $VBRNAME
+		fi		
+    fi
+
+    ##
+    ## add tags on eth0
+    ##
+	
+    #found=`brctl show | grep $WAN_IF.$VVLANID`
+    ifconfig $WAN_IF.$VVLANID 1,2> /dev/null
+    if [ "$?" != "0" ]; then
+		if [ "${MGMT_VLAN}" = "0" -a "$VAP_NATIVE" = "1" -a "${MGMT_VLAN_ID}" = "$VVLANID" ]; then		
+			brctl addif $BR_NA $WAN_IF				
+		else
+			vconfig add $WAN_IF $VVLANID
+			brctl addif $VBRNAME $WAN_IF.$VVLANID			
+		fi
+    fi
+
+    ##
+    ## add tags on athx
+    ##
+	if [ "${MGMT_VLAN}" = "0" -a "$VAP_NATIVE" = "1" -a "${MGMT_VLAN_ID}" = "$VVLANID" ]; then		
+			brctl addif $BR_NA $VAPNAME
+	else
+		vconfig add $VAPNAME $VVLANID
+		brctl addif $VBRNAME $VAPNAME.$VVLANID
+	fi
+	
+    ##
+    ## interface up
+    ##
+	if [ "${MGMT_VLAN}" = "0" -a "$VAP_NATIVE" = "1" -a "${MGMT_VLAN_ID}" = "$VVLANID" ]; then			
+		ifconfig $VAPNAME up
+		ifconfig $VBRNAME up
+	else
+		ifconfig $WAN_IF.$VVLANID up
+		ifconfig $VAPNAME up
+		ifconfig $VAPNAME.$VVLANID up
+		ifconfig $VBRNAME up
+	fi
+}
+## end configure_vlanvap
+
+
+
+##
+## remove vlan tag
+##
+
+ifconfig -a | grep $WAN_IF | grep '\.'
+if [ $? = 0 ]; then
+    ##
+    ## Bring down VLAN bridges
+    ## this loop only affects the VLANs and their associated bridges
+    ##
+
+    bridges=`brctl show | awk 'NR >1' | awk '{print $1" "$4}'`
+    for i in $bridges
+    do
+        check_br="`echo $i | grep 'br'`"
+        if [ "x$check_br" = "xbr0" ]
+        then
+            break
+        elif [ "x$check_br" = "x$i" ]; then
+            continue
+        else
+            iftag_ifnum="`echo $i | sed -e 's/ath//g' | sed -e 's/eth//g' | awk -F "." '{print $1}'`"
+            iftag_tagnum="`echo $i | sed -e 's/ath//g' | sed -e 's/eth//g' | awk -F "." '{print $2}'`"
+            br_if="br$iftag_tagnum"
+
+            if [ "x$iftag_tagnum" != "x" ] && [ "$iftag_ifnum" -lt "8" ] && [ "$ACT_VLAN_BAND" -eq "0" ] 
+            then
+                ifconfig $i down
+                brctl delif "br$iftag_tagnum" $i
+                vconfig rem $i
+            elif [ "x$iftag_tagnum" != "x" ] && [ "$iftag_ifnum" -ge "8" ] && [ "$ACT_VLAN_BAND" -eq "1" ]
+            then
+                ifconfig $i down
+                brctl delif "br$iftag_tagnum" $i
+                vconfig rem $i
+            elif [ "x$ACT_VLAN_BAND" = "x" ]; then
+                ifconfig $i down
+                brctl delif "br$iftag_tagnum" $i
+                vconfig rem $i
+            fi
+        fi
+    done
+
+    remain_if=`brctl show | awk 'NR > 1' | grep 'br' | awk '{print $1":"$4}'`
+    for j in $remain_if
+    do
+        br_if=`echo $j | cut -d ":" -f 1`
+        br_remain=`echo $j | cut -d ":" -f 2`
+        if [ "x$br_remain" = "x" ]
+        then
+            ifconfig $br_if down
+            brctl delbr $br_if
+            sleep 1
+        fi
+    done    
+
+	#delete native vlan interface eth0.0
+	ck=`ifconfig -a | grep eth0.0`
+	if [ "X$ck" != "X" ]; then
+		ifconfig eth0.0 down
+		vconfig rem eth0.0
+	fi		
+fi
+
+ifname=`brctl show | grep -v 'bridge name' | grep br0 | cut -f6`
+while [ "$ifname" != "" ]
+do
+    brctl delif br0 $ifname
+    ifname=`brctl show | grep -v 'bridge name' | grep br0 | cut -f6`
+done
+
+_IFS="$IFS"
+IFS=','
+
+##
+## Kill current udhcpc process
+##
+killall -q udhcpc
+killall -q dhcp6c
+
+##
+## configure VLANS and bridges
+##
+
+ifconfig br0 0.0.0.0 up
+ifconfig $WAN_IF 0.0.0.0 up
+ifconfig br0 | awk '/Global/ { cmd="ifconfig br0 del " $3; system(cmd) }'
+ifconfig $WAN_IF | awk -v var=$WAN_IF '/Global/ { cmd="ifconfig " var " del " $3; system(cmd) }'
+
+##
+## vlan ids must be choosen. This is to provide better control on number of vaps need to be created.
+##
+
+VAP_NUM=0
+
+if [ "${AP_STARTMODE_1}" = "root-mbssid" -o "${AP_STARTMODE_1}" = "repeater" ]; then 
+    ## WDS Root VAP has been actived
+    ITER_VLAN="AP_VLAN_$WDS_AP_PROFILE_1"
+    ITER_BRNAME="AP_BRNAME_$WDS_AP_PROFILE_1"
+    eval ITER_VLAN=\$$ITER_VLAN
+    eval ITER_BRNAME=\$$ITER_BRNAME
+
+    if [ "${DOT1Q_VLAN}" = "1" ]; then
+        if [ "_${ITER_BRNAME}" = "_" ]; then
+            ITER_BRNAME=br${ITER_VLAN:="$NATIVE_VID"}
+        fi
+        if [ "_${ITER_VLAN}" != "_" ]; then
+            configure_vlanvap ath$VAP_NUM ${ITER_BRNAME:="br$NATIVE_VID"} ${ITER_VLAN} $VAP_NUM
+        fi
+    else
+        configure_vap ath$VAP_NUM br0
+    fi
+
+    VAP_NUM=1
+fi
+
+for i in $VAP_LIST_1;
+do
+    if echo "${i}" | grep -q '_'; then
+        continue
+    fi
+    ITER_VLAN="AP_VLAN_$i"
+    ITER_BRNAME="AP_BRNAME_$i"
+    eval ITER_VLAN=\$$ITER_VLAN
+    eval ITER_BRNAME=\$$ITER_BRNAME
+
+    if [ "${DOT1Q_VLAN}" = "1" ]; then
+        if [ "_${ITER_BRNAME}" = "_" ]; then
+            ITER_BRNAME=br${ITER_VLAN:="$NATIVE_VID"}
+        fi
+        if [ "_${ITER_VLAN}" != "_" ]; then
+            configure_vlanvap ath$VAP_NUM ${ITER_BRNAME:="br$NATIVE_VID"} ${ITER_VLAN} $VAP_NUM
+        fi
+    else
+        configure_vap ath$VAP_NUM br0
+    fi
+
+    VAP_NUM=$(($VAP_NUM+1))
+done
+
+VAP_NUM=8
+
+if [ "${AP_STARTMODE_2}" = "root-mbssid" -o "${AP_STARTMODE_2}" = "repeater" ]; then 
+    ## WDS Root VAP has been actived
+    ITER_VLAN="AP_VLAN_$WDS_AP_PROFILE_2"
+    ITER_BRNAME="AP_BRNAME_$WDS_AP_PROFILE_2"
+    eval ITER_VLAN=\$$ITER_VLAN
+    eval ITER_BRNAME=\$$ITER_BRNAME
+
+    if [ "${DOT1Q_VLAN}" = "1" ]; then
+        if [ "_${ITER_BRNAME}" = "_" ]; then
+            ITER_BRNAME=br${ITER_VLAN:="$NATIVE_VID"}
+        fi
+        if [ "_${ITER_VLAN}" != "_" ]; then
+            configure_vlanvap ath$VAP_NUM ${ITER_BRNAME:="br$NATIVE_VID"} ${ITER_VLAN} $VAP_NUM
+        fi
+    else
+        configure_vap ath$VAP_NUM br0
+    fi
+
+    VAP_NUM=9
+fi
+
+for i in $VAP_LIST_2;
+do
+    if echo "${i}" | grep -q '_'; then
+        continue
+    fi
+    ITER_VLAN="AP_VLAN_$i"
+    ITER_BRNAME="AP_BRNAME_$i"
+    eval ITER_VLAN=\$$ITER_VLAN
+    eval ITER_BRNAME=\$$ITER_BRNAME
+
+    if [ "${DOT1Q_VLAN}" = "1" ]; then
+        if [ "_${ITER_BRNAME}" = "_" ]; then
+            ITER_BRNAME=br${ITER_VLAN:="$NATIVE_VID"}
+        fi
+        if [ "_${ITER_VLAN}" != "_" ]; then
+            configure_vlanvap ath$VAP_NUM ${ITER_BRNAME:="br$NATIVE_VID"} ${ITER_VLAN} $VAP_NUM
+        fi
+    else
+        configure_vap ath$VAP_NUM br0
+    fi
+
+    VAP_NUM=$(($VAP_NUM+1))
+done
+
+export MGMT_IF=`get_mgmt_if`
+
+##
+## Add VLAN for management interface
+##
+if [ "${DOT1Q_VLAN}" = "1" ]; then
+	brctl delif br0 eth0
+	vconfig add $WAN_IF 0
+	ifconfig $WAN_IF.0 up	
+    if [ "${MGMT_VLAN}" = "1" ]; then
+		brctl addbr $MGMT_IF
+		vconfig add $WAN_IF $MGMT_VLAN_ID
+		brctl addif $MGMT_IF $WAN_IF.$MGMT_VLAN_ID
+		ifconfig $WAN_IF.$MGMT_VLAN_ID up
+		brctl addif br0 $WAN_IF.0
+		
+		ckup=`ifconfig | grep $MGMT_IF`
+		if [ "X" = "X$ckup" ]; then
+			ifconfig $MGMT_IF up		
+		fi
+		
+	elif [ "${MGMT_VLAN}" = "0" ]; then
+		brctl addif $MGMT_IF $WAN_IF.0
+	fi
+fi
+
+IFS="$_IFS"
+
+return 0

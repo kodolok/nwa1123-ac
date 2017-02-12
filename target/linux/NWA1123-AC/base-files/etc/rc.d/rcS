@@ -1,0 +1,428 @@
+#!/bin/sh
+
+# This script runs when init it run during the boot process.
+# Mounts everything in the fstab
+
+# turn off amber led
+mm 0xb804000c 0x00000800
+
+# turn off green led 
+mm 0xb804000c 0x00001000
+
+mount -a
+#mount -o remount +w /
+
+#
+# Mount the RAM filesystem to /tmp
+#
+
+mount -t tmpfs -n none /tmp
+
+export PATH=$PATH:/etc/ath:/etc/scripts
+
+# for profile-based-optimization
+grep -iq "debugfs" /proc/filesystems
+if [ $? -eq 0 ]
+then
+	grep -iq "sysfs" /proc/filesystems
+	if [ $? -eq 0 ]
+	then
+		if [ ! -d /sys ]
+		then
+			mkdir /sys >/dev/null 2>&1
+		fi
+
+		mount -t sysfs none /sys >/dev/null 2>&1
+		if [ $? -eq 0 ]
+		then
+			mount -t debugfs none /sys/kernel/debug >/dev/null 2>&1
+			if [ $? -eq 0 ]
+			then
+				echo "** sysfs & debugfs mounted successfully **"
+			else
+				echo "****** debugfs mount failure ******"
+			fi
+					
+		else
+			echo "****** sysfs mount failure ******"
+		fi
+	fi
+fi
+
+KVER=`uname -r | cut -f 1 -d '-'`
+MODULE_PATH=/lib/modules/$KVER
+
+if [ "x${KVER}" = "x" ]; then
+	echo "****** Get uname Fail ******" >/dev/console
+	reboot
+	sleep 10
+else
+	insmod $MODULE_PATH/athrs_gmac.ko
+	sleep 2
+
+	# Read eth0 MAC from r-boot env and apply
+	if [ -f /etc/scripts/sys_chk_serialnum ]
+	then
+		/etc/scripts/sys_chk_serialnum
+	fi
+	if [ $? -eq 0 ]
+	then
+		#dd if=/dev/mtdblock6 of=/tmp/mtdblock6 bs=64k count=1
+		strings /dev/mtdblock6 > /tmp/mtdblock6
+		if [ "2" = `wc -l /tmp/mtdblock6|cut -d ' ' -f 7` ]
+		then
+			echo `sed -n '1p' /tmp/mtdblock6` `sed -n '2p' /tmp/mtdblock6` > /tmp/tmp_mtd6
+			cat /tmp/tmp_mtd6 > /tmp/mtdblock6
+			sed -i 's/US/840/g' /tmp/mtdblock6
+			mtd erase mtd6 >/dev/null 2>&1
+			mtd write /tmp/mtdblock6 mtd6 >/dev/null 2>&1
+		else
+		COUNTRY_CODE=`cat /tmp/mtdblock6 | grep 'countrycode' | cut -d ' ' -f 2`
+			if [ "$COUNTRY_CODE" = "countrycode=US" ]
+			then
+				sed -i 's/US/840/g' /tmp/mtdblock6
+				mtd erase mtd6 >/dev/null 2>&1
+				mtd write /tmp/mtdblock6 mtd6 >/dev/null 2>&1
+			fi
+		fi
+	fi
+fi
+
+TEMP=`cat /tmp/mtdblock6 | grep 'eth0mac' | awk '{print $3}'`
+ETH0MAC=`expr substr $TEMP 9 17`
+ifconfig eth0 hw ether $ETH0MAC
+
+# Reset button function
+#if [ -f /etc/scripts/sys_resetbutton ]
+#then
+#    /etc/scripts/sys_resetbutton &
+#fi
+
+# LED blink for bootup
+sys_led_system bootup &
+
+##
+## Put the names of the interfaces in the environmental variables
+## (They can be board unique)
+##
+
+export WAN_IF=eth0
+export LAN_IF=eth1
+
+ifconfig $WAN_IF up
+ifconfig $LAN_IF up
+
+/etc/rc.d/rc.network
+/etc/rc.d/rc.bridge
+. /etc/ath/apcfg
+
+#
+# Enable USB
+#
+#insmod $MODULE_PATH/usbcore.ko
+#insmod $MODULE_PATH/ehci-hcd.ko
+#insmod $MODULE_PATH/usb-storage.ko
+#insmod $MODULE_PATH/usbnet.ko
+#insmod $MODULE_PATH/cdc_ether.ko
+
+#
+# Enable I2S
+#
+#insmod $MODULE_PATH/ath_i2s.ko
+
+#
+# Set default hostname according to model name
+#
+HOSTNAME_STR=`cut -d _ -f 1 /etc/firmware_info`
+hostname $HOSTNAME_STR
+
+#
+# Upgrade passwd database from configure file.
+#
+if [ -f /etc/passwd_def ];then
+	cp -f /etc/passwd_def /tmp/passwd
+fi
+
+if [ -f /etc/shadow_def ];then
+	cp -f /etc/shadow_def /tmp/shadow
+fi
+
+echo "admin":"\$1\$\$$ENCRYPT_PASSWD" | /usr/bin/chpasswd -e
+
+HTTP_CONFIG_FILE="/tmp/mini_httpd.conf"
+HTTPS_CONFIG_FILE="/tmp/mini_httpd_ssl.conf"
+
+echo "dir=/usr/www" > $HTTP_CONFIG_FILE
+echo "cgipat=cgi-bin/*" >> $HTTP_CONFIG_FILE
+echo "user=root" >> $HTTP_CONFIG_FILE
+echo port=${MGMT_HTTP_PORT:=80} >> $HTTP_CONFIG_FILE
+
+#dd if=/dev/mtdblock6 of=/tmp/mtdblock6 bs=64k count=1
+
+CERT_LENGTH=`cfg -v CERT_LENGTH`
+if [ ${CERT_LENGTH:="0"} != "0" ]
+then
+    dd if=/dev/mtdblock4 of=/tmp/mtd4.tar bs=$CERT_LENGTH count=1
+    tar -zxv -f /tmp/mtd4.tar -C /
+    rm /tmp/mtd4.tar
+
+    TMP_CERT_CHECKSUM=`md5sum /tmp/mini_httpd.pem | awk '{print $1}'`
+	TMP_CERT_DEF_MD5=`cfg -v HTTPS_CERT_DEF_MD5`
+	TMP_HTTPS_CERT_FLAG=`cfg -v HTTPS_CERT_FLAG`
+
+	if [ "x$TMP_CERT_CHECKSUM" = "x" ];then
+			cfg -a CERT_LENGTH="0"
+			cfg -a HTTPS_CERT_FLAG="0"
+			cfg -c
+			cp -f /etc/mini_httpd.pem /tmp/mini_httpd.pem
+	else
+		if [ "x$TMP_CERT_CHECKSUM" != "x" -a "x$TMP_CERT_CHECKSUM" != "x$TMP_CERT_DEF_MD5" -a "x$TMP_HTTPS_CERT_FLAG" != "x1" ];then
+			cfg -a HTTPS_CERT_FLAG="1"
+			cfg -c
+		fi
+	fi
+else
+    cp -f /etc/mini_httpd.pem /tmp/mini_httpd.pem
+fi
+
+if [ /etc/mini_httpd.cnf ]; then
+	cp -f /etc/mini_httpd.cnf /tmp/mini_httpd.cnf
+fi
+
+echo "dir=/usr/www" > $HTTPS_CONFIG_FILE
+echo "cgipat=cgi-bin/*" >> $HTTPS_CONFIG_FILE
+echo "user=root" >> $HTTPS_CONFIG_FILE
+echo port=${MGMT_HTTPS_PORT:=443} >> $HTTPS_CONFIG_FILE
+echo ssl >> $HTTPS_CONFIG_FILE
+if [ -f /tmp/mini_httpd.pem ]; then
+    echo "certfile=/tmp/mini_httpd.pem" >> $HTTPS_CONFIG_FILE
+else
+    echo "certfile=/etc/mini_httpd.pem" >> $HTTPS_CONFIG_FILE
+fi
+
+mkdir -p /tmp/spool/cron/crontabs
+echo "*/1 * * * * " > /tmp/spool/cron/crontabs/root
+
+mkdir -p /tmp/local/etc/snmp
+if [ -f /etc/snmpd.conf ];then
+cp -f /etc/snmpd.conf /tmp/local/etc/snmp
+fi
+
+if [ -f /etc/wpa2/entropy ];then
+cp -f /etc/wpa2/entropy /tmp/wpa2/entropy
+fi
+
+mkdir -p /tmp/net-snmp
+
+mkdir -p /var/log
+
+mkdir -p /tmp/wpa2
+
+mkdir -p /tmp/ssmtp
+
+mount -t tmpfs tmpfs /var/log
+touch /var/log/messages
+
+touch /tmp/.wlanconfig.log
+
+echo "NULL" > /tmp/TZ
+
+#
+# Untar the debug tools into /tmp/tools
+#
+
+mkdir /tmp/tools
+cd /tmp/tools
+tar -xzvf /sbin/debug.tgz
+
+/etc/scripts/cgi_telnetd_config.sh
+#/usr/sbin/telnetd -l /etc/telnetd.script
+# /usr/sbin/httpd -h /usr/www/
+/bin/factoryreset /dev/freset
+
+# Starting ftp daemon
+chmod a+rwx /tmp
+mkdir /tmp/upload
+chmod a+rwx /tmp/upload
+if [ -f /sbin/vsftpd ]
+then
+    new_vsftpd_conf=/tmp/vsftp.conf.tmp
+    cp /etc/vsftpd_def.conf /tmp/vsftpd.conf
+    sed /listen_port/d /tmp/vsftpd.conf > $new_vsftpd_conf
+    echo listen_port=${MGMT_FTP_PORT:=21} >> $new_vsftpd_conf
+    mv -f $new_vsftpd_conf /tmp/vsftpd.conf
+    unset new_vsftpd_conf
+    if [ -f /var/log/vsftpd.log ]
+    then
+        rm -f /var/log/vsftpd.log
+    fi
+    /sbin/vsftpd &
+fi
+
+# Starting checking ramfs daemon
+if [ -f /etc/scripts/sys_check_ramfs ]
+then
+    /etc/scripts/sys_check_ramfs &
+fi
+
+# Starting ftp F/W upgrade daemon
+if [ -f /etc/scripts/ftp_fwupgrade ]
+then
+    /etc/scripts/ftp_fwupgrade &
+fi
+
+# start the page cache/kmem cache cleanup timer in the kernel
+echo 3 > /proc/sys/vm/drop_caches
+
+# when processes uses page-cache more than 30% of system memory,
+# lets force them to write
+echo 20 > /proc/sys/vm/dirty_ratio
+
+# when the dirty pages cross more than 5% of sys memory,
+# kick in the pdflush
+echo 5 > /proc/sys/vm/dirty_background_ratio
+
+echo 4096 > /proc/sys/vm/min_free_kbytes
+
+echo 1 > /proc/sys/vm/panic_on_oom
+
+mm 0xb804006c 0x00000042
+mm 0xb8040000 0x0003c312
+mm 0xb804002c 0x2f00002e
+
+sleep 3
+
+# adjust ART LNA settings
+if [ -f /sbin/artlna ]
+then
+    /sbin/artlna -d
+fi
+
+sleep 2
+
+##
+## write register 0xb8116c40  bit 0  to 1
+##
+reg=` md 0xb8116c40 | awk ' {print $3}' `
+let "b= $reg | 0x1"
+hex=`echo ""$b" 16 o p" | dc`
+mm 0xb8116c40 0x$hex
+
+##
+## Check for Auto AP Start
+##
+if [ "${WLAN_ON_BOOT}" = "y" ]; then
+    /etc/ath/apup
+fi
+
+# Set LED Function
+if [ -f /etc/scripts/sys_led_suppression ]
+then
+    /etc/scripts/sys_led_suppression bootup
+fi
+
+if [ -f /etc/scripts/sys_led_wifi ]
+then
+    /etc/scripts/sys_led_wifi &
+fi
+
+if [ -f /etc/scripts/sys_led_uplink ]
+then
+    /etc/scripts/sys_led_uplink
+fi
+
+#### Check for Auto AP Start##
+
+# Start WEB Service
+if [ -f /usr/sbin/mini_httpd ]
+then
+    new_http_conf=/tmp/mini_httpd.conf.tmp
+    sed /port/d /etc/mini_httpd.conf > $new_http_conf
+    echo port=${MGMT_HTTP_PORT:=80} >> $new_http_conf
+    mv -f $new_http_conf /tmp/mini_httpd.conf
+    unset new_http_conf
+    mini_httpd -C /tmp/mini_httpd.conf
+
+    new_https_conf=/tmp/mini_httpd_ssl.conf.tmp
+    sed /port/d /etc/mini_httpd_ssl.conf > $new_https_conf
+    echo port=${MGMT_HTTPS_PORT:=443} >> $new_https_conf
+    mv -f $new_https_conf /tmp/mini_httpd_ssl.conf
+    unset new_https_conf
+    mini_httpd -C /tmp/mini_httpd_ssl.conf
+fi
+
+# Start watchdog Service
+if [ ! -e /dev/watchdog ]
+then
+    mknod /dev/watchdog c 10 130
+fi
+if [ -f /root/bin/watchdog ]
+then
+    /root/bin/watchdog interval 20&
+fi
+#erase log file after reset
+#if [ -f /etc/scripts/cgi_log_clearlog ]
+#then
+#   /etc/scripts/cgi_log_clearlog
+#fi
+#syslog daemon
+if [ -f /etc/scripts/cgi_log_startlog ]
+then
+   /etc/scripts/cgi_log_startlog
+fi
+#cron daemon
+if [ -f /etc/scripts/cgi_log_smtpset ]
+then
+   /etc/scripts/cgi_log_smtpset
+fi
+#time zone setting
+if [ -f /etc/scripts/cgi_timezone_set ]
+then
+    /etc/scripts/cgi_timezone_set
+fi
+
+#start ntp
+if [ -f /etc/scripts/cgi_ntp_start ]
+then
+   /etc/scripts/cgi_ntp_start init
+fi
+
+#Start SNMP Service
+if [ -f /sbin/snmpd ]
+then
+    /etc/scripts/cgi_snmp_default_settings
+fi
+
+#Start ZON Service
+if [ -f /etc/scripts/cgi_zdpd.sh ]
+then
+    /etc/scripts/cgi_zdpd.sh
+fi
+
+# Start L2 Isolation
+/etc/scripts/sys_set_l2_isolation
+
+#Start net_monitor
+if [ -f /usr/sbin/net_monitor ]
+then
+    /usr/sbin/net_monitor &
+fi
+
+sys_led_system stop
+
+#Start lldpd Service
+if [ -f /etc/scripts/cgi_lldpd.sh ]
+then
+    /etc/scripts/cgi_lldpd.sh
+fi
+
+#Start dhcp, if WAN_MODE=dhcp
+WAN_MODE=`cfg -v WAN_MODE`
+if [ "${WAN_MODE}" = "dhcp" ]; then
+	cgi_get_dhcp_ip	
+fi
+
+if [ -f /etc/scripts/cgi_reboot_schedule ]
+then
+    /etc/scripts/cgi_reboot_schedule
+fi

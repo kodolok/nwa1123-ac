@@ -1,0 +1,64 @@
+#!/bin/sh
+#####################################
+## SYSTEM script
+## This script is used to control LED
+##
+## sys_led_suppression <status>
+## 
+## <status> : enable | disable | bootup
+## 
+#####################################
+
+uplink_path="/tmp/.alert_uplink"
+
+usage(){
+    echo
+    echo "Usage: sys_led_suppression <status>"
+    echo "<status>: enable | disable"
+    echo
+}
+
+status=`cfg -v LED_CTRL_STATUS`
+
+case $1 in
+    "")
+        if [ "$status" = "0" ]; then
+            echo "ledctrl: Disabled"
+        else
+            echo "ledctrl: Enabled"
+        fi
+        exit 0
+        ;;
+    "enable")
+        LED_SET=1
+        ;;
+    "disable")
+        LED_SET=0
+        ;;
+    "bootup")
+        LED_SET=$status
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac
+
+if [ "$1" = "disable" -a -e $uplink_path ]; then
+    iwpriv wifi0 led_ctrl 1
+    iwpriv wifi1 led_ctrl 1
+else
+    #ethreg --ledctl -i eth0 -v $LED_SET
+    iwpriv wifi0 led_ctrl $LED_SET
+    iwpriv wifi1 led_ctrl $LED_SET
+fi
+
+if [ "$LED_SET" = "1" ]; then
+    # turn off LED amber/green
+    mm 0xb804000c 0x00001800
+fi
+
+if [ "$1" != "bootup" ]; then
+    cfg -a LED_CTRL_STATUS=$LED_SET
+    cfg -c
+fi

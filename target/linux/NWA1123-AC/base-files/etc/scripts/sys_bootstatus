@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ "$1" = "warm" ]; then
+    cfg -a BOOT_STATUS=warm
+    cfg -c
+    rm -f /tmp/boot_status
+    exit
+fi
+
+if [ "$1" = "cold" ]; then
+    cfg -a BOOT_STATUS=cold
+    cfg -c
+    echo "cold" > /tmp/boot_status
+    exit
+fi
+
+if [ "$1" = "status" ]; then
+  	if [ `cfg -v BOOT_STATUS` = "cold" ]; then
+  		echo "cold" > /tmp/boot_status
+  	fi
+    exit
+fi

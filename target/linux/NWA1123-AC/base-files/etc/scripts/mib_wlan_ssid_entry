@@ -1,0 +1,84 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set the wlanSSIDEntry. 
+##
+## mib_wlan_ssid_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+OID=$1
+IDX=$2
+VALUE=$3
+
+if [ "${OID}" = "1" ]; then
+    cfg -a AP_PRO_NAME_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    cfg -a AP_SSID_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "3" ]; then
+    cfg -a AP_SEC_PROFILE_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    cfg -a AP_RAD_PROFILE_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "5" ]; then
+    cfg -a AP_MAC_PROFILE_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "6" ]; then
+    if [ "${VALUE}" = "0" ]; then
+        cfg -a AP_QOS_$IDX="WMM_BESTEFFORT"
+        cfg -c
+    elif [ "${VALUE}" = "1" ]; then
+        cfg -a AP_QOS_$IDX="WMM_BACKGROUND"
+        cfg -c
+    elif [ "${VALUE}" = "2" ]; then
+        cfg -a AP_QOS_$IDX="WMM_VIDEO"
+        cfg -c
+    elif [ "${VALUE}" = "3" ]; then
+        cfg -a AP_QOS_$IDX="WMM_VOICE"
+        cfg -c
+    elif [ "${VALUE}" = "4" ]; then
+        cfg -a AP_QOS_$IDX="WMM"
+        cfg -c
+    elif [ "${VALUE}" = "255" ]; then
+        cfg -a AP_QOS_$IDX="None"
+        cfg -c
+    fi
+    exit 0
+elif [ "${OID}" = "7" ]; then
+    cfg -a AP_STA_NUM_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "8" ]; then
+    cfg -a AP_HIDESSID_$IDX="$VALUE"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "9" ]; then
+    if [ "${VALUE}" = "1" ]; then
+        cfg -a AP_IBSS_$IDX="0"
+        cfg -c
+    elif [ "${VALUE}" = "2" ]; then
+        cfg -a AP_IBSS_$IDX="1"
+        cfg -c
+    fi
+    exit 0
+fi
+
+exit 255

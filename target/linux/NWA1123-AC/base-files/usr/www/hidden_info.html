@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<head>
+<title>Hidden Info</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Cache-Control" content="no-cache" />
+</head>
+<body>
+  <ul>
+    <li>FW Version: ~`cat /etc/firmware_name`~</li>
+    <li>Serial Number: ~`webget_factory_serial_number`~</li>
+    <li>2.4G SSID: ~`webget_factory_ssid1`~</li>
+    <li>2.4G Date rate: ~`webget_factory_data_rate1`~</li>
+    <li>2.4G Channel: ~`webget_factory_channel1`~</li>
+    <li>5G SSID: ~`webget_factory_ssid2`~</li>
+    <li>5G Date rate: ~`webget_factory_data_rate2`~</li>
+    <li>5G Channel: ~`webget_factory_channel2`~</li>
+    <li>Eth0 MAC: ~`get_if_hwaddr eth0`~</li>
+    <li>Wifi0 MAC: ~`get_if_hwaddr wifi0 | cut -c1-17`~</li>
+    <li>Wifi1 MAC: ~`get_if_hwaddr wifi1 | cut -c1-17`~</li>
+    <li>Region: ~`webget_factory_region`~</li>
+    <li>Coexist: ~`webget_factory_coexist`~</li>
+  </ul>
+</body>
+</html>
+

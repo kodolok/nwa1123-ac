@@ -1,0 +1,6 @@
+#!/bin/sh
+
+CMD=`iwpriv wifi0 getCountryID`
+CODE=`echo $CMD | awk '{print $2}'`
+echo $CODE
+exit 0

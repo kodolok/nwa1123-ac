@@ -1,0 +1,15 @@
+#!/bin/sh
+####################################################################
+## CGI script
+## 
+## This script is used to update the Wireless settings. 
+##
+## cgi_wlan_settings
+##
+####################################################################
+
+apdown
+apup
+
+cgi_ipv4_settings
+sys_set_l2_isolation

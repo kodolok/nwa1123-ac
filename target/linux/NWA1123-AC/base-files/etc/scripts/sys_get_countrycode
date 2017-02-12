@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# sys_get_countrycode <radioID>
+# 
+
+RADIO_ID=$1
+
+if [ "$RADIO_ID" != "0" -a "$RADIO_ID" != "1" ]; then
+    echo "usage: sys_get_countrycode [0 | 1]"
+    exit
+fi
+
+INFO="`iwpriv wifi$RADIO_ID getCountryID 2> /dev/null`"
+COUNTRYCODE=`echo "$INFO" | cut -d : -f 2`
+if [ "$COUNTRYCODE" = "" ]; then
+    ## Get from mtdblock6 ##
+    TEMP=`cat /tmp/mtdblock6 | grep 'countrycode' | awk '{print $2}'`
+    COUNTRYCODE=`expr "$TEMP" : '.*countrycode=\([0-9]*\)'`
+fi
+
+echo $COUNTRYCODE

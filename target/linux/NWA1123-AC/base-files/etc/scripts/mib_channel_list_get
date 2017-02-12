@@ -1,0 +1,19 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to get the Channel List with specific bandwith function. 
+##
+## mib_channel_list_get
+##
+####################################################################
+HTWIDTH="`cfg -v AP_CHWIDTH_$1`"
+CHLIST=""
+
+if [ "x$1" = "x1" ]; then
+	CHLIST="`sys_get_channel_list $HTWIDTH | sed -e 's/\[//g' -e 's/\]//g' -e 's/\"//g' -e 's/,/ /g'`"
+else
+	CHLIST="`sys_get_channel5g_list $HTWIDTH | sed -e 's/\[//g' -e 's/\]//g' -e 's/\"//g' -e 's/,/ /g'`"
+fi
+
+echo "0 $CHLIST"

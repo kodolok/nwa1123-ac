@@ -1,0 +1,43 @@
+#!/bin/sh
+##
+## make the topology file
+##
+
+RADIO_CONF="/tmp/.radio_conf_$1"
+
+if [ "$1" != "1" -a "$1" != "0" ]; then
+    echo "usage: makeTopology [ 0 | 1 ]"
+    exit 1
+fi
+
+if [ -f $RADIO_CONF/conf_filename ]; then
+    hostapd  -B `cat $RADIO_CONF/conf_filename` -e /tmp/wpa2/entropy
+
+    ## Patch WEP configuration
+    if [ -f $RADIO_CONF/ap_weplist ]; then
+        while read line
+        do
+            patchVAP WEP `echo -e $line`
+        done < $RADIO_CONF/ap_weplist
+    fi
+    
+    ## Patch MAC-filter configuration
+    if [ -f $RADIO_CONF/ap_maclist ]; then
+        while read line
+        do
+            patchVAP MAC `echo -e $line`
+        done < $RADIO_CONF/ap_maclist
+    fi
+fi
+if [ -f $RADIO_CONF/sta_conf_filename ]; then
+    while read line
+    do 
+        wpa_supplicant $line &
+    done < $RADIO_CONF/sta_conf_filename
+    
+    ## BUG: At client mode, the wifi interface doesn't receive 
+    ##      33:33:FF:XX:XX:XX multicast data. 
+    ## Workaround: Set the wifi interface to handle all multicast packets.
+    ifconfig wifi$1 allmulti 2> /dev/null
+fi
+

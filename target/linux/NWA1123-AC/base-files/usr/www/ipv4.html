@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+</head>
+<body>
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="IPv4"><span>IPv4</span></a></li>
+      <li><a href="ipv6" title="IPv6"><span>IPv6</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        IP Address Assignment
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table"><input type="radio" name="WAN_MODE" value="dhcp" ~cWAN_MODE:dhcp~ />Obtain IP Address Automatically</li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table"><input type="radio" name="WAN_MODE" value="static" ~cWAN_MODE:static~ />Use Fixed IP Address</li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">IP Address :</li>
+          <li class="right_table"><input maxlength="15" size="15" name="AP_IPADDR" id="AP_IPADDR" value="~~AP_IPADDR~" /></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Subnet Mask :</li>
+          <li class="right_table"><input maxlength="15" size="15" name="AP_NETMASK" id="AP_NETMASK" value="~~AP_NETMASK~" /></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table">Gateway IP Address :</li>
+          <li class="right_table"><input maxlength="15" size="15" name="IPGW" id="IPGW" value="~~IPGW~" /></li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        System DNS Servers
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">First DNS Server :</li>
+          <li class="right_table"><input maxlength="15" size="15" name="PRIDNS" id="PRIDNS" value="~~PRIDNS~" /></li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Second DNS Server :</li>
+          <li class="right_table"><input maxlength="15" size="15" name="SECDNS" id="SECDNS" value="~~SECDNS~" /></li>
+        </ul>
+      </div>
+    </div>
+    <div class="table_button">
+      <center>
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_l" />
+        <input name="cancel" value="Cancel" type="reset" class="table_button_r" />
+        <input type="hidden" name="EXECUTE" value="ipv4" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    .c_logmsg {text-align: left; padding-left: 50px;}
+  </style>
+  <script type="text/javascript" src="js/baseJS.js"></script>
+  <script type="text/javascript" src="js/uimake.js"></script>
+  <script type="text/javascript">
+    var logs = ~`webget_log_showlog`~;
+
+    function addLogRow() {
+      var elTa = NN_getById("logTable");
+      var type = NN_val(NN_getById("cateList"));
+      var index = 1;
+      for (var i = 0; i < logs.length; i++) {
+        if ((type == "all") || (logs[i]["Type"] == type)) {
+          var newRow = elTa.insertRow(elTa.rows.length); 
+          newRow.appendChild(uiMake('td', index));
+          newRow.appendChild(uiMake('td', logs[i]["Time"]));
+          newRow.appendChild(uiMake('td', {'className':'c_logmsg'}, logs[i]["Log"]));
+          newRow.appendChild(uiMake('td', logs[i]["SrcMac"]));
+          newRow.className = "table_font";
+          newRow.align = "center";
+          index++;
+        }
+      }
+    }
+    function removeAllLogRow() {
+      var elTa = NN_getById("logTable");
+      for (var i = (elTa.rows.length - 1); i > 0; i--) {
+        var newRow = elTa.deleteRow(i); 
+      }
+    }
+    function init() {
+      addLogRow();
+    }
+    function onCateListChange() {
+      removeAllLogRow();
+      addLogRow();
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="View Log"><span>View Log</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        Log List
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Display : <select onchange="onCateListChange();" size="1" name="cateList" id="cateList">
+            <option value="all"> All Logs </option>
+            <option value="SYS_MAINTAIN"> System Maintenance </option>
+            <option value="WIRELESS"> Wireless </option>
+            <option value="802DOT1X"> 802.1X </option>
+          </select></li>
+          <li class="right_table">
+          <input name="SENDLOG" value="E-Mail Log Now" type="submit" /> 
+          <input name="refresh" value="Refresh" type="button" onclick="document.location.replace('log_viewlog');" /> 
+          <input name="CLEARLOG" value="Clear Log" type="submit" /></li>
+        </ul>
+      </div>
+      <div class="tableframe">
+        <table width="100%" cellpadding="0" cellspacing="0" id="logTable">
+          <tr class="top_font" align="center">
+            <td width="35">#</td>
+            <td>Time</td>
+            <td>Message</td>
+            <td>Source</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

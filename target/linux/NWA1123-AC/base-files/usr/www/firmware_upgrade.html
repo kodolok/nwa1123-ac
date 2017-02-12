@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+
+    .input-pos {
+      margin-bottom: 2px;
+    }
+    .input-file {
+      width: 240px;
+      width: 250px\0;
+      width: 250px\9;
+      position: absolute;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .btn.disabled,
+    .btn[disabled] {
+      cursor: default;
+      background-image: none;
+      background-color: #e6e6e6;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .input-file:hover .btn,
+    .input-pos:hover .btn {
+      color: #333333;
+      text-decoration: none;
+      background-color: #e6e6e6;
+      background-position: 0 -15px;
+      -webkit-transition: background-position 0.1s linear;
+      -moz-transition: background-position 0.1s linear;
+      -ms-transition: background-position 0.1s linear;
+      -o-transition: background-position 0.1s linear;
+      transition: background-position 0.1s linear;
+    }
+  </style>
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    var startSec = 360;
+    var timerId = 0;
+    function countdown() {
+      startSec -= 1;
+      if (startSec < 0) {
+        clearInterval(timerId);
+        forceLogout();
+        top.location.href = location.portocol + "//" + location.host;
+      } else {
+        document.getElementById("clock").innerHTML = startSec;
+      }
+    }
+    function goCountdown() {
+      NN_showByClass("dvMsg");
+      NN_hideByClass("dvContent");
+      timerId = setInterval("countdown();", 1 * 1000);
+      setTimeout("NN_stopLoading();", 60 * 1000);
+    }
+    function init() {
+      NN_hideByClass("dvMsg");
+    }
+
+    function changeFilePath (path) {
+      var regax = /(\.bin)$/i;
+      if (!regax.exec(path)) {
+        document.getElementById("txtFilePath").value = "";
+        document.getElementById("txtFile").value = "";
+        alert("File extension not supported.");
+      } else {
+        document.getElementById("txtFilePath").value = path;
+      }
+
+      if (document.getElementById("txtFilePath").value != "") {
+        document.getElementById("fwUpgrade").removeAttribute("disabled");
+      } else {
+        document.getElementById("fwUpgrade").setAttribute("disabled", "disabled");
+      }
+    }
+
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Firmware Upgrade "><span>Firmware Upgrade</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form enctype="multipart/form-data" method="post">
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data dvContent">
+      <div class="undownLineTitle">
+        Firmware Upgrade
+      </div>
+      <div class="w_text">
+        To upgrade the internal device firmware, browse to the location of the binary (.BIN) upgrade file and click
+        <a class="blod">Upload</a>. Upgrade files can be downloaded from website. If the upgrade file is compressed
+        (.ZIP file), you must first extract the binary (.BIN) file. In some cases, you may need to reconfigure.
+      </div>
+      <div class="spaceair"></div>
+      <div class="w_text">
+        <div class="input-pos">
+          <input class="input-file" id="txtFile" name="firmware" type="file" size="30" onchange="changeFilePath(this.value);" />
+          <div>
+            <input disabled="disabled" id="txtFilePath" size="28" type="text">
+            <input type="button" value="Browse" id="fakeBtn" />
+          </div>
+        </div>
+        <input id="fwUpgrade" class="btn" type="submit" value="Upload" onclick="goCountdown();" disabled="disabled" />
+      </div>
+<!--       <div class="w_text">
+        File Path: <input type="file" name="firmware" /> <input type="submit" value="Upload" onclick="goCountdown();" />
+      </div> -->
+    </div>
+    <div class="data dvMsg">
+      <div class="undownLineTitle">
+        Rebooting...
+      </div>
+      <div class="w_text">
+      AP is rebooting now, system will upgrade firmware.<br />
+      As there will be no indication of when the process is complete, please wait for <span id="clock" class="css_clock">360</span> seconds before attempting to access AP again.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

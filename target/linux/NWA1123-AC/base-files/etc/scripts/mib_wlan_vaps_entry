@@ -1,0 +1,183 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set the wlanVAPEntry. 
+##
+## mib_wlan_vaps_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+if [ "${2}" = "" ]; then
+    echo "Please specify the INDEX."
+    exit 255
+fi
+
+if [ "${3}" = "" ]; then
+    echo "Please specify the APMODE."
+    exit 255
+fi
+
+if [ "${4}" = "" ]; then
+    echo "Please specify the VALUE."
+    exit 255
+fi
+
+OID=$1
+IDX=$2
+APMODE=$3
+VALUE=$4
+
+if [ $IDX -gt 8 ]; then
+    let IDX-=8
+fi
+
+VAPS_LIST=""
+if [ "$APMODE" = "1" ]; then
+    vaps_status=`cfg -v VAP_LIST_1`
+    my_vaps_status=`echo "$vaps_status" | sed 's/,/ /g'`
+elif [ "$APMODE" = "2" ]; then
+    vaps_status=`cfg -v VAP_LIST_2`
+    my_vaps_status=`echo "$vaps_status" | sed 's/,/ /g'`
+fi
+count=0
+if [ "${OID}" = "1" ]; then
+    for i in $my_vaps_status;
+    do
+        let ++count
+        if [ "$IDX" = "$count" ]; then
+            if [ "$VALUE" = "1" ]; then
+                TMP_VAPS=`echo "$i" | cut -c 1-1`
+                if [ "$TMP_VAPS" = "_" ]; then
+                    VAPS=`echo "$i" | cut -c 2-3`
+                else
+                    VAPS="$i"
+                fi
+            elif [ "$VALUE" = "2" ]; then
+                TMP_VAPS=`echo "$i" | cut -c 1-1`
+                if [ "$TMP_VAPS" != "_" ]; then
+                    VAPS="_${i}"
+                else
+                    VAPS="$i"
+                fi
+            fi
+        else
+            VAPS="$i"
+        fi
+        if [ -n "$VAPS" ]; then
+            if [ -n "$VAPS_LIST" ]; then
+                VAPS_LIST="$VAPS_LIST,$VAPS"
+            else
+                VAPS_LIST="$VAPS"
+            fi
+        fi
+    done
+    
+    if [ "$APMODE" = "1" ]; then
+        cfg -a VAP_LIST_1="$VAPS_LIST"
+    elif [ "$APMODE" = "2" ]; then
+        cfg -a VAP_LIST_2="$VAPS_LIST"
+    fi
+    cfg -c
+    exit 0
+elif [ "${OID}" = "2" ]; then
+    for i in $my_vaps_status;
+    do
+        let ++count
+        if [ "$IDX" = "$count" ]; then
+            TMP_VAPS=`echo "$i" | cut -c 1-1`
+            if [ "$TMP_VAPS" = "_" ]; then
+                VAPS="_${VALUE}"
+            else
+                VAPS="${VALUE}"
+            fi
+        else
+            VAPS="$i"
+        fi
+        if [ -n "$VAPS" ]; then
+            if [ -n "$VAPS_LIST" ]; then
+                VAPS_LIST="$VAPS_LIST,$VAPS"
+            else
+                VAPS_LIST="$VAPS"
+            fi
+        fi
+    done
+    if [ "$APMODE" = "1" ]; then
+        cfg -a VAP_LIST_1="$VAPS_LIST"
+    elif [ "$APMODE" = "2" ]; then
+        cfg -a VAP_LIST_2="$VAPS_LIST"
+###### Vlan Tag enable/disable ######
+elif [ "${OID}" = "3" ]; then
+    for i in $my_vaps_status;
+    do
+        let ++count
+        if [ "$IDX" = "$count" ]; then
+            TMP_VAPS=`echo "$i" | cut -c 1-1`
+            if [ "$TMP_VAPS" = "_" ]; then
+                VAPS=`echo "$i" | cut -c 2-3`
+            else
+                VAPS="${i}"
+            fi
+            break
+        fi
+    done
+    cfg -a AP_NATIVE_VLAN_${VAPS}="${VALUE}"
+    cfg -c
+    exit 0
+elif [ "${OID}" = "4" ]; then
+    for i in $my_vaps_status;
+    do
+        let ++count
+        if [ "$IDX" = "$count" ]; then
+            TMP_VAPS=`echo "$i" | cut -c 1-1`
+            if [ "$TMP_VAPS" = "_" ]; then
+                VAPS=`echo "$i" | cut -c 2-3`
+            else
+                VAPS="${i}"
+            fi
+            break
+        fi
+    done
+    cfg -a AP_VLAN_${VAPS}="${VALUE}"
+    cfg -c
+    exit 0
+##### QoS setup #####
+elif [ "${OID}" = "5" ]; then
+    for i in $my_vaps_status;
+    do
+        let ++count
+        if [ "$IDX" = "$count" ]; then
+            TMP_VAPS=`echo "$i" | cut -c 1-1`
+            if [ "$TMP_VAPS" = "_" ]; then
+                VAPS=`echo "$i" | cut -c 2-3`
+            else
+                VAPS="${i}"
+            fi
+            break
+        fi
+    done
+    
+    if [ "${VALUE}" = "1" ]; then
+        AP_QOS="WMM"
+    elif [ "${VALUE}" = "2" ]; then
+        AP_QOS="WMM_VOICE"
+    elif [ "${VALUE}" = "3" ]; then
+        AP_QOS="WMM_VIDEO"
+    elif [ "${VALUE}" = "4" ]; then
+        AP_QOS="WMM_BACKGROUND"
+    elif [ "${VALUE}" = "5" ]; then
+        AP_QOS="WMM_BESTEFFORT"
+    else
+        AP_QOS="None"
+    fi
+
+    cfg -a AP_QOS_${VAPS}="${AP_QOS}"
+    cfg -c
+    exit 0
+fi
+
+exit 255

@@ -1,0 +1,42 @@
+diff -Nur old/privops.c new/privops.c
+--- old/privops.c	2010-03-18 06:29:44.000000000 +0100
++++ new/privops.c	2015-10-28 16:25:46.000000000 +0100
+@@ -18,6 +18,8 @@
+ #include "tunables.h"
+ #include "defs.h"
+ #include "logging.h"
++#include <syslog.h>
++
+ 
+ /* File private functions */
+ static enum EVSFPrivopLoginResult handle_anonymous_login(
+@@ -243,9 +245,13 @@
+   enum EVSFPrivopLoginResult result =
+     handle_login(p_sess, &p_sess->user_str, p_pass_str);
+   vsf_log_start_entry(p_sess, kVSFLogEntryLogin);
++
++  openlog("",LOG_PID,LOG_LOCAL1);
++  
+   if (result == kVSFLoginFail)
+   {
+     vsf_log_do_log(p_sess, 0);
++	syslog(LOG_INFO,"FTP login incorrect");
+     if (tunable_delay_failed_login)
+     {
+       vsf_sysutil_sleep((double) tunable_delay_failed_login);
+@@ -254,11 +260,15 @@
+   else
+   {
+     vsf_log_do_log(p_sess, 1);
++	syslog(LOG_INFO,"FTP login");
+     if (tunable_delay_successful_login)
+     {
+       vsf_sysutil_sleep((double) tunable_delay_successful_login);
+     }
+   }
++  
++  closelog();
++  
+   return result;
+ }
+ 

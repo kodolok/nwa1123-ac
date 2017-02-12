@@ -1,0 +1,20 @@
+diff -Nur old/mini_httpd.c new/mini_httpd.c
+--- old/mini_httpd.c	2016-04-20 16:33:24.272197095 +0800
++++ new/mini_httpd.c	2016-04-26 11:17:00.135530389 +0800
+@@ -1429,6 +1429,7 @@
+                 fgets(tmpBuf, 50, f);
+                 if (strncmp(tmpBuf, "Access granted", 14) == 0)
+                 {
++                    system("log_maintain \"web login successful\"");
+                     char nextpage[20];
+ 
+                     /* ask user to change default password. */
+@@ -1446,6 +1447,8 @@
+ 
+                     send_auth_cookie(host, nextpage);
+                 }
++                else
++                    system("log_maintain \"web login failure\"");
+             }
+         }
+     }

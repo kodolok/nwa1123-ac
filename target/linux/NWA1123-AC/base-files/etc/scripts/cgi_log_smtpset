@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+#SMTP schedule scripts
+#
+. /etc/ath/apcfg
+ROOT_FILE=/var/spool/cron/crontabs/root
+
+killall -q crond
+
+if [ ! -f $ROOT_FILE ]
+then
+    touch $ROOT_FILE
+fi
+if [ "$LOG_SCHEDULE" = "0" ] #when log is FULL
+then
+    crontab -l | grep -v cgi_log > /tmp/crontab
+    echo "*/2 * * * * /etc/scripts/cgi_log_sendfull" >> /tmp/crontab
+elif [ "$LOG_SCHEDULE" = "1" ] #Hourly
+then
+    crontab -l | grep -v cgi_log > /tmp/crontab
+    echo "1 */1 * * * /etc/scripts/cgi_log_sendmail" >> /tmp/crontab
+
+elif [ "$LOG_SCHEDULE" = "2" ] #Daily
+then
+    crontab -l | grep -v cgi_log > /tmp/crontab
+	tmp_time=$(($LOG_MIN))
+	echo "$tmp_time" > /tmp/tmp_log_min
+	tmp_val=`cat /tmp/tmp_log_min`
+	echo "$tmp_val $LOG_HOUR * * * /etc/scripts/cgi_log_sendmail" >> /tmp/crontab
+    #echo "$LOG_MIN $LOG_HOUR * * * /etc/scripts/cgi_log_sendmail" >> /tmp/crontab
+elif [ "$LOG_SCHEDULE" = "3" ] #Weekly
+then
+    crontab -l | grep -v cgi_log > /tmp/crontab
+	tmp_time=$(($LOG_MIN))
+	echo "$tmp_time" > /tmp/tmp_log_min
+	tmp_val=`cat /tmp/tmp_log_min`
+    echo "$tmp_val $LOG_HOUR * * $LOG_WEEKLY /etc/scripts/cgi_log_sendmail" >> /tmp/crontab
+    #echo "$LOG_MIN $LOG_HOUR * * $LOG_WEEKLY /etc/scripts/cgi_log_sendmail" >> /tmp/crontab
+else #none
+    crontab -l | grep -v cgi_log > /tmp/crontab
+fi
+
+if [ -f /tmp/crontab ];then
+mv /tmp/crontab $ROOT_FILE
+fi
+crond &

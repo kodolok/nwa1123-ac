@@ -1,0 +1,211 @@
+#!/bin/sh
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+WAN_IF=${WAN_IF:=eth0}
+
+module_x_ip_eb_tables ebtables enable
+
+status_l2_iso(){
+    i=1
+    while [ $i -le 32 ]
+    do
+        ITER_STATUS="AP_L2_ISO_$i"
+        eval ITER_STATUS=\$$ITER_STATUS
+
+        if [ "$ITER_STATUS" = "1" ]; then
+            return 1
+        fi
+
+        i=$((i+1))
+    done
+
+    return 0
+}
+
+configure_l2_iso_acpt() {
+    VAPNAME=$1
+
+    i=1
+    while [ $i -le 32 ]
+    do
+        ITER_MAC="L2_ISO_MAC_$i"
+        eval ITER_MAC=\$$ITER_MAC
+
+        if [ "$ITER_MAC" != "" ]; then
+            if [ "$ITER_MAC" != "00:00:00:00:00:00" ]; then
+                ebtables -A L2_ISO_$VAPNAME -d $ITER_MAC -j ACCEPT
+            fi
+        fi
+
+        i=$(($i+1))
+    done
+
+    ebtables -A L2_ISO_$VAPNAME -d ff:ff:ff:ff:ff:ff -j ACCEPT
+}
+## end configure_l2_iso_acpt
+
+configure_l2_iso_deny() {
+    VAPNAME=$1
+
+    ebtables -A L2_ISO_$VAPNAME -j DROP
+}
+## end configure_l2_iso_deny
+
+create_l2_iso() {
+    VAPNAME=$1
+
+    ebtables -N L2_ISO_$VAPNAME
+    ebtables -A FORWARD -i $VAPNAME -j L2_ISO_$VAPNAME
+}
+## end create_l2_iso
+
+delete_l2_iso() {
+    VAPNAME=$1
+
+    ebtables -D FORWARD -i $VAPNAME -j L2_ISO_$VAPNAME 2> /dev/null
+    ebtables -X L2_ISO_$VAPNAME 2> /dev/null
+}
+## end delete_l2_iso
+
+_IFS="$IFS"
+IFS=','
+
+VAP_NUM=0
+
+ebtables -F
+ebtables -X
+
+if [ "${AP_STARTMODE_1}" != "repeater" -a "${AP_STARTMODE_1}" != "client" ]; then 
+	if [ "${AP_STARTMODE_1}" = "root-mbssid" ]; then
+		## WDS Root VAP has been actived
+		ITER_AP_L2_ISO="AP_L2_ISO_$WDS_AP_PROFILE_1"
+		ITER_AP_VLAN="AP_VLAN_$WDS_AP_PROFILE_1"
+		eval ITER_AP_L2_ISO=\$$ITER_AP_L2_ISO
+		eval ITER_AP_VLAN=\$$ITER_AP_VLAN
+
+		#delete_l2_iso ath$VAP_NUM
+
+		if [ "${ITER_AP_L2_ISO}" = "1" ]; then
+			if [ "$DOT1Q_VLAN" = "1" ]; then
+				if [ "$MGMT_VLAN" = "0" -a "x$MGMT_VLAN_ID" = "x$ITER_AP_VLAN" ]; then
+					INTERFACE=ath$VAP_NUM
+				else
+					INTERFACE=ath$VAP_NUM.$ITER_AP_VLAN
+				fi
+			else
+				INTERFACE=ath$VAP_NUM
+			fi
+			
+			create_l2_iso $INTERFACE
+			configure_l2_iso_acpt $INTERFACE
+			configure_l2_iso_deny $INTERFACE
+		fi
+
+		VAP_NUM=1
+	fi
+
+	for i in $VAP_LIST_1;
+	do
+		if echo "${i}" | grep -q '_'; then
+			#delete_l2_iso ath$VAP_NUM
+			continue
+		fi
+
+		ITER_AP_L2_ISO="AP_L2_ISO_$i"
+		ITER_AP_VLAN="AP_VLAN_$i"
+		eval ITER_AP_L2_ISO=\$$ITER_AP_L2_ISO
+		eval ITER_AP_VLAN=\$$ITER_AP_VLAN
+
+		#delete_l2_iso ath$VAP_NUM
+
+		if [ "${ITER_AP_L2_ISO}" = "1" ]; then
+			if [ "$DOT1Q_VLAN" = "1" ]; then
+				if [ "$MGMT_VLAN" = "0" -a "x$MGMT_VLAN_ID" = "x$ITER_AP_VLAN" ]; then
+					INTERFACE=ath$VAP_NUM
+				else
+					INTERFACE=ath$VAP_NUM.$ITER_AP_VLAN
+				fi
+			else
+				INTERFACE=ath$VAP_NUM
+			fi
+			create_l2_iso $INTERFACE
+			configure_l2_iso_acpt $INTERFACE
+			configure_l2_iso_deny $INTERFACE
+		fi
+		VAP_NUM=$(($VAP_NUM+1))
+	done
+fi
+
+VAP_NUM=8
+
+if [ "${AP_STARTMODE_2}" != "repeater" -a "${AP_STARTMODE_2}" != "client" ]; then 
+	if [ "${AP_STARTMODE_2}" = "root-mbssid" ]; then
+		## WDS Root VAP has been actived
+		ITER_AP_L2_ISO="AP_L2_ISO_$WDS_AP_PROFILE_2"
+		ITER_AP_VLAN="AP_VLAN_$WDS_AP_PROFILE_2"
+		eval ITER_AP_L2_ISO=\$$ITER_AP_L2_ISO
+		eval ITER_AP_VLAN=\$$ITER_AP_VLAN
+
+		#delete_l2_iso ath$VAP_NUM
+
+		if [ "${ITER_AP_L2_ISO}" = "1" ]; then
+			if [ "$DOT1Q_VLAN" = "1" ]; then
+				if [ "$MGMT_VLAN" = "0" -a "x$MGMT_VLAN_ID" = "x$ITER_AP_VLAN" ]; then
+					INTERFACE=ath$VAP_NUM
+				else
+					INTERFACE=ath$VAP_NUM.$ITER_AP_VLAN
+				fi
+			else
+				INTERFACE=ath$VAP_NUM
+			fi
+			create_l2_iso $INTERFACE
+			configure_l2_iso_acpt $INTERFACE
+			configure_l2_iso_deny $INTERFACE
+		fi
+
+		VAP_NUM=9
+	fi
+
+	for i in $VAP_LIST_2;
+	do
+		if echo "${i}" | grep -q '_'; then
+			#delete_l2_iso ath$VAP_NUM
+			continue
+		fi
+
+		ITER_AP_L2_ISO="AP_L2_ISO_$i"
+		ITER_AP_VLAN="AP_VLAN_$i"
+		eval ITER_AP_L2_ISO=\$$ITER_AP_L2_ISO
+		eval ITER_AP_VLAN=\$$ITER_AP_VLAN
+
+		#delete_l2_iso ath$VAP_NUM
+
+		if [ "${ITER_AP_L2_ISO}" = "1" ]; then
+			if [ "$DOT1Q_VLAN" = "1" ]; then
+				if [ "$MGMT_VLAN" = "0" -a "x$MGMT_VLAN_ID" = "x$ITER_AP_VLAN" ]; then
+					INTERFACE=ath$VAP_NUM
+				else
+					INTERFACE=ath$VAP_NUM.$ITER_AP_VLAN
+				fi
+			else
+				INTERFACE=ath$VAP_NUM
+			fi
+			create_l2_iso $INTERFACE
+			configure_l2_iso_acpt $INTERFACE
+			configure_l2_iso_deny $INTERFACE
+		fi
+
+		VAP_NUM=$(($VAP_NUM+1))
+	done
+fi
+
+status_l2_iso
+
+if [ $? = 0 ]; then
+    module_x_ip_eb_tables ebtables disable
+fi
+
+IFS="$_IFS"

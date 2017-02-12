@@ -1,0 +1,73 @@
+#!/bin/sh
+#########################################################################
+##  Network Configuration
+##
+##  This script sets up the WAN/LAN ports to the appropriate configuration
+##
+#########################################################################
+
+. /etc/ath/apcfg
+
+WAN_IF=${WAN_IF:=eth0}
+LAN_IF=${LAN_IF:=eth1}
+
+##
+# Enable the loopback interface
+##
+
+ifconfig lo 127.0.0.1 up
+
+##
+## Check the WAN mode.  If not bridged, check for DHCP client, else
+## simply set the address
+##
+
+##if [ "${WAN_MODE}" != "bridged" ]; then
+##    if [ "${WAN_MODE}" = "dhcp" ]; then
+        ##
+        ## Run the DHCP client on this interface
+        ##
+
+##        /sbin/udhcpc -b -i $WAN_IF &
+##        /sbin/dhcp6c -c /etc/dhcp6c.conf $WAN_IF
+##    else
+        ##
+        ## Static IP address
+        ##
+
+##        ifconfig $WAN_IF $WAN_IPADDR netmask $WAN_NETMASK up
+##    fi
+##fi
+
+##
+## Bring up the 4 port interface
+##
+
+# ifconfig $LAN_IF up
+
+##
+## Set DNS Server
+##
+
+RESOLV_CONF="/tmp/resolv.conf"
+
+## new_namesrv_conf=/tmp/resolv.conf.tmp
+## new_namesrv_temp=/tmp/resolv.conf.temp
+## sed s/\ nameserver/\ NAMESERVER/g < $RESOLV_CONF > $new_namesrv_temp
+## sed /nameserver/d $new_namesrv_temp > $new_namesrv_conf
+## sed s/\ NAMESERVER/\ nameserver/g < $new_namesrv_conf > $new_namesrv_temp
+## mv -f $new_namesrv_temp $RESOLV_CONF
+## rm -f $new_namesrv_conf
+## unset new_namesrv_temp
+## unset new_namesrv_conf
+
+rm -f $RESOLV_CONF
+touch $RESOLV_CONF
+if [ -n "$PRIDNS" ]
+then
+    echo nameserver $PRIDNS >> $RESOLV_CONF
+fi
+if [ -n "$SECDNS" ]
+then
+    echo nameserver $SECDNS >> $RESOLV_CONF
+fi

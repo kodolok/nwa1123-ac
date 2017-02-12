@@ -1,0 +1,14 @@
+--- ./mini_httpd.c	2016-05-19 09:43:40.928891470 +0800
++++ ./new_mini_httpd.c	2016-05-19 09:44:25.356815770 +0800
+@@ -1887,9 +1887,9 @@
+     ** into our buffer.  We also have to do this for all SSL CGIs.
+     */
+ #ifdef USE_SSL
+-    if ( ( method == METHOD_POST && request_len > request_idx ) || do_ssl )
++    if ( ( method == METHOD_POST && request_len >= request_idx ) || do_ssl )
+ #else /* USE_SSL */
+-    if ( ( method == METHOD_POST && request_len > request_idx ) )
++    if ( ( method == METHOD_POST && request_len >= request_idx ) )
+ #endif /* USE_SSL */
+ 	{
+ 	int p[2];

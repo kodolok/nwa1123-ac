@@ -1,0 +1,132 @@
+#!/bin/sh
+#######################################################
+##
+## sys_led_alert <name> [stop]
+##
+## <name>:   [wif | uplink]
+##
+#######################################################
+
+REG_GPIO_SET=0xb804000c
+REG_GPIO_CLEAR=0xb8040010
+GPIO_ALERT=0x00000800
+GPIO_WIFI=0x00001000
+BASE="/tmp/.alert_"
+PID_FILE="$BASE$1"
+PID_FILE_WIFI="$BASE""wifi"
+PID_FILE_UPLINK="$BASE""uplink"
+LED_STATUS=`cfg -v LED_CTRL_STATUS`
+ALERT_FUN=$1
+
+
+for name in uplink wifi
+do
+    if [ "$name" != "$ALERT_FUN" ]; then
+        Other_FUN=$name
+    fi
+done
+
+usage(){
+    echo
+    echo "Usage: sys_led_alert <name>"
+    echo "<status>: uplink | wifi"
+    echo
+}
+
+stop_blink(){
+    if [ -e "$PID_FILE" ]; then
+        kill `cat $PID_FILE`
+        rm $PID_FILE
+        mm $REG_GPIO_SET $GPIO_ALERT
+        if [ "$LED_STATUS" = "0" ]; then
+            iwpriv wifi0 led_ctrl 0
+            iwpriv wifi1 led_ctrl 0
+        fi        
+    fi
+}
+
+setPIDFILE(){
+    echo $$ > $PID_FILE
+}
+
+led_blink()
+{
+    mm $REG_GPIO_CLEAR $GPIO_ALERT
+    sleep 1
+
+    mm $REG_GPIO_SET $GPIO_ALERT
+    sleep 1
+}
+
+wait()
+{
+    CHFILE="$BASE$Other_FUN"
+    while true
+    do
+        if [ ! -e "$CHFILE" ]; then
+            break
+        fi
+        sleep 3
+    done
+}
+
+checkSelfStatus()
+{
+    CHFILE="$BASE$ALERT_FUN"
+    if [ -e "$CHFILE" ]; then
+        stop_blink
+    fi
+    setPIDFILE
+}
+
+checkOtherStatus()
+{
+    CHFILE="$BASE$Other_FUN"
+
+    if [ -e "$CHFILE" ]; then
+        wait
+    fi
+}
+
+if [ "$ALERT_FUN" != "uplink" -a "$ALERT_FUN" != "wifi" ]; then
+    usage
+    exit 1
+fi
+
+if [ "$2" = stop ]; then
+    stop_blink
+    exit 0
+fi
+
+if [ -e "$PID_FILE_WIFI" -a -e "$PID_FILE_UPLINK" ]; then
+    exit 1
+fi
+
+
+checkSelfStatus
+checkOtherStatus
+
+if [ "$ALERT_FUN" = "uplink" ]; then
+    if [ "$LED_STATUS" = "0" ]; then
+        iwpriv wifi0 led_ctrl 1
+        iwpriv wifi1 led_ctrl 1
+        mm $REG_GPIO_SET $GPIO_WIFI
+    fi
+
+    list="1 2 3"
+else
+    list="1 2"
+fi
+
+while true
+do
+    LED_STATUS=`cfg -v LED_CTRL_STATUS`
+    if [ "$LED_STATUS" = "0" ]; then
+        for i in $list;
+        do
+            led_blink
+        done
+    fi
+    
+    sleep 3
+done

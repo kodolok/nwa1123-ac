@@ -1,0 +1,29 @@
+#!/bin/sh
+#########################################################################
+##  Reset button 
+##  
+#########################################################################
+
+count=0
+while [ 1 ]; do
+resetflag=1 #0:push resetbutton
+i=1
+status=`md 0xb8040004 | cut -d ':' -f2`
+value=`echo $status | cut -d ' ' -f1`
+removehex=`echo $value | cut -d 'x' -f2`
+removeprefix=`echo $removehex | cut -b7`
+resetflag=$((removeprefix%2))
+if [ "$resetflag" = "1" ]
+then
+   count=0
+else
+   count=$(($count+1))
+fi   
+  sleep 1
+if [ "$count" != "0" ]
+then
+	logger -p local1.info " (sys_resetbutton) push reset button : value=$value"
+   #cfg -x
+   #reboot
+fi
+done

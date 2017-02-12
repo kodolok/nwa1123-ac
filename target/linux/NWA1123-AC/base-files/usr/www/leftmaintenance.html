@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <link href="css/dtree.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="js/dtree.js"></script>
+  <script type="text/javascript" src="js/baseJS.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript">
+    $.ajaxSetup({ cache: false });
+    function init() {
+      d.s(1);
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div id="top"></div>
+  <div id="leftframe">
+    <div class="contentframe">
+      <ul>
+        <li>
+          <div class="leftmaintenance">
+            <ul>
+              <li class="i_maintenance" title="Maintenance">&nbsp;</li>
+            </ul>
+          </div>
+          <div class="submenu3">
+            <ul>
+              <li class="i_dashboard"><a href="cgi-bin/dashboard" title="Dashboard" target="_parent"></a></li>
+              <li class="i_monitor"><a href="monitor.html" title="Monitor" target="_parent"></a></li>
+              <li class="i_config"><a href="configuration.html" title="Configuration" target="_parent"></a></li>
+              <li>&nbsp;</li>
+            </ul><br class="clearfloat" />
+          </div>
+        </li>
+        <li>
+          <div class="menu">
+            <ul>
+              <li class="menuline">
+                <div>
+                  <ul>
+                    <li class="menu_top"><br />
+                    &nbsp;&nbsp;MAINTENANCE</li>
+                    <li>&nbsp;</li>
+                    <li>
+                      <div class="dtree" style="*margin-top:-10px;">
+                        <script type="text/javascript">
+                        d = new dTree('d');
+                        d.add(0,-1,'');
+                        d.add(1,0,'General','cgi-bin/sys_general');
+                        d.add(2,0,'Password','cgi-bin/password');
+                        d.add(3,0,'Time','cgi-bin/time');
+                        d.add(4,0,'Firmware Upgrade','cgi-bin/firmware_upgrade');
+                        d.add(5,0,'Configuration File','cgi-bin/backup_restore');
+                        d.add(6,0,'LEDs','cgi-bin/leds');
+                        d.add(7,0,'Restart','cgi-bin/restart');
+                        document.write(d);
+                        </script>
+                      </div>
+                    </li>
+                    <li>&nbsp;</li>
+                  </ul>
+                </div>
+              </li>
+            </ul><br class="clearfloat" />
+          </div>
+        </li>
+      </ul><br class="clearfloat" />
+    </div>
+  </div>
+  <div class="menubottom"></div>
+</body>
+</html>

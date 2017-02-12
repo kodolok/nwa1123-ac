@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+
+if [ ! -n "$1" ]
+then
+    mainstr=` route | grep "default" | awk '{print $2}' `
+    echo "Current GW is $mainstr"
+    exit 0
+fi
+
+##
+## Checking input value
+regex="\b(22[0-3]|2[0-1][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b"
+
+CHECK=$(echo $1 | egrep $regex)
+if [ ! "$?" -eq 0 ]
+then
+    echo "Incorrect gateway address, please try again.. "
+    exit 0
+fi
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+if [ "${WAN_MODE}" = "dhcp" ]; then
+    echo "Current mode is dhcp, please change to static first."
+    exit 0
+fi
+
+if [ "${IPGW}" = "$1" ]; then
+    exit 0
+fi
+
+MGMT_IF=`get_mgmt_if`
+
+##
+## Removing current default gw
+if [ -n "$IPGW" ]
+then
+    OLD_IPGW="$IPGW"
+    route del default gw $IPGW dev $MGMT_IF
+fi
+
+IPGW="$1"
+
+##
+## Check the WAN mode.  check for DHCP client, else
+## simply set the address
+##
+if [ "${WAN_MODE}" = "dhcp" ]; then
+    udhcpc -b -i $MGMT_IF -h $SYS_NAME&
+else
+    ##
+    ## Static IP address
+    ##
+
+##    killall -q udhcpc
+##    ifconfig $MGMT_IF $AP_IPADDR netmask $AP_NETMASK up
+
+    if [ -n "$IPGW" ]
+    then
+        route add default gw $IPGW dev $MGMT_IF >  /tmp/check.tmp 2>&1
+        set -- `ls -l /tmp/check.tmp`
+        if [ $5 -gt 0 ]
+        then
+            if [ -n "$OLD_IPGW" ]
+            then
+                route add default gw $OLD_IPGW dev $MGMT_IF
+            fi
+            echo "Incorrect gateway address, please try again.. "
+            exit 0
+        fi
+    fi
+fi
+
+cfg -a IPGW="$IPGW"
+cfg -c
+
+sh /etc/scripts/acl_setrule
+
+exit 0
+

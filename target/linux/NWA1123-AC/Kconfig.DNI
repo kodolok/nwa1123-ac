@@ -1,0 +1,21 @@
+#
+# DNI Source Kernel Configuration
+#
+
+config JUMPSTART_GPIO
+	int "Define the JUMPSTART GPIO Pin number"
+	default "4"
+	help
+		Define the JUMPSTART GPIO Pin number
+		
+config WPS_LED_GPIO_PIN
+	int "Define the WPS LED GPIO Pin number"
+	default "5"
+	help
+		Define the WPS LED GPIO Pin number
+		
+config DNI_FLASH_SRC_READ_PATCH
+	bool "Define the DNI FLASH SRC READ PATCH"
+	default y
+	help
+		Define the FLASH SRC READ PATCH

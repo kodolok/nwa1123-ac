@@ -1,0 +1,10 @@
+#!/bin/sh
+log_maintain "telnet login"
+echo "#### Welcome ####"
+echo 
+
+## Run the application CLI 
+/etc/DNICLI
+
+echo 
+echo " Bye-Bye!"

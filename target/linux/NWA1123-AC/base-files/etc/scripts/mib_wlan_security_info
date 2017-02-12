@@ -1,0 +1,805 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanSecurityInfo. 
+##
+## mib_wlan_security_info
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+
+##
+## Security Mode /* None, WEP, WPA */
+##
+ITER_SEC_MODE_1=`cfg -v SEC_MODE_1`
+ITER_SEC_MODE_2=`cfg -v SEC_MODE_2`
+ITER_SEC_MODE_3=`cfg -v SEC_MODE_3`
+ITER_SEC_MODE_4=`cfg -v SEC_MODE_4`
+ITER_SEC_MODE_5=`cfg -v SEC_MODE_5`
+ITER_SEC_MODE_6=`cfg -v SEC_MODE_6`
+ITER_SEC_MODE_7=`cfg -v SEC_MODE_7`
+ITER_SEC_MODE_8=`cfg -v SEC_MODE_8`
+
+##
+## Security Version /* 0:802.1x, 1:WPA, 2:WPA2, 3:MIX */
+##
+SEC_WPA_1=`cfg -v SEC_WPA_1`
+SEC_WPA_2=`cfg -v SEC_WPA_2`
+SEC_WPA_3=`cfg -v SEC_WPA_3`
+SEC_WPA_4=`cfg -v SEC_WPA_4`
+SEC_WPA_5=`cfg -v SEC_WPA_5`
+SEC_WPA_6=`cfg -v SEC_WPA_6`
+SEC_WPA_7=`cfg -v SEC_WPA_7`
+SEC_WPA_8=`cfg -v SEC_WPA_8`
+
+##
+## Security Type {OPEN, WEP, PSK, EAP(Enterprise/802.1x)}
+##
+SEC_TYPE_1=`cfg -v SEC_TYPE_1`
+SEC_TYPE_2=`cfg -v SEC_TYPE_2`
+SEC_TYPE_3=`cfg -v SEC_TYPE_3`
+SEC_TYPE_4=`cfg -v SEC_TYPE_4`
+SEC_TYPE_5=`cfg -v SEC_TYPE_5`
+SEC_TYPE_6=`cfg -v SEC_TYPE_6`
+SEC_TYPE_7=`cfg -v SEC_TYPE_7`
+SEC_TYPE_8=`cfg -v SEC_TYPE_8`
+
+##
+## WEP key mgmt : {none|static|dynamic}
+#
+SEC_WEP_KEY_MGMT_1=`cfg -v SEC_WEP_KEY_MGMT_1`
+SEC_WEP_KEY_MGMT_2=`cfg -v SEC_WEP_KEY_MGMT_2`
+SEC_WEP_KEY_MGMT_3=`cfg -v SEC_WEP_KEY_MGMT_3`
+SEC_WEP_KEY_MGMT_4=`cfg -v SEC_WEP_KEY_MGMT_4`
+SEC_WEP_KEY_MGMT_5=`cfg -v SEC_WEP_KEY_MGMT_5`
+SEC_WEP_KEY_MGMT_6=`cfg -v SEC_WEP_KEY_MGMT_6`
+SEC_WEP_KEY_MGMT_7=`cfg -v SEC_WEP_KEY_MGMT_7`
+SEC_WEP_KEY_MGMT_8=`cfg -v SEC_WEP_KEY_MGMT_8`
+
+##
+## SecurityMode: None
+##
+if [ "$ITER_SEC_MODE_1" = "None" ] && [ "$SEC_WPA_1" = "0" ] && [ "$SEC_TYPE_1" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_1" = "none" ]; then
+    SEC_MODE_1=0
+fi
+if [ "$ITER_SEC_MODE_2" = "None" ] && [ "$SEC_WPA_2" = "0" ] && [ "$SEC_TYPE_2" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_2" = "none" ]; then
+    SEC_MODE_2=0
+fi
+if [ "$ITER_SEC_MODE_3" = "None" ] && [ "$SEC_WPA_3" = "0" ] && [ "$SEC_TYPE_3" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_3" = "none" ]; then
+    SEC_MODE_3=0
+fi
+if [ "$ITER_SEC_MODE_4" = "None" ] && [ "$SEC_WPA_4" = "0" ] && [ "$SEC_TYPE_4" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_4" = "none" ]; then
+    SEC_MODE_4=0
+fi
+if [ "$ITER_SEC_MODE_5" = "None" ] && [ "$SEC_WPA_5" = "0" ] && [ "$SEC_TYPE_5" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_5" = "none" ]; then
+    SEC_MODE_5=0
+fi
+if [ "$ITER_SEC_MODE_6" = "None" ] && [ "$SEC_WPA_6" = "0" ] && [ "$SEC_TYPE_6" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_6" = "none" ]; then
+    SEC_MODE_6=0
+fi
+if [ "$ITER_SEC_MODE_7" = "None" ] && [ "$SEC_WPA_7" = "0" ] && [ "$SEC_TYPE_7" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_7" = "none" ]; then
+    SEC_MODE_7=0
+fi
+if [ "$ITER_SEC_MODE_8" = "None" ] && [ "$SEC_WPA_8" = "0" ] && [ "$SEC_TYPE_8" = "OPEN" ] && [ "$SEC_WEP_KEY_MGMT_8" = "none" ]; then
+    SEC_MODE_8=0
+fi
+
+##
+## SecurityMode: WEP
+##
+if [ "$ITER_SEC_MODE_1" = "WEP" ] && [ "$SEC_WPA_1" = "0" ] && [ "$SEC_TYPE_1" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_1" = "static" ]; then
+    SEC_MODE_1=1
+fi
+if [ "$ITER_SEC_MODE_2" = "WEP" ] && [ "$SEC_WPA_2" = "0" ] && [ "$SEC_TYPE_2" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_2" = "static" ]; then
+    SEC_MODE_2=1
+fi
+if [ "$ITER_SEC_MODE_3" = "WEP" ] && [ "$SEC_WPA_3" = "0" ] && [ "$SEC_TYPE_3" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_3" = "static" ]; then
+    SEC_MODE_3=1
+fi
+if [ "$ITER_SEC_MODE_4" = "WEP" ] && [ "$SEC_WPA_4" = "0" ] && [ "$SEC_TYPE_4" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_4" = "static" ]; then
+    SEC_MODE_4=1
+fi
+if [ "$ITER_SEC_MODE_5" = "WEP" ] && [ "$SEC_WPA_5" = "0" ] && [ "$SEC_TYPE_5" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_5" = "static" ]; then
+    SEC_MODE_5=1
+fi
+if [ "$ITER_SEC_MODE_6" = "WEP" ] && [ "$SEC_WPA_6" = "0" ] && [ "$SEC_TYPE_6" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_6" = "static" ]; then
+    SEC_MODE_6=1
+fi
+if [ "$ITER_SEC_MODE_7" = "WEP" ] && [ "$SEC_WPA_7" = "0" ] && [ "$SEC_TYPE_7" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_7" = "static" ]; then
+    SEC_MODE_7=1
+fi
+if [ "$ITER_SEC_MODE_8" = "WEP" ] && [ "$SEC_WPA_8" = "0" ] && [ "$SEC_TYPE_8" = "WEP" ] && [ "$SEC_WEP_KEY_MGMT_8" = "static" ]; then
+    SEC_MODE_8=1
+fi
+
+##
+## SecurityMode: WPA, WPA2, WPA2-MIX
+##
+if [ "$ITER_SEC_MODE_1" = "WPA" ] && [ "$SEC_TYPE_1" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_1" = "none" ]; then
+    if [ "$SEC_WPA_1" = "1" ]; then
+        SEC_MODE_1=4
+    elif [ "$SEC_WPA_1" = "2" ]; then
+        SEC_MODE_1=8
+    elif [ "$SEC_WPA_1" = "3" ]; then
+        SEC_MODE_1=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_2" = "WPA" ] && [ "$SEC_TYPE_2" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_2" = "none" ]; then
+    if [ "$SEC_WPA_2" = "1" ]; then
+        SEC_MODE_2=4
+    elif [ "$SEC_WPA_2" = "2" ]; then
+        SEC_MODE_2=8
+    elif [ "$SEC_WPA_2" = "3" ]; then
+        SEC_MODE_2=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_3" = "WPA" ] && [ "$SEC_TYPE_3" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_3" = "none" ]; then
+    if [ "$SEC_WPA_3" = "1" ]; then
+        SEC_MODE_3=4
+    elif [ "$SEC_WPA_3" = "2" ]; then
+        SEC_MODE_3=8
+    elif [ "$SEC_WPA_3" = "3" ]; then
+        SEC_MODE_3=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_4" = "WPA" ] && [ "$SEC_TYPE_4" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_4" = "none" ]; then
+    if [ "$SEC_WPA_4" = "1" ]; then
+        SEC_MODE_4=4
+    elif [ "$SEC_WPA_4" = "2" ]; then
+        SEC_MODE_4=8
+    elif [ "$SEC_WPA_4" = "3" ]; then
+        SEC_MODE_4=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_5" = "WPA" ] && [ "$SEC_TYPE_5" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_5" = "none" ]; then
+    if [ "$SEC_WPA_5" = "1" ]; then
+        SEC_MODE_5=4
+    elif [ "$SEC_WPA_5" = "2" ]; then
+        SEC_MODE_5=8
+    elif [ "$SEC_WPA_5" = "3" ]; then
+        SEC_MODE_5=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_6" = "WPA" ] && [ "$SEC_TYPE_6" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_6" = "none" ]; then
+    if [ "$SEC_WPA_6" = "1" ]; then
+        SEC_MODE_6=4
+    elif [ "$SEC_WPA_6" = "2" ]; then
+        SEC_MODE_6=8
+    elif [ "$SEC_WPA_6" = "3" ]; then
+        SEC_MODE_6=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_7" = "WPA" ] && [ "$SEC_TYPE_7" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_7" = "none" ]; then
+    if [ "$SEC_WPA_7" = "1" ]; then
+        SEC_MODE_7=4
+    elif [ "$SEC_WPA_7" = "2" ]; then
+        SEC_MODE_7=8
+    elif [ "$SEC_WPA_7" = "3" ]; then
+        SEC_MODE_7=12
+    fi
+fi
+if [ "$ITER_SEC_MODE_8" = "WPA" ] && [ "$SEC_TYPE_8" = "EAP" ] && [ "$SEC_WEP_KEY_MGMT_8" = "none" ]; then
+    if [ "$SEC_WPA_8" = "1" ]; then
+        SEC_MODE_8=4
+    elif [ "$SEC_WPA_8" = "2" ]; then
+        SEC_MODE_8=8
+    elif [ "$SEC_WPA_8" = "3" ]; then
+        SEC_MODE_8=12
+    fi
+fi
+
+##
+## SecurityMode: WPA-PSK, WPA2-PSK, WPA2-PSK-MIX
+##
+if [ "$ITER_SEC_MODE_1" = "WPA" ] && [ "$SEC_TYPE_1" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_1" = "none" ]; then
+    if [ "$SEC_WPA_1" = "1" ]; then
+        SEC_MODE_1=16
+    elif [ "$SEC_WPA_1" = "2" ]; then
+        SEC_MODE_1=32
+    elif [ "$SEC_WPA_1" = "3" ]; then
+        SEC_MODE_1=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_2" = "WPA" ] && [ "$SEC_TYPE_2" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_2" = "none" ]; then
+    if [ "$SEC_WPA_2" = "1" ]; then
+        SEC_MODE_2=16
+    elif [ "$SEC_WPA_2" = "2" ]; then
+        SEC_MODE_2=32
+    elif [ "$SEC_WPA_2" = "3" ]; then
+        SEC_MODE_2=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_3" = "WPA" ] && [ "$SEC_TYPE_3" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_3" = "none" ]; then
+    if [ "$SEC_WPA_3" = "1" ]; then
+        SEC_MODE_3=16
+    elif [ "$SEC_WPA_3" = "2" ]; then
+        SEC_MODE_3=32
+    elif [ "$SEC_WPA_3" = "3" ]; then
+        SEC_MODE_3=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_4" = "WPA" ] && [ "$SEC_TYPE_4" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_4" = "none" ]; then
+    if [ "$SEC_WPA_4" = "1" ]; then
+        SEC_MODE_4=16
+    elif [ "$SEC_WPA_4" = "2" ]; then
+        SEC_MODE_4=32
+    elif [ "$SEC_WPA_4" = "3" ]; then
+        SEC_MODE_4=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_5" = "WPA" ] && [ "$SEC_TYPE_5" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_5" = "none" ]; then
+    if [ "$SEC_WPA_5" = "1" ]; then
+        SEC_MODE_5=16
+    elif [ "$SEC_WPA_5" = "2" ]; then
+        SEC_MODE_5=32
+    elif [ "$SEC_WPA_5" = "3" ]; then
+        SEC_MODE_5=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_6" = "WPA" ] && [ "$SEC_TYPE_6" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_6" = "none" ]; then
+    if [ "$SEC_WPA_6" = "1" ]; then
+        SEC_MODE_6=16
+    elif [ "$SEC_WPA_6" = "2" ]; then
+        SEC_MODE_6=32
+    elif [ "$SEC_WPA_6" = "3" ]; then
+        SEC_MODE_6=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_7" = "WPA" ] && [ "$SEC_TYPE_7" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_7" = "none" ]; then
+    if [ "$SEC_WPA_7" = "1" ]; then
+        SEC_MODE_7=16
+    elif [ "$SEC_WPA_7" = "2" ]; then
+        SEC_MODE_7=32
+    elif [ "$SEC_WPA_7" = "3" ]; then
+        SEC_MODE_7=48
+    fi
+fi
+if [ "$ITER_SEC_MODE_8" = "WPA" ] && [ "$SEC_TYPE_8" = "PSK" ] && [ "$SEC_WEP_KEY_MGMT_8" = "none" ]; then
+    if [ "$SEC_WPA_8" = "1" ]; then
+        SEC_MODE_8=16
+    elif [ "$SEC_WPA_8" = "2" ]; then
+        SEC_MODE_8=32
+    elif [ "$SEC_WPA_8" = "3" ]; then
+        SEC_MODE_8=48
+    fi
+fi
+
+##
+## WPA Group Key Rekey
+##
+SEC_WPA_GROUP_REKEY_PER_1=`cfg -v SEC_WPA_GROUP_REKEY_PER_1`
+SEC_WPA_GROUP_REKEY_PER_2=`cfg -v SEC_WPA_GROUP_REKEY_PER_2`
+SEC_WPA_GROUP_REKEY_PER_3=`cfg -v SEC_WPA_GROUP_REKEY_PER_3`
+SEC_WPA_GROUP_REKEY_PER_4=`cfg -v SEC_WPA_GROUP_REKEY_PER_4`
+SEC_WPA_GROUP_REKEY_PER_5=`cfg -v SEC_WPA_GROUP_REKEY_PER_5`
+SEC_WPA_GROUP_REKEY_PER_6=`cfg -v SEC_WPA_GROUP_REKEY_PER_6`
+SEC_WPA_GROUP_REKEY_PER_7=`cfg -v SEC_WPA_GROUP_REKEY_PER_7`
+SEC_WPA_GROUP_REKEY_PER_8=`cfg -v SEC_WPA_GROUP_REKEY_PER_8`
+
+##
+## WPA PreShared Key
+##
+PSK_KEY_1=`cfg -v PSK_KEY_1`
+PSK_KEY_2=`cfg -v PSK_KEY_2`
+PSK_KEY_3=`cfg -v PSK_KEY_3`
+PSK_KEY_4=`cfg -v PSK_KEY_4`
+PSK_KEY_5=`cfg -v PSK_KEY_5`
+PSK_KEY_6=`cfg -v PSK_KEY_6`
+PSK_KEY_7=`cfg -v PSK_KEY_7`
+PSK_KEY_8=`cfg -v PSK_KEY_8`
+
+if [ "$PSK_KEY_1" = "" ]; then
+    PSK_KEY_1="unknown"
+fi
+
+if [ "$PSK_KEY_2" = "" ]; then
+    PSK_KEY_2="unknown"
+fi
+
+if [ "$PSK_KEY_3" = "" ]; then
+    PSK_KEY_3="unknown"
+fi
+
+if [ "$PSK_KEY_4" = "" ]; then
+    PSK_KEY_4="unknown"
+fi
+
+if [ "$PSK_KEY_5" = "" ]; then
+    PSK_KEY_5="unknown"
+fi
+
+if [ "$PSK_KEY_6" = "" ]; then
+    PSK_KEY_6="unknown"
+fi
+
+if [ "$PSK_KEY_7" = "" ]; then
+    PSK_KEY_7="unknown"
+fi
+
+if [ "$PSK_KEY_8" = "" ]; then
+    PSK_KEY_8="unknown"
+fi
+
+##
+## WEP Encryption
+##
+SEC_WEP_KEY_LEN_1=`cfg -v SEC_WEP_KEY_LEN_1`
+SEC_WEP_KEY_LEN_2=`cfg -v SEC_WEP_KEY_LEN_2`
+SEC_WEP_KEY_LEN_3=`cfg -v SEC_WEP_KEY_LEN_3`
+SEC_WEP_KEY_LEN_4=`cfg -v SEC_WEP_KEY_LEN_4`
+SEC_WEP_KEY_LEN_5=`cfg -v SEC_WEP_KEY_LEN_5`
+SEC_WEP_KEY_LEN_6=`cfg -v SEC_WEP_KEY_LEN_6`
+SEC_WEP_KEY_LEN_7=`cfg -v SEC_WEP_KEY_LEN_7`
+SEC_WEP_KEY_LEN_8=`cfg -v SEC_WEP_KEY_LEN_8`
+
+if [ "$SEC_WEP_KEY_LEN_1" = "5" ]; then
+    SEC_WEP_KEY_LEN_1=40
+elif [ "$SEC_WEP_KEY_LEN_1" = "13" ]; then
+    SEC_WEP_KEY_LEN_1=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_2" = "5" ]; then
+    SEC_WEP_KEY_LEN_2=40
+elif [ "$SEC_WEP_KEY_LEN_2" = "13" ]; then
+    SEC_WEP_KEY_LEN_2=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_3" = "5" ]; then
+    SEC_WEP_KEY_LEN_3=40
+elif [ "$SEC_WEP_KEY_LEN_3" = "13" ]; then
+    SEC_WEP_KEY_LEN_3=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_4" = "5" ]; then
+    SEC_WEP_KEY_LEN_4=40
+elif [ "$SEC_WEP_KEY_LEN_4" = "13" ]; then
+    SEC_WEP_KEY_LEN_4=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_5" = "5" ]; then
+    SEC_WEP_KEY_LEN_5=40
+elif [ "$SEC_WEP_KEY_LEN_5" = "13" ]; then
+    SEC_WEP_KEY_LEN_5=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_6" = "5" ]; then
+    SEC_WEP_KEY_LEN_6=40
+elif [ "$SEC_WEP_KEY_LEN_6" = "13" ]; then
+    SEC_WEP_KEY_LEN_6=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_7" = "5" ]; then
+    SEC_WEP_KEY_LEN_7=40
+elif [ "$SEC_WEP_KEY_LEN_7" = "13" ]; then
+    SEC_WEP_KEY_LEN_7=104
+fi
+
+if [ "$SEC_WEP_KEY_LEN_8" = "5" ]; then
+    SEC_WEP_KEY_LEN_8=40
+elif [ "$SEC_WEP_KEY_LEN_8" = "13" ]; then
+    SEC_WEP_KEY_LEN_8=104
+fi
+
+##
+## WEP Key Index
+##
+PRIMARY_KEY_1=`cfg -v SEC_PRIMARY_KEY_1`
+PRIMARY_KEY_2=`cfg -v SEC_PRIMARY_KEY_2`
+PRIMARY_KEY_3=`cfg -v SEC_PRIMARY_KEY_3`
+PRIMARY_KEY_4=`cfg -v SEC_PRIMARY_KEY_4`
+PRIMARY_KEY_5=`cfg -v SEC_PRIMARY_KEY_5`
+PRIMARY_KEY_6=`cfg -v SEC_PRIMARY_KEY_6`
+PRIMARY_KEY_7=`cfg -v SEC_PRIMARY_KEY_7`
+PRIMARY_KEY_8=`cfg -v SEC_PRIMARY_KEY_8`
+
+if [ "$PRIMARY_KEY_1" = "0" ]; then
+    SEC_PRIMARY_KEY_1=1
+elif [ "$PRIMARY_KEY_1" = "1" ]; then
+    SEC_PRIMARY_KEY_1=2
+elif [ "$PRIMARY_KEY_1" = "2" ]; then
+    SEC_PRIMARY_KEY_1=3
+elif [ "$PRIMARY_KEY_1" = "3" ]; then
+    SEC_PRIMARY_KEY_1=4
+fi
+
+if [ "$PRIMARY_KEY_2" = "0" ]; then
+    SEC_PRIMARY_KEY_2=1
+elif [ "$PRIMARY_KEY_2" = "1" ]; then
+    SEC_PRIMARY_KEY_2=2
+elif [ "$PRIMARY_KEY_2" = "2" ]; then
+    SEC_PRIMARY_KEY_2=3
+elif [ "$PRIMARY_KEY_2" = "3" ]; then
+    SEC_PRIMARY_KEY_2=4
+fi
+
+if [ "$PRIMARY_KEY_3" = "0" ]; then
+    SEC_PRIMARY_KEY_3=1
+elif [ "$PRIMARY_KEY_3" = "1" ]; then
+    SEC_PRIMARY_KEY_3=2
+elif [ "$PRIMARY_KEY_3" = "2" ]; then
+    SEC_PRIMARY_KEY_3=3
+elif [ "$PRIMARY_KEY_3" = "3" ]; then
+    SEC_PRIMARY_KEY_3=4
+fi
+
+if [ "$PRIMARY_KEY_4" = "0" ]; then
+    SEC_PRIMARY_KEY_4=1
+elif [ "$PRIMARY_KEY_4" = "1" ]; then
+    SEC_PRIMARY_KEY_4=2
+elif [ "$PRIMARY_KEY_4" = "2" ]; then
+    SEC_PRIMARY_KEY_4=3
+elif [ "$PRIMARY_KEY_4" = "3" ]; then
+    SEC_PRIMARY_KEY_4=4
+fi
+
+if [ "$PRIMARY_KEY_5" = "0" ]; then
+    SEC_PRIMARY_KEY_5=1
+elif [ "$PRIMARY_KEY_5" = "1" ]; then
+    SEC_PRIMARY_KEY_5=2
+elif [ "$PRIMARY_KEY_5" = "2" ]; then
+    SEC_PRIMARY_KEY_5=3
+elif [ "$PRIMARY_KEY_5" = "3" ]; then
+    SEC_PRIMARY_KEY_5=4
+fi
+
+if [ "$PRIMARY_KEY_6" = "0" ]; then
+    SEC_PRIMARY_KEY_6=1
+elif [ "$PRIMARY_KEY_6" = "1" ]; then
+    SEC_PRIMARY_KEY_6=2
+elif [ "$PRIMARY_KEY_6" = "2" ]; then
+    SEC_PRIMARY_KEY_6=3
+elif [ "$PRIMARY_KEY_6" = "3" ]; then
+    SEC_PRIMARY_KEY_6=4
+fi
+
+if [ "$PRIMARY_KEY_7" = "0" ]; then
+    SEC_PRIMARY_KEY_7=1
+elif [ "$PRIMARY_KEY_7" = "1" ]; then
+    SEC_PRIMARY_KEY_7=2
+elif [ "$PRIMARY_KEY_7" = "2" ]; then
+    SEC_PRIMARY_KEY_7=3
+elif [ "$PRIMARY_KEY_7" = "3" ]; then
+    SEC_PRIMARY_KEY_7=4
+fi
+
+if [ "$PRIMARY_KEY_8" = "0" ]; then
+    SEC_PRIMARY_KEY_8=1
+elif [ "$PRIMARY_KEY_8" = "1" ]; then
+    SEC_PRIMARY_KEY_8=2
+elif [ "$PRIMARY_KEY_8" = "2" ]; then
+    SEC_PRIMARY_KEY_8=3
+elif [ "$PRIMARY_KEY_8" = "3" ]; then
+    SEC_PRIMARY_KEY_8=4
+fi
+
+##
+## WEP Key
+##
+SEC_WEP_KEY1_1=`cfg -v SEC_WEP_KEY1_1`
+SEC_WEP_KEY2_1=`cfg -v SEC_WEP_KEY2_1`
+SEC_WEP_KEY3_1=`cfg -v SEC_WEP_KEY3_1`
+SEC_WEP_KEY4_1=`cfg -v SEC_WEP_KEY4_1`
+SEC_WEP_KEY1_2=`cfg -v SEC_WEP_KEY1_2`
+SEC_WEP_KEY2_2=`cfg -v SEC_WEP_KEY2_2`
+SEC_WEP_KEY3_2=`cfg -v SEC_WEP_KEY3_2`
+SEC_WEP_KEY4_2=`cfg -v SEC_WEP_KEY4_2`
+SEC_WEP_KEY1_3=`cfg -v SEC_WEP_KEY1_3`
+SEC_WEP_KEY2_3=`cfg -v SEC_WEP_KEY2_3`
+SEC_WEP_KEY3_3=`cfg -v SEC_WEP_KEY3_3`
+SEC_WEP_KEY4_3=`cfg -v SEC_WEP_KEY4_3`
+SEC_WEP_KEY1_4=`cfg -v SEC_WEP_KEY1_4`
+SEC_WEP_KEY2_4=`cfg -v SEC_WEP_KEY2_4`
+SEC_WEP_KEY3_4=`cfg -v SEC_WEP_KEY3_4`
+SEC_WEP_KEY4_4=`cfg -v SEC_WEP_KEY4_4`
+SEC_WEP_KEY1_5=`cfg -v SEC_WEP_KEY1_5`
+SEC_WEP_KEY2_5=`cfg -v SEC_WEP_KEY2_5`
+SEC_WEP_KEY3_5=`cfg -v SEC_WEP_KEY3_5`
+SEC_WEP_KEY4_5=`cfg -v SEC_WEP_KEY4_5`
+SEC_WEP_KEY1_6=`cfg -v SEC_WEP_KEY1_6`
+SEC_WEP_KEY2_6=`cfg -v SEC_WEP_KEY2_6`
+SEC_WEP_KEY3_6=`cfg -v SEC_WEP_KEY3_6`
+SEC_WEP_KEY4_6=`cfg -v SEC_WEP_KEY4_6`
+SEC_WEP_KEY1_7=`cfg -v SEC_WEP_KEY1_7`
+SEC_WEP_KEY2_7=`cfg -v SEC_WEP_KEY2_7`
+SEC_WEP_KEY3_7=`cfg -v SEC_WEP_KEY3_7`
+SEC_WEP_KEY4_7=`cfg -v SEC_WEP_KEY4_7`
+SEC_WEP_KEY1_8=`cfg -v SEC_WEP_KEY1_8`
+SEC_WEP_KEY2_8=`cfg -v SEC_WEP_KEY2_8`
+SEC_WEP_KEY3_8=`cfg -v SEC_WEP_KEY3_8`
+SEC_WEP_KEY4_8=`cfg -v SEC_WEP_KEY4_8`
+
+if [ "$SEC_WEP_KEY1_1" = "" ]; then
+    SEC_WEP_KEY1_1="unknown"
+fi
+if [ "$SEC_WEP_KEY2_1" = "" ]; then
+    SEC_WEP_KEY2_1="unknown"
+fi
+if [ "$SEC_WEP_KEY3_1" = "" ]; then
+    SEC_WEP_KEY3_1="unknown"
+fi
+if [ "$SEC_WEP_KEY4_1" = "" ]; then
+    SEC_WEP_KEY4_1="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_2" = "" ]; then
+    SEC_WEP_KEY1_2="unknown"
+fi
+if [ "$SEC_WEP_KEY2_2" = "" ]; then
+    SEC_WEP_KEY2_2="unknown"
+fi
+if [ "$SEC_WEP_KEY3_2" = "" ]; then
+    SEC_WEP_KEY3_2="unknown"
+fi
+if [ "$SEC_WEP_KEY4_2" = "" ]; then
+    SEC_WEP_KEY4_2="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_3" = "" ]; then
+    SEC_WEP_KEY1_3="unknown"
+fi
+if [ "$SEC_WEP_KEY2_3" = "" ]; then
+    SEC_WEP_KEY2_3="unknown"
+fi
+if [ "$SEC_WEP_KEY3_3" = "" ]; then
+    SEC_WEP_KEY3_3="unknown"
+fi
+if [ "$SEC_WEP_KEY4_3" = "" ]; then
+    SEC_WEP_KEY4_3="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_4" = "" ]; then
+    SEC_WEP_KEY1_4="unknown"
+fi
+if [ "$SEC_WEP_KEY2_4" = "" ]; then
+    SEC_WEP_KEY2_4="unknown"
+fi
+if [ "$SEC_WEP_KEY3_4" = "" ]; then
+    SEC_WEP_KEY3_4="unknown"
+fi
+if [ "$SEC_WEP_KEY4_4" = "" ]; then
+    SEC_WEP_KEY4_4="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_5" = "" ]; then
+    SEC_WEP_KEY1_5="unknown"
+fi
+if [ "$SEC_WEP_KEY2_5" = "" ]; then
+    SEC_WEP_KEY2_5="unknown"
+fi
+if [ "$SEC_WEP_KEY3_5" = "" ]; then
+    SEC_WEP_KEY3_5="unknown"
+fi
+if [ "$SEC_WEP_KEY4_5" = "" ]; then
+    SEC_WEP_KEY4_5="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_6" = "" ]; then
+    SEC_WEP_KEY1_6="unknown"
+fi
+if [ "$SEC_WEP_KEY2_6" = "" ]; then
+    SEC_WEP_KEY2_6="unknown"
+fi
+if [ "$SEC_WEP_KEY3_6" = "" ]; then
+    SEC_WEP_KEY3_6="unknown"
+fi
+if [ "$SEC_WEP_KEY4_6" = "" ]; then
+    SEC_WEP_KEY4_6="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_7" = "" ]; then
+    SEC_WEP_KEY1_7="unknown"
+fi
+if [ "$SEC_WEP_KEY2_7" = "" ]; then
+    SEC_WEP_KEY2_7="unknown"
+fi
+if [ "$SEC_WEP_KEY3_7" = "" ]; then
+    SEC_WEP_KEY3_7="unknown"
+fi
+if [ "$SEC_WEP_KEY4_7" = "" ]; then
+    SEC_WEP_KEY4_7="unknown"
+fi
+
+if [ "$SEC_WEP_KEY1_8" = "" ]; then
+    SEC_WEP_KEY1_8="unknown"
+fi
+if [ "$SEC_WEP_KEY2_8" = "" ]; then
+    SEC_WEP_KEY2_8="unknown"
+fi
+if [ "$SEC_WEP_KEY3_8" = "" ]; then
+    SEC_WEP_KEY3_8="unknown"
+fi
+if [ "$SEC_WEP_KEY4_8" = "" ]; then
+    SEC_WEP_KEY4_8="unknown"
+fi
+
+
+##
+## WEP Auth Method
+##
+EAP_TYPE_1=`cfg -v SEC_EAP_TYPE_1`
+EAP_TYPE_2=`cfg -v SEC_EAP_TYPE_2`
+EAP_TYPE_3=`cfg -v SEC_EAP_TYPE_3`
+EAP_TYPE_4=`cfg -v SEC_EAP_TYPE_4`
+EAP_TYPE_5=`cfg -v SEC_EAP_TYPE_5`
+EAP_TYPE_6=`cfg -v SEC_EAP_TYPE_6`
+EAP_TYPE_7=`cfg -v SEC_EAP_TYPE_7`
+EAP_TYPE_8=`cfg -v SEC_EAP_TYPE_8`
+
+if [ "$EAP_TYPE_1" = "TLS" ]; then
+    SEC_EAP_TYPE_1=13
+elif [ "$EAP_TYPE_1" = "LEAP" ]; then
+    SEC_EAP_TYPE_1=17
+elif [ "$EAP_TYPE_1" = "TTLS" ]; then
+    SEC_EAP_TYPE_1=21
+elif [ "$EAP_TYPE_1" = "PEAP" ]; then
+    SEC_EAP_TYPE_1=25
+fi
+
+if [ "$EAP_TYPE_2" = "TLS" ]; then
+    SEC_EAP_TYPE_2=13
+elif [ "$EAP_TYPE_2" = "LEAP" ]; then
+    SEC_EAP_TYPE_2=17
+elif [ "$EAP_TYPE_2" = "TTLS" ]; then
+    SEC_EAP_TYPE_2=21
+elif [ "$EAP_TYPE_2" = "PEAP" ]; then
+    SEC_EAP_TYPE_2=25
+fi
+
+if [ "$EAP_TYPE_3" = "TLS" ]; then
+    SEC_EAP_TYPE_3=13
+elif [ "$EAP_TYPE_3" = "LEAP" ]; then
+    SEC_EAP_TYPE_3=17
+elif [ "$EAP_TYPE_3" = "TTLS" ]; then
+    SEC_EAP_TYPE_3=21
+elif [ "$EAP_TYPE_3" = "PEAP" ]; then
+    SEC_EAP_TYPE_3=25
+fi
+
+if [ "$EAP_TYPE_4" = "TLS" ]; then
+    SEC_EAP_TYPE_4=13
+elif [ "$EAP_TYPE_4" = "LEAP" ]; then
+    SEC_EAP_TYPE_4=17
+elif [ "$EAP_TYPE_4" = "TTLS" ]; then
+    SEC_EAP_TYPE_4=21
+elif [ "$EAP_TYPE_4" = "PEAP" ]; then
+    SEC_EAP_TYPE_4=25
+fi
+
+if [ "$EAP_TYPE_5" = "TLS" ]; then
+    SEC_EAP_TYPE_5=13
+elif [ "$EAP_TYPE_5" = "LEAP" ]; then
+    SEC_EAP_TYPE_5=17
+elif [ "$EAP_TYPE_5" = "TTLS" ]; then
+    SEC_EAP_TYPE_5=21
+elif [ "$EAP_TYPE_5" = "PEAP" ]; then
+    SEC_EAP_TYPE_5=25
+fi
+
+if [ "$EAP_TYPE_6" = "TLS" ]; then
+    SEC_EAP_TYPE_6=13
+elif [ "$EAP_TYPE_6" = "LEAP" ]; then
+    SEC_EAP_TYPE_6=17
+elif [ "$EAP_TYPE_6" = "TTLS" ]; then
+    SEC_EAP_TYPE_6=21
+elif [ "$EAP_TYPE_6" = "PEAP" ]; then
+    SEC_EAP_TYPE_6=25
+fi
+
+if [ "$EAP_TYPE_7" = "TLS" ]; then
+    SEC_EAP_TYPE_7=13
+elif [ "$EAP_TYPE_7" = "LEAP" ]; then
+    SEC_EAP_TYPE_7=17
+elif [ "$EAP_TYPE_7" = "TTLS" ]; then
+    SEC_EAP_TYPE_7=21
+elif [ "$EAP_TYPE_7" = "PEAP" ]; then
+    SEC_EAP_TYPE_7=25
+fi
+
+if [ "$EAP_TYPE_8" = "TLS" ]; then
+    SEC_EAP_TYPE_8=13
+elif [ "$EAP_TYPE_8" = "LEAP" ]; then
+    SEC_EAP_TYPE_8=17
+elif [ "$EAP_TYPE_8" = "TTLS" ]; then
+    SEC_EAP_TYPE_8=21
+elif [ "$EAP_TYPE_8" = "PEAP" ]; then
+    SEC_EAP_TYPE_8=25
+fi
+
+##
+## Security Profile Name
+##
+SEC_PRO_NAME_1=`cfg -v SEC_PRO_NAME_1`
+SEC_PRO_NAME_2=`cfg -v SEC_PRO_NAME_2`
+SEC_PRO_NAME_3=`cfg -v SEC_PRO_NAME_3`
+SEC_PRO_NAME_4=`cfg -v SEC_PRO_NAME_4`
+SEC_PRO_NAME_5=`cfg -v SEC_PRO_NAME_5`
+SEC_PRO_NAME_6=`cfg -v SEC_PRO_NAME_6`
+SEC_PRO_NAME_7=`cfg -v SEC_PRO_NAME_7`
+SEC_PRO_NAME_8=`cfg -v SEC_PRO_NAME_8`
+
+##
+## 8021X Reauth Time
+##
+SEC_EAP_REAUTH_PER_1=`cfg -v SEC_EAP_REAUTH_PER_1`
+SEC_EAP_REAUTH_PER_2=`cfg -v SEC_EAP_REAUTH_PER_2`
+SEC_EAP_REAUTH_PER_3=`cfg -v SEC_EAP_REAUTH_PER_3`
+SEC_EAP_REAUTH_PER_4=`cfg -v SEC_EAP_REAUTH_PER_4`
+SEC_EAP_REAUTH_PER_5=`cfg -v SEC_EAP_REAUTH_PER_5`
+SEC_EAP_REAUTH_PER_6=`cfg -v SEC_EAP_REAUTH_PER_6`
+SEC_EAP_REAUTH_PER_7=`cfg -v SEC_EAP_REAUTH_PER_7`
+SEC_EAP_REAUTH_PER_8=`cfg -v SEC_EAP_REAUTH_PER_8`
+
+##
+## 8021X Group Key Retry Control
+##
+SEC_WPA_GROUP_REKEY_1=`cfg -v SEC_WPA_GROUP_REKEY_1`
+SEC_WPA_GROUP_REKEY_2=`cfg -v SEC_WPA_GROUP_REKEY_2`
+SEC_WPA_GROUP_REKEY_3=`cfg -v SEC_WPA_GROUP_REKEY_3`
+SEC_WPA_GROUP_REKEY_4=`cfg -v SEC_WPA_GROUP_REKEY_4`
+SEC_WPA_GROUP_REKEY_5=`cfg -v SEC_WPA_GROUP_REKEY_5`
+SEC_WPA_GROUP_REKEY_6=`cfg -v SEC_WPA_GROUP_REKEY_6`
+SEC_WPA_GROUP_REKEY_7=`cfg -v SEC_WPA_GROUP_REKEY_7`
+SEC_WPA_GROUP_REKEY_8=`cfg -v SEC_WPA_GROUP_REKEY_8`
+
+if [ "$SEC_WPA_GROUP_REKEY_1" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_1=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_2" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_2=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_3" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_3=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_4" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_4=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_5" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_5=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_6" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_6=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_7" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_7=2
+fi
+if [ "$SEC_WPA_GROUP_REKEY_8" = 0 ]; then
+    SEC_WPA_GROUP_REKEY_8=2
+fi
+
+for i in _1 _2 _3 _4 _5 _6 _7 _8
+do
+    ITER_SEC_MODE="SEC_MODE$i"
+    ITER_SEC_WPA_GROUP_REKEY_PER="SEC_WPA_GROUP_REKEY_PER$i"
+    ITER_PSK_KEY="PSK_KEY$i"
+    ITER_SEC_WEP_KEY_LEN="SEC_WEP_KEY_LEN$i"
+    ITER_SEC_PRIMARY_KEY="SEC_PRIMARY_KEY$i"
+    ITER_SEC_WEP_KEY1="SEC_WEP_KEY1$i"
+    ITER_SEC_WEP_KEY2="SEC_WEP_KEY2$i"
+    ITER_SEC_WEP_KEY3="SEC_WEP_KEY3$i"
+    ITER_SEC_WEP_KEY4="SEC_WEP_KEY4$i"
+    ITER_SEC_EAP_TYPE="SEC_EAP_TYPE$i"
+    ITER_SEC_PRO_NAME="SEC_PRO_NAME$i"
+    ITER_SEC_EAP_REAUTH_PER="SEC_EAP_REAUTH_PER$i"
+    ITER_SEC_WPA_GROUP_REKEY="SEC_WPA_GROUP_REKEY$i"
+    
+    eval MODE=\$$ITER_SEC_MODE
+    eval GROUP_REKEY_PER=\$$ITER_SEC_WPA_GROUP_REKEY_PER
+    eval WPA_PSK_KEY=\$$ITER_PSK_KEY
+    eval WEP_KEY_LEN=\$$ITER_SEC_WEP_KEY_LEN
+    eval PRIMARY_KEY=\$$ITER_SEC_PRIMARY_KEY
+    eval WEP_KEY1=\$$ITER_SEC_WEP_KEY1
+    eval WEP_KEY2=\$$ITER_SEC_WEP_KEY2
+    eval WEP_KEY3=\$$ITER_SEC_WEP_KEY3
+    eval WEP_KEY4=\$$ITER_SEC_WEP_KEY4
+    eval EAP_TYPE=\$$ITER_SEC_EAP_TYPE
+    eval PRO_NAME=\$$ITER_SEC_PRO_NAME
+    eval EAP_REAUTH_PER=\$$ITER_SEC_EAP_REAUTH_PER
+    eval WPA_GROUP_REKEY=\$$ITER_SEC_WPA_GROUP_REKEY
+    
+    echo "$MODE,$GROUP_REKEY_PER,$WPA_PSK_KEY,$WEP_KEY_LEN,$PRIMARY_KEY,$WEP_KEY1,$WEP_KEY2,$WEP_KEY3,$WEP_KEY4,$EAP_TYPE,$PRO_NAME,$EAP_REAUTH_PER,$WPA_GROUP_REKEY"
+done
+
+exit 0

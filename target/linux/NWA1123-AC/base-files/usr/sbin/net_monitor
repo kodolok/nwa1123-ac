@@ -1,0 +1,47 @@
+#!/bin/sh
+# 
+#check wan physical status
+
+last_wan_phy_conn=`ethreg --p_st -i eth0 -p -|grep alive|tr -s "\t"|cut -f 2`
+wan_phy_conn='Not alive'
+last_wifi_status=`get_wifi_status.sh`
+wifi_status="0"
+first_time=1
+while true
+do
+    wan_phy_conn=`ethreg --p_st -i eth0 -p -|grep alive|tr -s "\t"|cut -f 2`
+    wifi_status=`get_wifi_status.sh`
+
+    if [ "$wan_phy_conn" != "$last_wan_phy_conn" -o $first_time = 1 ]; then
+        first_time=0
+        if [ "$wan_phy_conn" = "Not alive" ]; then
+            #link down
+            kill -s 22 `cat /tmp/snmpd_pid`
+            #killall -q udhcpc
+            sys_led_alert uplink &
+            log_maintain "LAN port link down"
+        else
+            #link up
+            kill -s 17 `cat /tmp/snmpd_pid`
+            sh /etc/scripts/cgi_ipv4_settings
+            sys_led_alert uplink stop
+            log_maintain "LAN port link up"
+        fi
+    fi
+
+    if [ "$wifi_status" != "$last_wifi_status" ]; then
+        if [ "$wifi_status" = "0" ]; then
+            #AP down
+            sys_led_alert wifi &
+        else
+            #AP up
+            sys_led_alert wifi stop &
+        fi
+    fi
+
+    last_wan_phy_conn=${wan_phy_conn}
+    last_wifi_status=${wifi_status}
+    sleep 3
+done
+
+

@@ -1,0 +1,6 @@
+#!/bin/sh
+INFO="`webget_ip_getifinfo`"
+str1="`echo "$INFO" | cut -d , -f 7`"
+str2="`echo "$str1" | cut -d : -f 2-7`"
+str3="`echo "$str2" | sed 's/\"//g'`"
+echo $str3

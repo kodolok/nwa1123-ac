@@ -1,0 +1,106 @@
+#!/bin/sh
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+OID=$1
+#FW_Version=`cat /etc/firmware_version | grep '^NWA'`
+#MODEL_NAME=`cut -d _ -f 1 /etc/firmware_version`
+FW_VER=`cut -d _ -f 1 /etc/firmware_version`
+FW_DATE=`cut -d _ -f 2 /etc/firmware_version | sed -n 's/[^0-9]*//gp'`
+
+## SW Platform
+if [ "${OID}" = "1" ];then
+    ## read-only
+    swPlatform=`uname -r|awk '{print substr($1, 9, 4)}'`
+    echo -n $swPlatform
+    exit 0
+fi
+
+## Major Versiion
+if [ "${OID}" = "2" ];then
+    ## read-only
+    #Major=`echo $FW_VER | awk -F'[.()]' '{ print $1 }'`
+    Major=`echo $FW_VER | cut -c 2-2`
+    echo -n $Major
+    exit 0
+fi
+
+## Minor Versiion
+if [ "${OID}" = "3" ];then
+    ## read-only
+    #Minor=`echo $FW_VER | awk -F'[.()]' '{ print $2 }'`
+    Minor=`echo $FW_VER | cut -c 3-4`
+    echo -n $Minor
+    exit 0
+fi
+
+## SW Model
+if [ "${OID}" = "4" ];then
+    ## read-only
+    #ModelVersiion=`echo $FW_VER | awk -F'[.()]' '{ print $3 }'`
+    ModelVersiion=`echo $FW_VER | cut -c 5-8`
+    echo -n $ModelVersiion
+    exit 0
+fi
+
+## Patch Number
+if [ "${OID}" = "5" ];then
+    ## read-only
+    #PatchNumber=`echo $FW_VER | awk -F'[.()]' '{ print $4 }'`
+    PatchNumber=`echo $FW_VER | cut -c 9-9`
+    echo -n $PatchNumber
+    exit 0
+fi
+
+## Version String
+if [ "${OID}" = "6" ];then
+    ## read-only
+    VersionString=`cat /etc/firmware_name`
+    echo -n $VersionString
+    exit 0
+fi
+
+## SW Day
+if [ "${OID}" = "7" ];then
+    ## read-only
+    Day=`echo $FW_DATE | cut -c 7-8`
+    echo -n $Day
+    exit 0
+fi
+
+## SW Month
+if [ "${OID}" = "8" ];then
+    ## read-only
+    Month=`echo $FW_DATE | cut -c 5-6`
+    echo -n $Month
+    exit 0
+fi
+
+## SW Year
+if [ "${OID}" = "9" ];then
+    ## read-only
+    Year=`echo $FW_DATE | cut -c 1-4`
+    echo -n $Year
+    exit 0
+fi
+
+## Product Family
+#if [ "${OID}" = "10" ];then
+#    ## read-only
+#    ProductFamily=`echo $MODEL_NAME | cut -d - -f 1`
+#    echo -n $ProductFamily
+#    exit 0
+#fi
+
+## Product Model
+#if [ "${OID}" = "11" ];then
+#    ## read-only
+#    ProductModel=`echo $MODEL_NAME`
+#    echo -n $ProductModel
+#    exit 0
+#fi
+
+exit 0

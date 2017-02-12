@@ -1,0 +1,77 @@
+#!/bin/sh
+####################################################################
+## SYSTEM script
+## 
+## This script is used to write the root image to flash. 
+##
+## sys_write_image
+##
+####################################################################
+
+version_name=`cat /etc/firmware_version`
+echo "--- FW version: $version_name ---" > /dev/console
+
+cd /
+echo "--- Write mi124_f1e-jffs to mtd2 ---" > /dev/console
+date
+
+CKSUM_rootfs="x1"
+CKSUM_mtd2="x0"
+
+for i in 1 2 3 4 5;
+do
+	if [ "x$CKSUM_rootfs" = "x$CKSUM_mtd2" ]; then
+		continue
+	fi
+	
+	mtd erase /dev/mtd2
+	mtd write /tmp/mi124_f1e-jffs2 /dev/mtd2
+
+	CKSUM_rootfs=`md5sum /tmp/mi124_f1e-jffs2 | cut -d ' ' -f 1`
+	CKSUM_mtd2=`md5sum /dev/mtd2 | cut -d ' ' -f 1`
+
+	echo "Write rootfs: $i times." > /dev/console
+	echo "CKSUM_rootfs=$CKSUM_rootfs" > /dev/console
+	echo "CKSUM_mtd2=$CKSUM_mtd2" > /dev/console
+done
+
+echo "--- Write vmlinux_mi124_f1e to mtd3 ---" > /dev/console
+CKSUM_kernel="x1"
+CKSUM_mtd3="x0"
+for j in 1 2 3 4 5;
+do
+	if [ "x$CKSUM_kernel" = "x$CKSUM_mtd3" ]; then
+		continue
+	fi
+
+	mtd erase /dev/mtd3
+	mtd write /tmp/vmlinux_mi124_f1e.lzma.uImage /dev/mtd3
+	date
+
+	CKSUM_kernel=`md5sum /tmp/vmlinux_mi124_f1e.lzma.uImage | cut -d ' ' -f 1`
+	filelen=`ls -la \/tmp | grep vmlinux_mi124_f1e | awk '{print $5}'`
+	#echo "---->filelen=$filelen" > /dev/console
+	dd if=/dev/mtd3 of=/tmp/backup_vmlinux_mi124 bs=1 count=$filelen
+	CKSUM_mtd3=`md5sum /tmp/backup_vmlinux_mi124 | cut -d ' ' -f 1`
+	#CKSUM_mtd3=`md5sum /dev/mtd3 | cut -d ' ' -f 1`
+	
+	echo "Write kernel: $j times." > /dev/console
+	echo "CKSUM_kernel=$CKSUM_kernel" > /dev/console
+	echo "CKSUM_mtd3=$CKSUM_mtd3" > /dev/console
+done
+
+if [ "x$CKSUM_rootfs" != "x$CKSUM_mtd2" -o "x$CKSUM_kernel" != "x$CKSUM_mtd3" ]; then
+	echo "--- FW upgrade error!!! ---" > /dev/console
+#	echo "--- FW upgrade error!!! ---" >> /tmp/fw_upgrade_log
+#	echo "Write rootfs: $i times." >> /tmp/fw_upgrade_log
+#	echo "CKSUM_rootfs=$CKSUM_rootfs" >> /tmp/fw_upgrade_log
+#	echo "CKSUM_mtd2=$CKSUM_mtd2" >> /tmp/fw_upgrade_log
+#	echo "Write kernel: $j times." >> /tmp/fw_upgrade_log
+#	echo "CKSUM_kernel=$CKSUM_kernel" >> /tmp/fw_upgrade_log
+#	echo "CKSUM_mtd3=$CKSUM_mtd3" >> /tmp/fw_upgrade_log
+#	/usr/sbin/telnetd -l /etc/telnetd.script
+else
+	echo "--- reboot ---" > /dev/console
+	reboot
+	mm 0xb806001c 0x01000000
+fi

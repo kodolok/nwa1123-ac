@@ -1,0 +1,31 @@
+~eSEC_WPA#:0~    key_mgmt=IEEE8021X
+~eSEC_WPA#:1~    proto=WPA
+~eSEC_WPA#:1~    key_mgmt=WPA-EAP
+~eSEC_WPA#:1~    pairwise=TKIP
+~eSEC_WPA#:2~    proto=RSN
+~eSEC_WPA#:2~    key_mgmt=WPA-EAP
+~eSEC_WPA#:2~    pairwise=CCMP
+~eSEC_WEP_KEY_MGMT#:static~    wep_key0="~!SEC_WEP_KEY1#~"
+~eSEC_WEP_KEY_MGMT#:static~    wep_key1="~!SEC_WEP_KEY2#~"
+~eSEC_WEP_KEY_MGMT#:static~	   wep_key2="~!SEC_WEP_KEY3#~"
+~eSEC_WEP_KEY_MGMT#:static~    wep_key3="~!SEC_WEP_KEY4#~"
+~eSEC_WEP_KEY_MGMT#:static~	   wep_tx_keyidx=~~SEC_PRIMARY_KEY#~
+    eap=~~SEC_EAP_TYPE#~
+~eSEC_EAP_TYPE#:TLS~    identity="~~SEC_EAP_ID#~"
+~eSEC_EAP_TYPE#:TLS~    #ca_cert="/tmp/certs/ca.pem"
+~eSEC_EAP_TYPE#:TLS~    #client_cert="/tmp/certs/cert.pem"
+~eSEC_EAP_TYPE#:TLS~    private_key="/tmp/certs/~~SEC_TLS_CERT#~"
+~eSEC_EAP_TYPE#:TLS~    private_key_passwd="~~SEC_EAP_PSWD#~"
+~eSEC_EAP_TYPE#:PEAP~    identity="~~SEC_EAP_USER#~"
+~eSEC_EAP_TYPE#:PEAP~    password="~~SEC_EAP_PSWD#~"
+~eSEC_EAP_TYPE#:PEAP~    #ca_cert="/tmp/certs/ca.pem"
+~eSEC_EAP_TYPE#:PEAP~    phase2="auth=~~SEC_EAP_PHASE2#~"
+~eSEC_EAP_TYPE#:TTLS~    identity="~~SEC_EAP_USER#~"
+~eSEC_EAP_TYPE#:TTLS~    password="~~SEC_EAP_PSWD#~"
+~eSEC_EAP_TYPE#:TTLS~    #ca_cert="/tmp/certs/ca.pem"
+~eSEC_EAP_TYPE#:TTLS~    phase2="auth=~~SEC_EAP_PHASE2#~"
+~eSEC_EAP_TYPE#:LEAP~    identity="~~SEC_EAP_USER#~"
+~eSEC_EAP_TYPE#:LEAP~    password="~~SEC_EAP_PSWD#~"
+~eSEC_EAP_TYPE#:LEAP~    auth_alg=LEAP
+}
+

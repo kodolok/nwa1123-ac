@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ ! -n "$1" ]
+then
+    exit 1
+fi
+if [ -f "/tmp/webupload" ]; then
+  if [ ! -d "/tmp/certs/" ]; then
+    mkdir /tmp/certs/
+  fi
+  mv /tmp/webupload "/tmp/certs/$1"
+  tar -zcv -f /tmp/mtd4.tar /tmp/certs /tmp/mini_httpd.pem
+  TMP_CERT_LENGTH=`wc -c /tmp/mtd4.tar | awk '{print $1}'`
+  dd if=/tmp/mtd4.tar of=/dev/mtdblock4 bs=$TMP_CERT_LENGTH count=1
+  cfg -a CERT_LENGTH="$TMP_CERT_LENGTH"
+  cfg -c
+  rm /tmp/mtd4.tar
+  exit 0
+fi
+
+

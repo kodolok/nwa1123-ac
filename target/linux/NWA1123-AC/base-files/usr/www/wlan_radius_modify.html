@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"  />
+<meta http-equiv="X-UA-Compatible" content="IE=10" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>.::Welcome to the Web-Based Configurator::.</title>
+<link href="css/expert.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/baseJS.js" ></script>
+<script type="text/javascript" src="js/uimake.js"></script>
+<script type="text/javascript">
+var server_enabled = {
+  "pri_auth_server":"~~RAD_AUTH_PRI_SERVER#~", /* Active|Inactive */
+  "sec_auth_server":"~~RAD_AUTH_SEC_SERVER#~", /* Active|Inactive */
+  "pri_acct_server":"~~RAD_ACCT_PRI_SERVER#~", /* Active|Inactive */
+  "sec_acct_server":"~~RAD_ACCT_SEC_SERVER#~"  /* Active|Inactive */
+};
+function checkRadBackup() {
+  var objRadAuthPri = NN_getById("cRAD_AUTH_PRI_SERVER~#~");
+  var objRadAuthSec = NN_getById("cRAD_AUTH_SEC_SERVER~#~");
+  var isCheckedPri = NN_val(objRadAuthPri);
+  var isCheckedSec = NN_val(objRadAuthSec);
+  if (isCheckedPri && isCheckedSec) {
+    objRadAuthPri.disabled = false;
+    objRadAuthSec.disabled = false;
+  } else if (isCheckedPri) {
+    objRadAuthPri.disabled = true;
+    objRadAuthSec.disabled = false;
+  } else if (isCheckedSec) {
+    objRadAuthPri.disabled = false;
+    objRadAuthSec.disabled = true;
+  } else {
+    objRadAuthPri.checked = true;
+    objRadAuthPri.disabled = true;
+    objRadAuthSec.disabled = false;
+  }
+  checkRadSrv("AUTH_PRI");
+  checkRadSrv("AUTH_SEC");
+}
+function checkRadSrv(srv) {
+  var className = "en_" + srv.toLowerCase(); 
+  var isChecked = NN_val(NN_getById("cRAD_"+ srv +"_SERVER~#~"));
+  if (isChecked) {
+    NN_enableByClass(className);
+  } else {
+    NN_disableByClass(className);
+  }
+  NN_val(NN_getById("RAD_"+ srv +"_SERVER~#~"), (isChecked == true ? "Active": "Inactive"));
+} 
+function init() {
+  checkRadSrv("AUTH_PRI");
+  checkRadSrv("AUTH_SEC");
+  checkRadSrv("ACCT_PRI");
+  checkRadSrv("ACCT_SEC");
+  checkRadBackup();
+}
+
+function validateServerCfg(srv) {
+  var retVal = true;
+  var srvIpObj = NN_getById("RAD_"+ srv +"_SERVER_IP~#~");
+  if (NN_val(NN_getById("cRAD_"+ srv +"_SERVER~#~"))) {
+    if (NN_val(srvIpObj) == "0.0.0.0") {
+      NN_addClass(srvIpObj, "invalidinput");
+      retVal = false;
+    } else if (!validate(srvIpObj, V_IP)) {
+      retVal = false;
+    }
+    if (!validate(NN_getById("RAD_"+ srv +"_SERVER_PORT~#~"), V_INT, 1, 65535)) retVal = false;
+    if (!validate(NN_getById("RAD_"+ srv +"_SERVER_SECRET~#~"), V_STR, 1, 64)) retVal = false;
+  } else {
+    NN_removeClass(NN_getById("RAD_"+ srv +"_SERVER_IP~#~"), "invalidinput");
+    NN_removeClass(NN_getById("RAD_"+ srv +"_SERVER_PORT~#~"), "invalidinput");
+    NN_removeClass(NN_getById("RAD_"+ srv +"_SERVER_SECRET~#~"), "invalidinput");
+  }
+  return retVal;
+}
+function formSubmit() {
+  var retVal = true;
+  if (!validate(NN_getById("RAD_PRO_NAME~#~"), V_STR, 1, 32)) retVal = false;
+
+  if (!validateServerCfg("AUTH_PRI")) retVal = false;
+  if (!validateServerCfg("AUTH_SEC")) retVal = false;
+  if (!validateServerCfg("ACCT_PRI")) retVal = false;
+  if (!validateServerCfg("ACCT_SEC")) retVal = false;
+  
+  return retVal;
+}
+</script>
+  </head>
+  <body onload="init();">
+  <FORM METHOD=POST onsubmit="return formSubmit();">
+  <input type="hidden" name="INDEX" value=~~INDEX~>
+    <div class="topgraph"></div>
+    <div id="tabs">
+      <ul>
+        <li class="hightline"><a title="RADIUS"><span>RADIUS</span></a></li>
+      </ul>
+      <br class="clearfloat" />
+    </div>
+    <div class="table_top"></div>
+    <div id="table">
+      <div class="data">
+        <div class="undownLineTitle">RADIUS Profile</div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Profile Name :</li>
+            <li class="right_table">
+            <input type="text" name="RAD_PRO_NAME~#~" id="RAD_PRO_NAME~#~" value="~~RAD_PRO_NAME#~" size="20" maxlength="32" />
+            </li>
+          </ul>
+        </div>
+        <br class="clearfloat" />
+        <div class="undownLineTitle">RADIUS Server Settings</div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Primary RADIUS Server :</li>
+            <li class="right_table">
+            <input type="checkbox" id="cRAD_AUTH_PRI_SERVER~#~" value="Active" onclick="checkRadBackup();" ~cRAD_AUTH_PRI_SERVER#:Active~/> Enabled
+            <input type="hidden" name="RAD_AUTH_PRI_SERVER~#~" id="RAD_AUTH_PRI_SERVER~#~" value="Inactive" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Primary Server IP Address :</li>
+            <li class="right_table">
+            <input type="text" class="en_auth_pri" name="RAD_AUTH_PRI_SERVER_IP~#~" value="~~RAD_AUTH_PRI_SERVER_IP#~" size="20" maxlength="15" id="RAD_AUTH_PRI_SERVER_IP~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Primary Server Port :</li>
+            <li class="right_table">
+            <input type="text" class="en_auth_pri" name="RAD_AUTH_PRI_SERVER_PORT~#~" value="~~RAD_AUTH_PRI_SERVER_PORT#~" size="20" maxlength="5" id="RAD_AUTH_PRI_SERVER_PORT~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Primary Share Secret:</li>
+            <li class="right_table">
+            <input type="text" class="en_auth_pri" name="RAD_AUTH_PRI_SERVER_SECRET~#~" value="~~RAD_AUTH_PRI_SERVER_SECRET#~" size="20" maxlength="64" id="RAD_AUTH_PRI_SERVER_SECRET~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Backup RADIUS Server :</li>
+            <li class="right_table">
+            <input type="checkbox" id="cRAD_AUTH_SEC_SERVER~#~" value="Active" onclick="checkRadBackup();" ~cRAD_AUTH_SEC_SERVER#:Active~/> Enabled
+            <input type="hidden" name="RAD_AUTH_SEC_SERVER~#~" id="RAD_AUTH_SEC_SERVER~#~" value="Inactive" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Backup Server IP Address :</li>
+            <li class="right_table">
+            <input type="text" class="en_auth_sec" name="RAD_AUTH_SEC_SERVER_IP~#~" value="~~RAD_AUTH_SEC_SERVER_IP#~" size="20" maxlength="15" id="RAD_AUTH_SEC_SERVER_IP~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Backup Server Port :</li>
+            <li class="right_table">
+            <input type="text" class="en_auth_sec" name="RAD_AUTH_SEC_SERVER_PORT~#~" value="~~RAD_AUTH_SEC_SERVER_PORT#~" size="20" maxlength="5" id="RAD_AUTH_SEC_SERVER_PORT~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Backup Share Secret:</li>
+            <li class="right_table">
+            <input type="text" class="en_auth_sec" name="RAD_AUTH_SEC_SERVER_SECRET~#~" value="~~RAD_AUTH_SEC_SERVER_SECRET#~" size="20" maxlength="64" id="RAD_AUTH_SEC_SERVER_SECRET~#~" />
+            </li>
+          </ul>
+        </div>
+        <br class="clearfloat" />
+        <div class="undownLineTitle">Accounting Server Settings</div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Primary Accounting Server :</li>
+            <li class="right_table">
+            <input type="checkbox" id="cRAD_ACCT_PRI_SERVER~#~" value="Active" onclick="checkRadSrv('ACCT_PRI');" ~cRAD_ACCT_PRI_SERVER#:Active~/> Enabled
+            <input type="hidden" name="RAD_ACCT_PRI_SERVER~#~" id="RAD_ACCT_PRI_SERVER~#~" value="Inactive" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Primary Server IP Address :</li>
+            <li class="right_table">
+            <input type="text" class="en_acct_pri" name="RAD_ACCT_PRI_SERVER_IP~#~" value="~~RAD_ACCT_PRI_SERVER_IP#~" size="20" maxlength="15" id="RAD_ACCT_PRI_SERVER_IP~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Primary Server Port :</li>
+            <li class="right_table">
+            <input type="text" class="en_acct_pri" name="RAD_ACCT_PRI_SERVER_PORT~#~" value="~~RAD_ACCT_PRI_SERVER_PORT#~" size="20" maxlength="5" id="RAD_ACCT_PRI_SERVER_PORT~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Primary Share Secret:</li>
+            <li class="right_table">
+            <input type="text" class="en_acct_pri" name="RAD_ACCT_PRI_SERVER_SECRET~#~" value="~~RAD_ACCT_PRI_SERVER_SECRET#~" size="20" maxlength="64" id="RAD_ACCT_PRI_SERVER_SECRET~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text">
+          <ul>
+            <li class="left_table">Backup Accounting Server :</li>
+            <li class="right_table">
+            <input type="checkbox" id="cRAD_ACCT_SEC_SERVER~#~" value="Active" onclick="checkRadSrv('ACCT_SEC');" ~cRAD_ACCT_SEC_SERVER#:Active~/> Enabled
+            <input type="hidden" name="RAD_ACCT_SEC_SERVER~#~" id="RAD_ACCT_SEC_SERVER~#~" value="Inactive" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Backup Server IP Address :</li>
+            <li class="right_table">
+            <input type="text" class="en_acct_sec" name="RAD_ACCT_SEC_SERVER_IP~#~" value="~~RAD_ACCT_SEC_SERVER_IP#~" size="20" maxlength="15" id="RAD_ACCT_SEC_SERVER_IP~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Backup Server Port :</li>
+            <li class="right_table">
+            <input type="text" class="en_acct_sec" name="RAD_ACCT_SEC_SERVER_PORT~#~" value="~~RAD_ACCT_SEC_SERVER_PORT#~" size="20" maxlength="5" id="RAD_ACCT_SEC_SERVER_PORT~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="w_text2">
+          <ul>
+            <li class="left_table">Backup Share Secret:</li>
+            <li class="right_table">
+            <input type="text" class="en_acct_sec" name="RAD_ACCT_SEC_SERVER_SECRET~#~" value="~~RAD_ACCT_SEC_SERVER_SECRET#~" size="20" maxlength="64" id="RAD_ACCT_SEC_SERVER_SECRET~#~" />
+            </li>
+          </ul>
+        </div>
+        <div class="table_button">
+          <center>
+            <center>
+              <input class="table_button_l" name="Back" type="button" id="Back" value="Back" onclick="document.location.href='wlan_radius'"/>
+              <input class="table_button_m" name="COMMIT" value="Apply" type="submit" />
+              <input class="table_button_r" name="cancel" value="Cancel" type="button" onclick="document.location.replace('wlan_radius_modify?INDEX=~~INDEX~');" />
+		          <input name="EXECUTE" value="wlan_radius_modify" type="hidden" />
+            </center>
+          </center>
+        </div>
+      </div>
+
+    </body>
+
+  </html>
+

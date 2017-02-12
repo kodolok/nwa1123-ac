@@ -1,0 +1,17 @@
+auth_algs=~~SEC_WEP_MODE#~
+ieee8021x=0
+eapol_version=2
+eapol_key_index_workaround=0
+eap_server=1
+wpa=~~SEC_WPA#~
+~hPSK_KEY#~wpa_psk=~~PSK_KEY#~
+~hPSK_KEY#!~wpa_passphrase=~~PSK_KEY#~
+wpa_key_mgmt=WPA-PSK
+~eSEC_WPA#:1~wpa_pairwise=TKIP
+~eSEC_WPA#:2~wpa_pairwise=CCMP
+~eSEC_WPA#:3~wpa_pairwise=TKIP CCMP
+~eSEC_WPA#:2~rsn_pairwise=CCMP
+wpa_group_rekey=0
+wpa_gmk_rekey=0
+eap_reauth_period=0
+#wpa_strict_rekey=1

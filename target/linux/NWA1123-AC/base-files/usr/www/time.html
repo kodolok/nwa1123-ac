@@ -1,0 +1,515 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=10" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>.::Welcome to the Web-Based Configurator::.</title>
+<link href="css/expert.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/baseJS.js"></script>
+<script type="text/javascript" src="../js/uimake.js"></script>
+<script type="text/javascript">
+var monArray = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+var monNormal = ["31","28","31","30","31","30","31","31","30","31","30","31"];
+var monLeap = ["31","29","31","30","31","30","31","31","30","31","30","31"];
+var currTime = ~`webget_time_show`~;
+function isYear(str) {
+  var regEx = /^\d{4}$/;
+  return regEx.test(str);        
+}
+function isMon(str) {
+  var regEx = /(^0[1-9]$)|(^1[0-2]$)/;    
+  return regEx.test(str);          
+}
+function isDay(day, mon, year) { 
+  var regEx = /(^0[1-9]$)|(^[1-2]\d$)|(^3[0-1]$)/;    
+  if (regEx.test(day) == true) {
+    var isLeapYear = ((year % 4 == 0) ? true : false);
+    var maxDay = 0, index = 0;
+    for (; index < 12; index++) {
+      if (monArray[index] == mon) {
+        if (isLeapYear) {
+          maxDay = monLeap[index]; 
+        } else {
+          maxDay = monNormal[index]; 
+        }
+      }
+    }
+    if (eval(day) <= maxDay) {
+      return true;
+    }
+  } 
+  return false;
+}
+function isHour(str) {  
+  var regEx = /(^0\d$)|(^1\d$)|(^2[0-3]$)/;    
+  return regEx.test(str);          
+}
+function isMinSec(str) {
+  var regEx = /(^0\d$)|(^[1-5]\d$)/;    
+  return regEx.test(str);          
+}
+function checkNtpStatus() {
+  NN_disableByClass("c_ntpstatus");
+  NN_disableByClass("c_ntpsrvauto");
+  NN_disableByClass("c_ntpsrvmanual");
+  var isChecked = NN_val(NN_getById("cNTP_STATUS"));
+  NN_val(NN_getById("NTP_STATUS"), (isChecked == true ? 1: 0));
+  if (isChecked == true) {
+    NN_enableByClass("c_ntpstatus");
+    checkNtpServerType();
+    NN_disableByClass("dis_time");
+  } else {
+    NN_disableByClass("c_ntpstatus");
+    NN_enableByClass("dis_time");
+  }
+  checkNtpDls();
+}
+function checkNtpDls() {
+  var isChecked = NN_val(NN_getById("cNTP_DAYLIGHT_SAVING"));
+  NN_val(NN_getById("NTP_DAYLIGHT_SAVING"), (isChecked == true ? 1: 0));
+}
+function checkNtpServerType() {
+  NN_disableByClass("c_ntpsrvauto");
+  NN_disableByClass("c_ntpsrvmanual");
+  var retVal = NN_val(NN_getByName("NTP_SERVER_TYPE"));
+  if (retVal == 0) {
+    NN_enableByClass("c_ntpsrvauto");
+    NN_disableByClass("c_ntpsrvmanual");
+  } else {
+    NN_disableByClass("c_ntpsrvauto");
+    NN_enableByClass("c_ntpsrvmanual");
+  }
+}
+function checkNtpDaylight() {
+  var isChecked = NN_val(NN_getById("cNTP_DAYLIGHT_SAVING"));
+
+  NN_val(NN_getById("NTP_DAYLIGHT_SAVING"), (isChecked ? 1: 0));
+
+  if (isChecked) {
+    NN_enableByClass("c_daylight");
+  } else {
+    NN_disableByClass("c_daylight");
+  }
+}
+function init() {
+  uiFillOutForm(currTime);
+  checkNtpStatus();
+  checkNtpDaylight();
+}
+function formSubmit() {
+  var retVal = true;
+  if (NN_val(NN_getById("cNTP_STATUS")) == true) {
+    if (NN_val(NN_getByName("NTP_SERVER_TYPE")) == 1) {
+      if (!validate(NN_getById("NTP_SERVER_IP"), V_DOMAIN, 1, 32)) {
+        if (!validate(NN_getById("NTP_SERVER_IP"), V_IP)) {
+          retVal = false;
+        }
+      }
+    }
+  } else {
+    var oYear = NN_getById("Year"); 
+    var vYear = oYear.value;
+    var oMon = NN_getById("Mon"); 
+    var vMon = oMon.value;
+    var oDay = NN_getById("Day"); 
+    var vDay = oDay.value;
+    var oHour = NN_getById("Hour"); 
+    var vHour = oHour.value;
+    var oMin = NN_getById("Min"); 
+    var vMin = oMin.value;
+    var oSec = NN_getById("Sec"); 
+    var vSec = oSec.value;
+
+    if (isYear(vYear)) {
+      NN_removeClass(oYear, "invalidinput");
+    } else {
+      NN_addClass(oYear, "invalidinput");
+      retVal = false;
+    }
+
+    if (isMon(vMon)) {
+      NN_removeClass(oMon, "invalidinput");
+    } else {
+      NN_addClass(oMon, "invalidinput");
+      retVal = false;
+    }
+
+    if (isDay(vDay, vMon, vYear)) {
+      NN_removeClass(oDay, "invalidinput");
+    } else {
+      NN_addClass(oDay, "invalidinput");
+      retVal = false;
+    }
+
+    if (isHour(vHour)) {
+      NN_removeClass(oHour, "invalidinput");
+    } else {
+      NN_addClass(oHour, "invalidinput");
+      retVal = false;
+    }
+
+    if (isMinSec(vMin)) {
+      NN_removeClass(oMin, "invalidinput");
+    } else {
+      NN_addClass(oMin, "invalidinput");
+      retVal = false;
+    }
+
+    if (isMinSec(vSec)) {
+      NN_removeClass(oSec, "invalidinput");
+    } else {
+      NN_addClass(oSec, "invalidinput");
+      retVal = false;
+    }
+
+    if (retVal) {
+      NN_getById("NTP_YEAR").value = vYear;
+      NN_getById("NTP_MON").value = vMon;
+      NN_getById("NTP_DAY").value = vDay;
+      NN_getById("NTP_HOUR").value = vHour;
+      NN_getById("NTP_MIN").value = vMin;
+      NN_getById("NTP_SEC").value = vSec;
+
+      if ((vYear != currTime["Year"]) || (vMon != currTime["Mon"]) ||
+          (vDay != currTime["Day"]) || (vHour != currTime["Hour"]) ||
+          (vMin != currTime["Min"]) || (vSec != currTime["Sec"])) {
+        NN_val(NN_getById("NTP_TIME_CHANGE"), "1");
+      }
+
+    }
+  }
+
+  if (NN_val(NN_getById("NTP_STATUS")) != "~~NTP_STATUS~") {
+    NN_val(NN_getById("NTP_STATUS_CHANGE"), "1");
+  }
+
+  if (NN_val(NN_getById("NTP_TIME_ZONE")) != "~~NTP_TIME_ZONE~") {
+    NN_val(NN_getById("NTP_TIME_ZONE_CHANGE"), "1");
+  }
+
+  if (NN_val(NN_getById("NTP_DAYLIGHT_SAVING")) != "~~NTP_DAYLIGHT_SAVING~") {
+    NN_val(NN_getById("NTP_DAYLIGHT_SAVING_CHANGE"), "1");
+  }
+  if (NN_val(NN_getById("cNTP_DAYLIGHT_SAVING"))) {
+    var oStartH = NN_getById("NTP_DAYLIGHT_START_HOUR"), vStartH = NN_val(oStartH),
+        oStartM = NN_getById("NTP_DAYLIGHT_START_MINUTE"), vStartM = NN_val(oStartM),
+        oEndH = NN_getById("NTP_DAYLIGHT_END_HOUR"), vEndH = NN_val(oEndH),
+        oEndM = NN_getById("NTP_DAYLIGHT_END_MINUTE"), vEndM = NN_val(oEndM);
+
+    if (NN_val(NN_getById("NTP_DAYLIGHT_START_WEEK_NUM")) != "~~NTP_DAYLIGHT_START_WEEK_NUM~" ||
+        NN_val(NN_getById("NTP_DAYLIGHT_START_WEEK_DAY")) != "~~NTP_DAYLIGHT_START_WEEK_DAY~" ||
+        NN_val(NN_getById("NTP_DAYLIGHT_START_MONTH")) != "~~NTP_DAYLIGHT_START_MONTH~" ||
+        NN_val(NN_getById("NTP_DAYLIGHT_END_WEEK_NUM")) != "~~NTP_DAYLIGHT_END_WEEK_NUM~" ||
+        NN_val(NN_getById("NTP_DAYLIGHT_END_WEEK_DAY")) != "~~NTP_DAYLIGHT_END_WEEK_DAY~" ||
+        NN_val(NN_getById("NTP_DAYLIGHT_END_MONTH")) != "~~NTP_DAYLIGHT_END_MONTH~") {
+
+      NN_val(NN_getById("NTP_DAYLIGHT_SAVING_CHANGE"), "1");
+    }
+
+    if (vStartH != "~~NTP_DAYLIGHT_START_HOUR~" ||
+        vStartM != "~~NTP_DAYLIGHT_START_MINUTE~" ||
+        vEndH != "~~NTP_DAYLIGHT_END_HOUR~" ||
+        vEndM != "~~NTP_DAYLIGHT_END_MINUTE~") {
+
+      NN_val(NN_getById("NTP_DAYLIGHT_SAVING_CHANGE"), "1");
+
+      if (isHour(vStartH)) {
+        NN_removeClass(oStartH, "invalidinput");
+      } else {
+        NN_addClass(oStartH, "invalidinput");
+        retVal = false;
+      }
+
+      if (isHour(vEndH)) {
+        NN_removeClass(oEndH, "invalidinput");
+      } else {
+        NN_addClass(oEndH, "invalidinput");
+        retVal = false;
+      }
+
+      if (isMinSec(vStartM)) {
+        NN_removeClass(oStartM, "invalidinput");
+      } else {
+        NN_addClass(oStartM, "invalidinput");
+        retVal = false;
+      }
+
+      if (isMinSec(vEndM)) {
+        NN_removeClass(oEndM, "invalidinput");
+      } else {
+        NN_addClass(oEndM, "invalidinput");
+        retVal = false;
+      }
+    }
+  }
+  return retVal;
+}
+</script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Time"><span>Time</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <form method="post" onsubmit="return formSubmit();">
+  <input type="hidden" name="NTP_YEAR" id="NTP_YEAR" value="~~NTP_YEAR~" />
+  <input type="hidden" name="NTP_MON" id="NTP_MON" value="~~NTP_MON~" />
+  <input type="hidden" name="NTP_DAY" id="NTP_DAY" value="~~NTP_DAY~" />
+  <input type="hidden" name="NTP_HOUR" id="NTP_HOUR" value="~~NTP_HOUR~" />
+  <input type="hidden" name="NTP_MIN" id="NTP_MIN" value="~~NTP_MIN~" />
+  <input type="hidden" name="NTP_SEC" id="NTP_SEC" value="~~NTP_SEC~" />
+  <input type="hidden" name="NTP_STATUS_CHANGE" id="NTP_STATUS_CHANGE" value="0" />
+  <input type="hidden" name="NTP_TIME_CHANGE" id="NTP_TIME_CHANGE" value="0" />
+  <input type="hidden" name="NTP_TIME_ZONE_CHANGE" id="NTP_TIME_ZONE_CHANGE" value="0" />
+  <input type="hidden" name="NTP_DAYLIGHT_SAVING_CHANGE" id="NTP_DAYLIGHT_SAVING_CHANGE" value="0" />
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        Current Time and Date
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Current Time :</li>
+          <li class="right_table">
+            <input type="text" name="Hour" id="Hour" size="4" maxlength="2" class="dis_time" /> 
+            <input type="text" name="Min" id="Min" size="4" maxlength="2" class="dis_time" /> 
+            <input type="text" name="Sec" id="Sec" size="4" maxlength="2" class="dis_time" /> 
+            (hh:mm:ss)
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Current Date :</li>
+          <li class="right_table">
+            <input type="text" name="Year" id="Year" size="4" maxlength="4" class="dis_time" /> 
+            <input type="text" name="Mon" id="Mon" size="4" maxlength="2" class="dis_time" /> 
+            <input type="text" name="Day" id="Day" size="4" maxlength="2" class="dis_time" /> 
+            (YYYY:MM:DD)
+          </li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Time and Date Setup
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">NTP Client Update:</li>
+          <li class="right_table">
+            <input type="checkbox" name="cNTP_STATUS" id="cNTP_STATUS" value="1" ~cNTP_STATUS:1~ onclick="checkNtpStatus();" />
+            <input type="hidden" name="NTP_STATUS" id="NTP_STATUS" value="0" />
+            Enabled
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table"><input type="radio" name="NTP_SERVER_TYPE" id="NTP_SERVER_TYPE_AUTO" value="0" ~cNTP_SERVER_TYPE:0~ class="c_ntpstatus" onclick="checkNtpServerType();" />NTP Server:</li>
+          <li class="right_table"><select name="NTP_SERVER" class="c_ntpstatus c_ntpsrvauto">
+            <option value="ntp1.cs.wisc.edu" ~sNTP_SERVER:ntp1.cs.wisc.edu~>ntp1.cs.wisc.edu</option>
+            <option value="ntp1.gbg.netnod.se" ~sNTP_SERVER:ntp1.gbg.netnod.se~>ntp1.gbg.netnod.se</option>
+            <option value="ntp2.cs.wisc.edu" ~sNTP_SERVER:ntp2.cs.wisc.edu~>ntp2.cs.wisc.edu</option>
+            <option value="tock.usno.navy.mil" ~sNTP_SERVER:tock.usno.navy.mil~>tock.usno.navy.mil</option>
+            <option value="ntp3.cs.wisc.edu" ~sNTP_SERVER:ntp3.cs.wisc.edu~>ntp3.cs.wisc.edu</option>
+            <option value="ntp.cs.strath.ac.uk" ~sNTP_SERVER:ntp.cs.strath.ac.uk~>ntp.cs.strath.ac.uk</option>
+            <option value="ntp1.sp.se" ~sNTP_SERVER:ntp1.sp.se~>ntp1.sp.se</option>
+            <option value="time1.stupi.se" ~sNTP_SERVER:time1.stupi.se~>time1.stupi.se</option>
+            <option value="tick.stdtime.gov.tw" ~sNTP_SERVER:tick.stdtime.gov.tw~>tick.stdtime.gov.tw</option>
+            <option value="tock.stdtime.gov.tw" ~sNTP_SERVER:tock.stdtime.gov.tw~>tock.stdtime.gov.tw</option>
+            <option value="time.stdtime.gov.tw" ~sNTP_SERVER:time.stdtime.gov.tw~>time.stdtime.gov.tw</option>
+          </select></li>
+        </ul>
+      </div>
+      <div class="w_text2">
+        <ul>
+          <li class="left_table"><input type="radio" name="NTP_SERVER_TYPE" id="NTP_SERVER_TYPE_MANUAL" value="1" ~cNTP_SERVER_TYPE:1~ class="c_ntpstatus" onclick="checkNtpServerType();" />Manual Setting :</li>
+          <li class="right_table"><input type="text" name="NTP_SERVER_IP" id="NTP_SERVER_IP" value="~~NTP_SERVER_IP~" size="20" class="c_ntpstatus c_ntpsrvmanual" /></li>
+        </ul>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Time Zone Setup
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Time Zone :</li>
+          <li class="right_table"><select name="NTP_TIME_ZONE" id="NTP_TIME_ZONE" size="1">
+            <option value="0" ~sNTP_TIME_ZONE:0~ > (GMT-12:00) International Date Line West </option>
+            <option value="1" ~sNTP_TIME_ZONE:1~ > (GMT-11:00) Midway Island, Samoa </option>
+            <option value="2" ~sNTP_TIME_ZONE:2~ > (GMT-10:00) Hawaii </option>
+            <option value="3" ~sNTP_TIME_ZONE:3~ > (GMT-09:00) Alaska </option>
+            <option value="4" ~sNTP_TIME_ZONE:4~ > (GMT-08:00) Pacific Time (US &amp; Canada), Tijuana </option>
+            <option value="5" ~sNTP_TIME_ZONE:5~ > (GMT-07:00) Arizona </option>
+            <option value="6" ~sNTP_TIME_ZONE:6~ > (GMT-07:00) Chihuahua, La Paz, Mazatlan </option>
+            <option value="7" ~sNTP_TIME_ZONE:7~ > (GMT-07:00) Mountain Time (US &amp; Canada) </option>
+            <option value="8" ~sNTP_TIME_ZONE:8~ > (GMT-06:00) Central America </option>
+            <option value="9" ~sNTP_TIME_ZONE:9~ > (GMT-06:00) Central Time (US &amp; Canada) </option>
+            <option value="10" ~sNTP_TIME_ZONE:10~ > (GMT-06:00) Guadalajara, Mexico City, Monterrey </option>
+            <option value="11" ~sNTP_TIME_ZONE:11~ > (GMT-06:00) Saskatchewan </option>
+            <option value="12" ~sNTP_TIME_ZONE:12~ > (GMT-05:00) Bogota, Lima, Quito </option>
+            <option value="13" ~sNTP_TIME_ZONE:13~ > (GMT-05:00) Eastern Time (US &amp; Canada) </option>
+            <option value="14" ~sNTP_TIME_ZONE:14~ > (GMT-05:00) Indiana(East) </option>
+            <option value="15" ~sNTP_TIME_ZONE:15~ > (GMT-04:00) Altlantic Time (Canada) </option>
+            <option value="16" ~sNTP_TIME_ZONE:16~ > (GMT-04:00) Caracas, La Poz, Santiago </option>
+            <option value="17" ~sNTP_TIME_ZONE:17~ > (GMT-03:30) Newfoundland </option>
+            <option value="18" ~sNTP_TIME_ZONE:18~ > (GMT-03:00) Brasilia, Greenland </option>
+            <option value="19" ~sNTP_TIME_ZONE:19~ > (GMT-03:00) Buenos Aires, Georgetown </option>
+            <option value="20" ~sNTP_TIME_ZONE:20~ > (GMT-02:00) Mid-Atlantic </option>
+            <option value="21" ~sNTP_TIME_ZONE:21~ > (GMT-01:00) Azores, Cape Verde Is.  </option>
+            <option value="22" ~sNTP_TIME_ZONE:22~ > (GMT) Casablanca, Monrovia </option>
+            <option value="23" ~sNTP_TIME_ZONE:23~ > (GMT) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London </option>
+            <option value="24" ~sNTP_TIME_ZONE:24~ > (GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna </option>
+            <option value="25" ~sNTP_TIME_ZONE:25~ > (GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague </option>
+            <option value="26" ~sNTP_TIME_ZONE:26~ > (GMT+01:00) Brussels, Copenhagen, Madrid, Paris </option>
+            <option value="27" ~sNTP_TIME_ZONE:27~ > (GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb </option>
+            <option value="28" ~sNTP_TIME_ZONE:28~ > (GMT+01:00) West Central Africa </option>
+            <option value="29" ~sNTP_TIME_ZONE:29~ > (GMT+02:00) Athens, Beirut, Istanbul, Minsk </option>
+            <option value="30" ~sNTP_TIME_ZONE:30~ > (GMT+02:00) Bucharest, Cairo, Harare, Pretoria </option>
+            <option value="31" ~sNTP_TIME_ZONE:31~ > (GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius </option>
+            <option value="32" ~sNTP_TIME_ZONE:32~ > (GMT+02:00) Jerusalem </option>
+            <option value="33" ~sNTP_TIME_ZONE:33~ > (GMT+03:00) Baghdad, Kuwait, Riyadh, Nairobi </option>
+            <option value="34" ~sNTP_TIME_ZONE:34~ > (GMT+03:00) Moscow, St. Petersburg, Volgograd </option>
+            <option value="35" ~sNTP_TIME_ZONE:35~ > (GMT+03:30) Tehran </option>
+            <option value="36" ~sNTP_TIME_ZONE:36~ > (GMT+04:00) Abu Dhabi, Muscat </option>
+            <option value="37" ~sNTP_TIME_ZONE:37~ > (GMT+04:00) Baku, Tbilisi, Yerevan </option>
+            <option value="38" ~sNTP_TIME_ZONE:38~ > (GMT+04:30) Kabul </option>
+            <option value="39" ~sNTP_TIME_ZONE:39~ > (GMT+05:00) Ekaterinburg </option>
+            <option value="40" ~sNTP_TIME_ZONE:40~ > (GMT+05:00) Islamabad, Karachi, Tashkent </option>
+            <option value="41" ~sNTP_TIME_ZONE:41~ > (GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi </option>
+            <option value="42" ~sNTP_TIME_ZONE:42~ > (GMT+05:45) Katmandu </option>
+            <option value="43" ~sNTP_TIME_ZONE:43~ > (GMT+06:00) Almaty, Novosibirsk </option>
+            <option value="44" ~sNTP_TIME_ZONE:44~ > (GMT+06:00) Astana, Dhaka </option>
+            <option value="45" ~sNTP_TIME_ZONE:45~ > (GMT+06:00) Sri Jayawardenepura </option>
+            <option value="46" ~sNTP_TIME_ZONE:46~ > (GMT+06:30) Rangoon </option>
+            <option value="47" ~sNTP_TIME_ZONE:47~ > (GMT+07:00) Bangkok, Hanoi, Jakarta </option>
+            <option value="48" ~sNTP_TIME_ZONE:48~ > (GMT+07:00) Krasnoyarsk </option>
+            <option value="49" ~sNTP_TIME_ZONE:49~ > (GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi </option>
+            <option value="50" ~sNTP_TIME_ZONE:50~ > (GMT+08:00) Irkutsk, Ulaan Bataar </option>
+            <option value="51" ~sNTP_TIME_ZONE:51~ > (GMT+08:00) Kuala Lumpur, Singapore </option>
+            <option value="52" ~sNTP_TIME_ZONE:52~ > (GMT+08:00) Perth, Taipei </option>
+            <option value="53" ~sNTP_TIME_ZONE:53~ > (GMT+09:00) Osaka, Sapporo, Tokyo </option>
+            <option value="54" ~sNTP_TIME_ZONE:54~ > (GMT+09:00) Seoul, Yakutsk </option>
+            <option value="55" ~sNTP_TIME_ZONE:55~ > (GMT+09:30) Adelaide, Darwin </option>
+            <option value="56" ~sNTP_TIME_ZONE:56~ > (GMT+10:00) Brisbane, Vladivostok </option>
+            <option value="57" ~sNTP_TIME_ZONE:57~ > (GMT+10:00) Canberra, Melbourne, Sydney </option>
+            <option value="58" ~sNTP_TIME_ZONE:58~ > (GMT+10:00) Guam, Port Moresby, Hobart </option>
+            <option value="59" ~sNTP_TIME_ZONE:59~ > (GMT+11:00) Magadan, Solomon Is., New Caledonia </option>
+            <option value="60" ~sNTP_TIME_ZONE:60~ > (GMT+12:00) Auckland, Wellington </option>
+            <option value="61" ~sNTP_TIME_ZONE:61~ > (GMT+12:00) Fiji, Kamchatka, Marshall Is.  </option>
+            <option value="62" ~sNTP_TIME_ZONE:62~ > (GMT+13:00) Nuku'alofa </option>
+          </select></li>
+        </ul>
+      </div>
+    </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Adjust for Daylight Saving Time:</li>
+          <li class="right_table">
+            <input type="checkbox" id="cNTP_DAYLIGHT_SAVING" value="1" ~cNTP_DAYLIGHT_SAVING:1~ onclick="checkNtpDaylight();"/>
+            <input type="hidden" name="NTP_DAYLIGHT_SAVING" id="NTP_DAYLIGHT_SAVING" value="0" />
+            Enabled
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2 c_daylight">
+        <ul>
+          <li class="left_table">Start Date:</li>
+          <li class="right_table">
+          <span style="white-space: nowrap;">
+            <select name="NTP_DAYLIGHT_START_WEEK_NUM" id="NTP_DAYLIGHT_START_WEEK_NUM" size="1" class="c_daylight">
+              <option value="1" ~sNTP_DAYLIGHT_START_WEEK_NUM:1~>First</option>
+              <option value="2" ~sNTP_DAYLIGHT_START_WEEK_NUM:2~>Second</option>
+              <option value="3" ~sNTP_DAYLIGHT_START_WEEK_NUM:3~>Third</option>
+              <option value="4" ~sNTP_DAYLIGHT_START_WEEK_NUM:4~>Fourth</option>
+              <option value="5" ~sNTP_DAYLIGHT_START_WEEK_NUM:5~>Last</option>
+            </select>
+            <select name="NTP_DAYLIGHT_START_WEEK_DAY" id="NTP_DAYLIGHT_START_WEEK_DAY" size="1" class="c_daylight">
+              <option value="1" ~sNTP_DAYLIGHT_START_WEEK_DAY:1~>Monday</option>
+              <option value="2" ~sNTP_DAYLIGHT_START_WEEK_DAY:2~>Tuesday</option>
+              <option value="3" ~sNTP_DAYLIGHT_START_WEEK_DAY:3~>Wednesday</option>
+              <option value="4" ~sNTP_DAYLIGHT_START_WEEK_DAY:4~>Thursday</option>
+              <option value="5" ~sNTP_DAYLIGHT_START_WEEK_DAY:5~>Firday</option>
+              <option value="6" ~sNTP_DAYLIGHT_START_WEEK_DAY:6~>Saturday</option>
+              <option value="7" ~sNTP_DAYLIGHT_START_WEEK_DAY:7~>Sunday</option>
+            </select>
+            of
+            <select name="NTP_DAYLIGHT_START_MONTH" id="NTP_DAYLIGHT_START_MONTH" size="1" class="c_daylight">
+              <option value="1" ~sNTP_DAYLIGHT_START_MONTH:1~>January</option>
+              <option value="2" ~sNTP_DAYLIGHT_START_MONTH:2~>February</option>
+              <option value="3" ~sNTP_DAYLIGHT_START_MONTH:3~>March</option>
+              <option value="4" ~sNTP_DAYLIGHT_START_MONTH:4~>April</option>
+              <option value="5" ~sNTP_DAYLIGHT_START_MONTH:5~>May</option>
+              <option value="6" ~sNTP_DAYLIGHT_START_MONTH:6~>June</option>
+              <option value="7" ~sNTP_DAYLIGHT_START_MONTH:7~>July</option>
+              <option value="8" ~sNTP_DAYLIGHT_START_MONTH:8~>August</option>
+              <option value="9" ~sNTP_DAYLIGHT_START_MONTH:9~>September</option>
+              <option value="10" ~sNTP_DAYLIGHT_START_MONTH:10~>October</option>
+              <option value="11" ~sNTP_DAYLIGHT_START_MONTH:11~>November</option>
+              <option value="12" ~sNTP_DAYLIGHT_START_MONTH:12~>December</option>
+            </select>
+            at
+            <input type="text" name="NTP_DAYLIGHT_START_HOUR" id="NTP_DAYLIGHT_START_HOUR" maxlength="2" size="3" value="~~NTP_DAYLIGHT_START_HOUR~" class="c_daylight">
+            &#58;
+            <input type="text" name="NTP_DAYLIGHT_START_MINUTE" id="NTP_DAYLIGHT_START_MINUTE" maxlength="2" size="3" value="~~NTP_DAYLIGHT_START_MINUTE~" class="c_daylight">
+          </span>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text2 c_daylight">
+        <ul>
+          <li class="left_table">End Date:</li>
+          <li class="right_table">
+          <span style="white-space: nowrap;">
+            <select name="NTP_DAYLIGHT_END_WEEK_NUM" id="NTP_DAYLIGHT_END_WEEK_NUM" size="1" class="c_daylight">
+              <option value="1" ~sNTP_DAYLIGHT_END_WEEK_NUM:1~>First</option>
+              <option value="2" ~sNTP_DAYLIGHT_END_WEEK_NUM:2~>Second</option>
+              <option value="3" ~sNTP_DAYLIGHT_END_WEEK_NUM:3~>Third</option>
+              <option value="4" ~sNTP_DAYLIGHT_END_WEEK_NUM:4~>Fourth</option>
+              <option value="5" ~sNTP_DAYLIGHT_END_WEEK_NUM:5~>Last</option>
+            </select>
+            <select name="NTP_DAYLIGHT_END_WEEK_DAY" id="NTP_DAYLIGHT_END_WEEK_DAY" size="1" class="c_daylight">
+              <option value="1" ~sNTP_DAYLIGHT_END_WEEK_DAY:1~>Monday</option>
+              <option value="2" ~sNTP_DAYLIGHT_END_WEEK_DAY:2~>Tuesday</option>
+              <option value="3" ~sNTP_DAYLIGHT_END_WEEK_DAY:3~>Wednesday</option>
+              <option value="4" ~sNTP_DAYLIGHT_END_WEEK_DAY:4~>Thursday</option>
+              <option value="5" ~sNTP_DAYLIGHT_END_WEEK_DAY:5~>Firday</option>
+              <option value="6" ~sNTP_DAYLIGHT_END_WEEK_DAY:6~>Saturday</option>
+              <option value="7" ~sNTP_DAYLIGHT_END_WEEK_DAY:7~>Sunday</option>
+            </select>
+            of
+            <select name="NTP_DAYLIGHT_END_MONTH" id="NTP_DAYLIGHT_END_MONTH" size="1" class="c_daylight">
+              <option value="1" ~sNTP_DAYLIGHT_END_MONTH:1~>January</option>
+              <option value="2" ~sNTP_DAYLIGHT_END_MONTH:2~>February</option>
+              <option value="3" ~sNTP_DAYLIGHT_END_MONTH:3~>March</option>
+              <option value="4" ~sNTP_DAYLIGHT_END_MONTH:4~>April</option>
+              <option value="5" ~sNTP_DAYLIGHT_END_MONTH:5~>May</option>
+              <option value="6" ~sNTP_DAYLIGHT_END_MONTH:6~>June</option>
+              <option value="7" ~sNTP_DAYLIGHT_END_MONTH:7~>July</option>
+              <option value="8" ~sNTP_DAYLIGHT_END_MONTH:8~>August</option>
+              <option value="9" ~sNTP_DAYLIGHT_END_MONTH:9~>September</option>
+              <option value="10" ~sNTP_DAYLIGHT_END_MONTH:10~>October</option>
+              <option value="11" ~sNTP_DAYLIGHT_END_MONTH:11~>November</option>
+              <option value="12" ~sNTP_DAYLIGHT_END_MONTH:12~>December</option>
+            </select>
+            at
+            <input type="text" name="NTP_DAYLIGHT_END_HOUR" id="NTP_DAYLIGHT_END_HOUR" maxlength="2" size="3" value="~~NTP_DAYLIGHT_END_HOUR~" class="c_daylight">
+            &#58;
+            <input type="text" name="NTP_DAYLIGHT_END_MINUTE" id="NTP_DAYLIGHT_END_MINUTE" maxlength="2" size="3" value="~~NTP_DAYLIGHT_END_MINUTE~" class="c_daylight">
+          </span>
+          </li>
+        </ul>
+      </div>
+    <div class="table_button">
+      <center>
+        <input name="COMMIT" value="Apply" type="submit" class="table_button_l" /> 
+        <input name="cancel" value="Cancel" type="button" onclick="document.location.replace('time');" class="table_button_r" />
+        <input type="hidden" name="EXECUTE" value="time" />
+      </center>
+    </div>
+  </div>
+</body>
+</html>

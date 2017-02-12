@@ -1,0 +1,4 @@
+
+if PACKAGE_kmod-qca-wifi
+
+endif

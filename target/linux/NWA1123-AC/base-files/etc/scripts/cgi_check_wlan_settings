@@ -1,0 +1,133 @@
+#!/bin/sh
+####################################################################
+## CGI script
+## 
+## This script is used to check the Wireless settings. 
+##
+## cgi_check_wlan_settings <radio>
+##
+## Where
+##      radio:  Radio index. (0:2GHz, 1:5GHz)
+##
+####################################################################
+
+if [ "${1}" = "" ]; then
+    INDEX_LIST="1 2"
+else
+    INDEX_LIST="${1}"
+fi
+
+STA_CONFIGURED=0
+for INDEX in $INDEX_LIST;
+do
+    APMODE=`cfg -v AP_STARTMODE_$INDEX`
+    APCHMODE=`cfg -v AP_CHMODE_$INDEX`
+    WLAN_STATUS=`cfg -v WLAN_UP_$INDEX`
+    if [ $INDEX = 1 ]; then
+        OTHER_INDEX=2
+    else
+        OTHER_INDEX=1
+    fi
+    
+    if [ "${APMODE}" = "mbssid" ]; then
+        my_vaps=`cfg -v VAP_LIST_$INDEX | sed 's/,/ /g'`
+    fi
+    if [ "${APMODE}" = "root-mbssid" ]; then
+        my_vaps=`cfg -v VAP_LIST_$INDEX | awk -F, '{print $1,$2,$3,$4}'`
+    fi
+
+    ## Check Client mode
+    if [ "${WLAN_STATUS}" = "1" ]; then
+        OTHER_STATUS=`cfg -v WLAN_UP_$OTHER_INDEX`
+        OTHER_APMODE=`cfg -v AP_STARTMODE_$OTHER_INDEX`
+        if [ "${APMODE}" = "client" ]; then
+            ## Disable another radio
+            #cfg -a WLAN_UP_$OTHER_INDEX=0
+            #cfg -c
+            STA_CONFIGURED=1;
+        elif [ "${OTHER_STATUS}" = "1" -a "${OTHER_APMODE}" = "client" ]; then
+            ## Can't activate this radio 
+            exit 23
+        fi
+    fi
+    
+    ## Check WDS mode
+    if [ "${APMODE}" = "root-mbssid" -o "${APMODE}" = "repeater" ]; then
+        ##check WDS security method
+        AP_IDX=`cfg -v WDS_AP_PROFILE_$INDEX`
+        
+        ITER_SEC_PROFILE="AP_SEC_PROFILE_$AP_IDX"
+        SEC_PROFILE_VAL=`cfg -v $ITER_SEC_PROFILE`
+        
+        SEC_DESC="SEC_DESC_$SEC_PROFILE_VAL"
+        SEC_DESC_VAL=`cfg -v $SEC_DESC`
+        
+        case $SEC_DESC_VAL in
+            "")
+                ;;
+            "None")
+                ;;
+            "WPA-PSK")
+                ;;
+            "WPA2-PSK")
+                ;;
+            *)
+                exit 20
+                ;;
+        esac
+        
+        ##
+        ## Check QoS 
+        ##
+        ITER_QOS="AP_QOS_$AP_IDX"
+        AP_QOS_VAL=`cfg -v $ITER_QOS`
+        
+        if [ "$AP_QOS_VAL" = "None" ]; then
+            if [ "$APCHMODE" = "11NGHT" -o "$APCHMODE" = "11NAHT" ]; then
+                exit 22
+            fi
+        fi
+    fi
+    
+    
+    ## Check Multiple SSID mode
+    WEP_CONFIGURED=0
+    if [ "${APMODE}" = "root-mbssid" -o "${APMODE}" = "mbssid" ]; then
+    
+        for i in $my_vaps;
+        do
+            if echo "${i}" | grep -q '_'; then
+                continue
+            fi
+            
+            ##
+            ## Check WEP 
+            ##
+            ITER_SEC_PROFILE="AP_SEC_PROFILE_$i"
+            SEC_PROFILE_VAL=`cfg -v $ITER_SEC_PROFILE`
+            
+            SEC_DESC="SEC_DESC_$SEC_PROFILE_VAL"
+            SEC_DESC_VAL=`cfg -v $SEC_DESC`
+    
+            if [ "$SEC_DESC_VAL" = "WEP" ]; then
+                if [ $WEP_CONFIGURED != 0 ]; then
+                    exit 21
+                fi
+                
+                WEP_CONFIGURED=1
+            fi
+            
+            ##
+            ## Check QoS 
+            ##
+            ITER_QOS="AP_QOS_$i"
+            AP_QOS_VAL=`cfg -v $ITER_QOS`
+            
+            if [ "$AP_QOS_VAL" = "None" ]; then
+                if [ "$APCHMODE" = "11NGHT" -o "$APCHMODE" = "11NAHT" ]; then
+                    exit 22
+                fi
+            fi
+        done ##vap loop
+    fi
+done ##radio loop

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ "${1}" = "" ]; then
+    echo "Please specify the OID."
+    exit 255
+fi
+
+OID=$1
+
+year=`date | awk '{print $6}'`
+mon=`date +"%D"| cut -d '/' -f1`
+day=`date +"%D"| cut -d '/' -f2`
+currenttime=`date| awk '{print $4}'`
+hour=`echo $currenttime|cut -d ':' -f1`
+min=`echo $currenttime|cut -d ':' -f2`
+sec=`echo $currenttime|cut -d ':' -f3`
+
+if [ "${OID}" = "1" ]
+then
+    echo -n "$year/$mon/$day"
+fi
+
+if [ "${OID}" = "2" ]
+then
+    echo -n "$hour:$min:$sec"
+fi
+
+exit 0

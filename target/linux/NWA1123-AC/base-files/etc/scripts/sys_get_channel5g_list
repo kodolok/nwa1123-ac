@@ -1,0 +1,67 @@
+#!/bin/sh
+#########################################################################
+##  get channel list
+##  This file used to get channel list
+##  sys_get_channel5g_list [20 | 40 | 80]
+#########################################################################
+
+PRE=""
+CH=""
+WLAN_STATUS=`cfg -v WLAN_UP_2`
+
+if [ "$1" != "20" -a "$1" != "40" -a "$1" != "80" ]; then
+    echo "Usage: sys_get_channel5g_list [20 | 40 | 80]"
+    exit
+fi
+
+check_CHWIDTH80()
+{
+    CHECK_CH=$1
+    if [ "x$CHECK_CH" = "x36" -o "x$CHECK_CH" = "x52" -o "x$CHECK_CH" = "x100" -o "x$CHECK_CH" = "x116"  -o "x$CHECK_CH" = "x149" ]; then 
+		TOKEN=`wlanconfig ath8 list chan | awk -v RS=Channel '{print}' | grep " $CHECK_CH :" | grep V80`
+		if [ "$TOKEN" != "" ]; then
+			[ "$PRE" != "" ] && echo -n ","
+			PRE=$1
+			echo -n "\"$CHECK_CH\""
+		fi
+	fi
+}
+
+check_CHWIDTH40()
+{
+    CHECK_CH=$1
+#    if [ "$CHECK_CH" != "40" -a "$CHECK_CH" != "48" -a "$CHECK_CH" != "153" -a "$CHECK_CH" != "161" ]; then 
+	    TOKEN=`wlanconfig ath8 list chan | awk -v RS=Channel '{print}' | grep " $CHECK_CH :" | grep "C CU"`
+	    if [ "$TOKEN" != "" ]; then
+	    		[ "$PRE" != "" ] && echo -n ","
+	        PRE=$1
+	        echo -n "\"$CHECK_CH\""
+	    fi
+#    fi
+}
+
+echo -n "["
+
+if [ "$WLAN_STATUS" = "1" ]; then
+    iwlist ath8 channel | grep Channel | grep -v Current > /tmp/.chlist
+
+    while read line
+    do
+        CH=`echo $line | cut -d ' ' -f2`
+        
+        if [ "$1" = "80" ]; then
+            check_CHWIDTH80 $CH
+        elif [ "$1" = "40" ]; then
+            check_CHWIDTH40 $CH
+        else
+			[ "$PRE" != "" ] && echo -n ","
+            PRE=$CH
+            echo -n "\"$CH\""
+        fi
+        
+        
+    done < /tmp/.chlist
+fi
+
+echo "]"
+

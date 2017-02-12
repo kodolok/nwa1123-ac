@@ -1,0 +1,82 @@
+#!/bin/sh
+###################################################################
+# SYSTEM script
+#
+# This script is used to get the IP/MAC address of the interface.
+#
+# cgi_ip_gettings [ifname]
+#
+#  ifname:  The interface name. ex: ath0,eth0
+#
+###################################################################
+#
+
+if [ "${1}" = "" ]; then
+    #
+    # Default management interface
+    #
+    DEV_NAME=`get_mgmt_if`
+else
+    DEV_NAME=$1
+fi
+
+IF_STR=`ifconfig | grep $DEV_NAME`
+
+if [ "_$IF_STR" = "_" ]; then
+    exit
+fi
+
+
+# Get IPV4
+#
+mainstr=` ifconfig $DEV_NAME | grep "inet addr" `
+
+# _IFS="$IFS"
+# IFS=' '
+set -- $mainstr
+# IFS="$_IFS"
+
+addr=` echo "$2" | cut -d : -f2 `
+mask=` echo "$4" | cut -d : -f2 `
+
+# Get IPV6
+#
+mainstr=` ifconfig $DEV_NAME | grep "inet6 addr" | grep "Global" `
+set -- $mainstr
+v6addrg=` echo "$3" `
+mainstr=` ifconfig $DEV_NAME | grep "inet6 addr" | grep "Link" `
+set -- $mainstr
+v6addrl=` echo "$3" `
+
+# Get HWaddr
+#
+#mainstr=` ifconfig $DEV_NAME | grep "HWaddr" | sed 's/br0//' `
+#set -- $mainstr
+hwaddr=` ifconfig $DEV_NAME | awk '/HWaddr/ {print $5}' `
+
+# Get GW
+#
+mainstr=` route | grep "default" `
+set -- $mainstr
+gwaddr=` echo "$2" `
+
+# Scan all IPV6 Address
+#
+mainstr=`ifconfig $DEV_NAME | awk '/inet6/ {printf "\"V6Addr\":\""$3"\",\"Scope\":\"" $4"\"," }'`
+
+echo -n {
+echo -n \"V4Addr\":\""$addr"\",
+echo -n \"V4Mask\":\""$mask"\",
+if [ "$mainstr" != "" ]; then
+	echo -n $mainstr
+else
+	echo -n \"V6Addr\":\"\",
+	echo -n \"Scope\":\"\",
+fi
+echo -n \"V6AddrGlobal\":\""$v6addrg"\",
+echo -n \"V6AddrLink\":\""$v6addrl"\",
+echo -n \"HWAddr\":\""$hwaddr"\",
+echo -n \"GWAddr\":\""$gwaddr"\"
+echo -n }
+
+exit 0

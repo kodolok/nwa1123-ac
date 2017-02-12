@@ -1,0 +1,40 @@
+#!/bin/sh 
+#
+#SMTP schedule scripts
+#
+. /etc/ath/apcfg
+
+
+LOG_STR=0
+if [ "$LOG_CATE_ERROR" = "1" ]
+then
+    LOG_STR=$(($LOG_STR+1))
+fi
+
+if [ "$LOG_CATE_MAINT" = "1" ]
+then
+    LOG_STR=$(($LOG_STR+2))
+fi
+
+if [ "$LOG_CATE_DOT1X" = "1" ]
+then
+    LOG_STR=$(($LOG_STR+4))
+fi
+
+if [ "$LOG_CATE_WIRELESS" = "1" ]
+then
+    LOG_STR=$(($LOG_STR+8))
+fi
+
+if [ "$LOG_REMOTE" = "1" ]
+then
+    killall -q syslogd
+#    killall -q klogd
+    syslogd -l $LOG_STR -R $LOG_SERVER:$LOG_PORT -L -s 128&
+#    klogd
+else
+    killall -q syslogd
+#    killall -q klogd
+    syslogd -l $LOG_STR -L -s 128&
+#    klogd
+fi

@@ -1,0 +1,28 @@
+diff -Nur old/Makefile.in new/Makefile.in
+--- old/Makefile.in	2012-05-15 10:04:19.000000000 +0800
++++ new/Makefile.in	2016-03-16 11:14:22.377288886 +0800
+@@ -46,19 +46,19 @@
+ 	sh contrib/build-rpm
+ 
+ docs:
+-	-@test -d doc && cd doc && $(MAKE) libext2fs.info
++	#-@test -d doc && cd doc && $(MAKE) libext2fs.info
+ 
+ install-doc-libs:
+-	-@test -d doc && cd doc && $(MAKE) install-doc-libs
++	#-@test -d doc && cd doc && $(MAKE) install-doc-libs
+ 
+ uninstall-doc-libs:
+-	-@test -d doc && cd doc && $(MAKE) uninstall-doc-libs
++	#-@test -d doc && cd doc && $(MAKE) uninstall-doc-libs
+ 
+ clean-doc:
+-	-@test -d doc && cd doc && $(MAKE) clean
++	#-@test -d doc && cd doc && $(MAKE) clean
+ 
+ distclean-doc:
+-	-test -d doc && cd doc && $(MAKE) distclean
++	#-test -d doc && cd doc && $(MAKE) distclean
+ 
+ install: subs all-libs-recursive install-progs-recursive \
+   install-shlibs-libs-recursive install-doc-libs

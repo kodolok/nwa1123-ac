@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<title>[nwa1123-ac]</title>
+<link rel="stylesheet" type="text/css" href="../login/images/login.css" />
+<style type="text/css">
+.invalidinput {border-color:red;}
+</style>
+<script type="text/javascript" src="../js/baseJS.js"></script>
+<script type="text/javascript" src="../js/uimake.js"></script>
+<script type="text/javascript">
+  document.title = "[nwa1123-ac] (" + document.domain + ")";
+
+  var certStatus = "~~HTTPS_CERT_FLAG~";
+  var startSec = 15;
+  var timerId = 0;
+  function countdownGenCa() {
+    startSec -= 1;
+    if (startSec < 0) {
+      clearInterval(timerId);
+      document.getElementById("genCaDescr").innerHTML = "Please attempt to access ap again.";
+      //document.getElementById("caStatusInit").innerHTML = "Updated";
+      //document.getElementById("caStatusProg").innerHTML = "Updated";
+
+      redirectTo();
+    } else {
+      document.getElementById("clockGenCa").innerHTML = startSec;
+    }
+  }
+  function goCountdownGenCa() {
+    NN_showByClass("progresspart");
+    NN_hideByClass("confirmpart");
+    timerId = setInterval("countdownGenCa();", 1 * 1000);
+    setTimeout("NN_stopLoading();", 10 * 1000);
+  }
+  function redirectTo() {
+      forceLogout();
+      top.location.href = location.protocol + "//" + location.hostname; 
+  }
+  function MM_goToURL() { //v3.0
+    var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+    for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+  }
+
+  function init() {
+/*
+    if (certStatus == "0") {
+      document.getElementById("caStatusInit").innerHTML = "Default";
+      document.getElementById("caStatusProg").innerHTML = "Default";
+    } else {
+      document.getElementById("caStatusInit").innerHTML = "Updated";
+      document.getElementById("caStatusProg").innerHTML = "Updated";
+    }
+*/
+    NN_hideByClass("progresspart");
+  }
+
+</script>
+</head>
+<body onload="init();">
+<form id="form1" name="form1" method="post">
+<div class="l-wrap">
+<div class="login_bg">
+    <div class="related">
+      <div class="logo"></div>
+      <div class="model">NWA1123-AC</div>
+    </div>
+  <div class="usg_icon"></div>
+  <div class="content_bg"><div class="section_bg"> </div>
+  </div>
+  <div class="section">
+    <div id="confirmpart" class="confirmpart">
+      <div class="title">Renew HTTPS Certificate</div>
+      <span class="content_line"></span>
+      <br />
+      <p>AP currently uses a factory default non-unique SHA1 certificate for HTTPS.</p>
+      <p>As a security precaution, it is highly recommended that you regenerate a unique SHA2 certificate to replace default certificate now.</p><br />
+    
+      <div class="btn">
+        <input type="submit" name="GEN_HTTPS_CERT" value="Renew"  onclick="goCountdownGenCa();"/>
+        <!-- <input type="submit" name="COMMIT" value="Apply"  onclick="goCountdownGenCa();"/> -->
+        <input name="Submit2" type="button" onclick="MM_goToURL('parent','../cgi-bin/dashboard');" value="Ignore" />
+        <!-- <input type="hidden" name="EXECUTE" value="gennewcert" /> -->
+      </div>
+    </div>
+  	<div id="progresspart"  class="progresspart">
+  		<div class="title">Generating new HTTPS certificate</div>
+  		<span class="content_line"></span>
+  		<br />
+      <p>The system is generating new SHA2 certificate for HTTPS.</p>
+      <p>Please don't turn off the power or press the reset button.</p>
+  		<p id="genCaDescr">Certificate renewal will be done in <span id="clockGenCa">15</span> secs.</p><br />
+  	</div>
+	</div>
+  </div>
+</div>
+</form>
+</body>
+</html>

@@ -1,0 +1,77 @@
+#!/bin/sh
+####################################################################
+## WEB script
+## 
+## This script is used to get the Interface info. 
+##
+## webget_intf_info <interface>
+##
+##  interface: LAN/WLAN
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the interface."
+    exit 255
+fi
+
+if [ "${1}" = "LAN" ]; then
+    INTF=eth0
+    ## Get LAN info
+    LINK_STATUS=`ethreg --p_st -i eth0 -p 0 | grep "Link:" | awk '{printf "%s" $2}'`
+    DUPLEX_STR=`ethreg --p_st -i eth0 -p 0 | grep "Duplex:" | awk '{printf "%s" $2}'`
+    SPEED_STR=`ethreg --p_st -i eth0 -p 0 | grep "Speed:" | awk '{printf "%s" $2}'`
+    if [ "$LINK_STATUS" = "alive" ]; then 
+        IF_STATUS=UP
+        RATE_STR="${SPEED_STR}/${DUPLEX_STR} Duplex"
+    else
+        IF_STATUS=DOWN
+        RATE_STR="Auto"
+    fi
+fi
+if [ "${1}" = "WLAN1" ]; then
+    INTF=wifi0
+    ## Get WLAN info
+    #IF_STATUS=`ifconfig | grep $INTF 2> /dev/null`
+    ## Get user's config
+    IF_STATUS=`cfg -v WLAN_UP_1`
+    if [ "$IF_STATUS" = "1" ]; then 
+        IF_STATUS="up"
+    else
+        IF_STATUS="down"
+    fi
+    TMP_STR=`iwlist ath0 channel 2> /dev/null | grep 'Current Frequency'`
+    CH_STR=`expr "$TMP_STR" : '.*Channel \(.*\))'`
+    TMP_STR=`iwlist ath0 rate 2> /dev/null | grep 'Current'`
+    RATE_STR=`expr "$TMP_STR" : '.*Rate[:=]\(.*\) Mb/s'`
+    RATE_STR="${RATE_STR}Mbps"
+fi
+if [ "${1}" = "WLAN2" ]; then
+    INTF=wifi1
+    ## Get WLAN info
+    #IF_STATUS=`ifconfig | grep $INTF 2> /dev/null`
+    ## Get user's config
+    IF_STATUS=`cfg -v WLAN_UP_2`
+    if [ "$IF_STATUS" = "1" ]; then 
+        IF_STATUS="up"
+    else
+        IF_STATUS="down"
+    fi
+    TMP_STR=`iwlist ath8 channel 2> /dev/null | grep 'Current Frequency'`
+    CH_STR=`expr "$TMP_STR" : '.*Channel \(.*\))'`
+    TMP_STR=`iwlist ath8 rate 2> /dev/null | grep 'Current'`
+    RATE_STR=`expr "$TMP_STR" : '.*Rate[:=]\(.*\) Mb/s'`
+    RATE_STR="${RATE_STR}Mbps"
+fi
+
+## Return info
+echo -n {
+echo -n \"interface\":\""$INTF"\",
+echo -n \"status\":\""$IF_STATUS"\",
+echo -n \"channel\":\""$CH_STR"\",
+if [ "$RATE_STR" = "Mbps" ]; then 
+    echo -n \"rate\":\""Unknown"\"
+else
+    echo -n \"rate\":\""${RATE_STR}"\"
+fi
+echo -n }
+

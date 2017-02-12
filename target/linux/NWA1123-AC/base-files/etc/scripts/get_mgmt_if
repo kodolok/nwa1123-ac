@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cfg -e > /tmp/vars.$$
+. /tmp/vars.$$
+rm /tmp/vars.$$
+
+if [ "${DOT1Q_VLAN}" = "1" ]; then
+    if [ "${MGMT_VLAN}" = "1" ]; then
+        mgmtif=br${MGMT_VLAN_ID:="1"}
+    else
+        #mgmtif=eth0
+		#mgmtif=br_n
+		mgmtif=br0
+    fi
+else
+    mgmtif=br0
+fi
+
+echo "$mgmtif"

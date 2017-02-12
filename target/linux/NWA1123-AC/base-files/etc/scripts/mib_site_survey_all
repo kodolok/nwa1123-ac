@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [ "`ifconfig ath0 2>/dev/null`" ]
+then
+   if [ "`ifconfig ath8 2>/dev/null`" ]
+   then
+       #iwlist ath0 scanning 2>/dev/null | mib_site_survey
+       site_survey_2g.sh mib
+       #echo -e "\n"
+       #iwlist ath8 scanning 2>/dev/null | mib_site_survey
+       site_survey_5g.sh mib
+   else
+       #iwlist ath0 scanning 2>/dev/null | mib_site_survey
+       site_survey_2g.sh mib
+   fi
+else
+   if [ "`ifconfig ath8 2>/dev/null`" ]
+   then
+       #iwlist ath8 scanning 2>/dev/null | mib_site_survey
+       site_survey_5g.sh mib
+   fi
+fi
+
+exit 0

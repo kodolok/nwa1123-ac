@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript">
+    var startSec = 180;
+    var timerId = 0;
+    function countdown() {
+      startSec -= 1;
+      if (startSec < 0) {
+        clearInterval(timerId);
+        forceLogout();
+        top.location.href = location.protocol + "//" + location.host;
+      } else {
+        document.getElementById("clock").innerHTML = startSec;
+      }
+    }
+    function goCountdown() {
+      NN_showByClass("dvMsg");
+      NN_hideByClass("dvContent");
+      timerId = setInterval("countdown();", 1 * 1000);
+      setTimeout("NN_stopLoading();", 5 * 1000);
+    }
+    function init() {
+      NN_hideByClass("dvMsg");
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li class="hightline"><a title="Restart"><span>Restart</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data dvContent">
+      <div class="undownLineTitle">
+        System Restart
+      </div>
+      <div class="w_text">
+        <form method="post">
+        Click <input name="RebootButton" value="Restart" onclick="goCountdown();" type="submit" /> to have the device perform a software.
+        The SYS LED blinks as the device restarts and then stays steady off if the restart is successful. Wait 180 sec
+        before logging into the device again.
+        </form>
+      </div>
+    </div>
+    <div class="data dvMsg">
+      <div class="undownLineTitle">
+        Rebooting...
+      </div>
+      <div class="w_text">
+      AP is rebooting now.<br />
+      As there will be no indication of when the process is complete, please wait for <span id="clock" class="css_clock">180</span> seconds before attempting to access AP again.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+SYSLOG_FILE=/var/log/log-messages
+RETURN=0
+GOT_START_BRACE=""
+GOT_END_BRACE=""
+
+/etc/scripts/sys_delete_log
+echo -n "["
+
+# process each line in temp file
+while read line
+do
+
+     GOT_START_BRACE=`echo $line | grep '{'`
+     
+     # If last line has been detected a '{', output a ',' before this line
+     if [ "$GOT_START_BRACE" ]
+     then
+         if [ "$GOT_END_BRACE" ]
+         then
+             echo -n ","
+         fi
+     fi
+
+     GOT_END_BRACE=`echo $line | grep '}'`
+
+     echo -n $line
+
+done < $SYSLOG_FILE
+
+echo -n "]"
+
+echo ""

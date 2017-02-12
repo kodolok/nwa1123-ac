@@ -1,0 +1,48 @@
+diff -Nur old/mini_httpd.c new/mini_httpd.c
+--- old/mini_httpd.c	2016-04-07 17:35:50.618353700 +0800
++++ new/mini_httpd.c	2016-04-07 17:18:32.045320100 +0800
+@@ -1,6 +1,6 @@
+ /* mini_httpd - small HTTP server
+ **
+-** Copyright © 1999,2000 by Jef Poskanzer <jef@acme.com>.
++** Copyright © 1999,2000 by Jef Poskanzer <jef@acme.com>.
+ ** All rights reserved.
+ **
+ ** Redistribution and use in source and binary forms, with or without
+@@ -1389,6 +1389,20 @@
+             char cmd[256] = {0}, tmpBuf[50] = {0};
+             char safeFormat[200] = {0};
+ 
++		    FILE *ca;
++		    char cmd2[256] = {0}, tmpBuf2[50] = {0}, genCertFlag[2] = {0};
++
++		    sprintf(cmd2, "cfg -v HTTPS_CERT_FLAG");
++		    ca = popen(cmd2, "r");
++		    if (ca)
++		    {
++		        fgets(tmpBuf2, 50, ca);
++		        if (strncmp(tmpBuf2, "", 1) != 0){
++		            strncpy(genCertFlag, tmpBuf2, 1);
++		        }
++		    }
++
++
+             pStr = strstr(content_start, "myname=");
+             if (pStr != NULL) 
+             {
+@@ -1421,7 +1435,14 @@
+                     if (strcmp(mypasswd, "1234") == 0) 
+                         strncpy(nextpage, "chgpw", 5);
+                     else 
+-                        strncpy(nextpage, "dashboard", 9);
++                    	if (strcmp(genCertFlag, "0") == 0)
++                    	{
++                    		strncpy(nextpage, "gennewcert", 10);	
++                    	}
++                    	else
++                    	{
++	                        strncpy(nextpage, "dashboard", 9);
++                    	}
+ 
+                     send_auth_cookie(host, nextpage);
+                 }

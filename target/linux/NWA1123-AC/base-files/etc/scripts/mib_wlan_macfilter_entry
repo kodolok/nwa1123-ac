@@ -1,0 +1,124 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to set/get the wlanMACFilter. 
+##
+## mib_wlan_radius_entry
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the ACTION."
+    exit 255
+fi
+
+ACTION=$1
+OID=$2
+IDX=$3
+VALUE=$4
+
+#
+#MACFilterProfileName
+#
+if [ "$ACTION" = "1" ]; then
+    #read
+    MAC_PRO_NAME_1=`cfg -v MAC_PRO_NAME_1`
+    MAC_PRO_NAME_2=`cfg -v MAC_PRO_NAME_2`
+    MAC_PRO_NAME_3=`cfg -v MAC_PRO_NAME_3`
+    MAC_PRO_NAME_4=`cfg -v MAC_PRO_NAME_4`
+    MAC_PRO_NAME_5=`cfg -v MAC_PRO_NAME_5`
+    MAC_PRO_NAME_6=`cfg -v MAC_PRO_NAME_6`
+    MAC_PRO_NAME_7=`cfg -v MAC_PRO_NAME_7`
+    MAC_PRO_NAME_8=`cfg -v MAC_PRO_NAME_8`
+    MAC_MODE_1=`cfg -v MAC_MODE_1`
+    MAC_MODE_2=`cfg -v MAC_MODE_2`
+    MAC_MODE_3=`cfg -v MAC_MODE_3`
+    MAC_MODE_4=`cfg -v MAC_MODE_4`
+    MAC_MODE_5=`cfg -v MAC_MODE_5`
+    MAC_MODE_6=`cfg -v MAC_MODE_6`
+    MAC_MODE_7=`cfg -v MAC_MODE_7`
+    MAC_MODE_8=`cfg -v MAC_MODE_8`
+elif [ "$ACTION" = "2" ]; then
+    #write
+    if [ "$OID" = "1" ];then
+        if [ "${IDX}" = "1" ]; then
+            cfg -a MAC_PRO_NAME_1="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "2" ]; then
+            cfg -a MAC_PRO_NAME_2="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "3" ]; then
+            cfg -a MAC_PRO_NAME_3="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "4" ]; then
+            cfg -a MAC_PRO_NAME_4="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "5" ]; then
+            cfg -a MAC_PRO_NAME_5="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "6" ]; then
+            cfg -a MAC_PRO_NAME_6="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "7" ]; then
+            cfg -a MAC_PRO_NAME_7="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "8" ]; then
+            cfg -a MAC_PRO_NAME_8="$VALUE"
+            cfg -c
+            exit 0
+        fi
+    elif [ "$OID" = "2" ]; then
+        if [ "${IDX}" = "1" ]; then
+            cfg -a MAC_MODE_1="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "2" ]; then
+            cfg -a MAC_MODE_2="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "3" ]; then
+            cfg -a MAC_MODE_3="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "4" ]; then
+            cfg -a MAC_MODE_4="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "5" ]; then
+            cfg -a MAC_MODE_5="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "6" ]; then
+            cfg -a MAC_MODE_6="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "7" ]; then
+            cfg -a MAC_MODE_7="$VALUE"
+            cfg -c
+            exit 0
+        elif [ "${IDX}" = "8" ]; then
+            cfg -a MAC_MODE_8="$VALUE"
+            cfg -c
+            exit 0
+        fi
+    fi
+fi
+
+echo "$MAC_PRO_NAME_1,$MAC_MODE_1"
+echo "$MAC_PRO_NAME_2,$MAC_MODE_2"
+echo "$MAC_PRO_NAME_3,$MAC_MODE_3"
+echo "$MAC_PRO_NAME_4,$MAC_MODE_4"
+echo "$MAC_PRO_NAME_5,$MAC_MODE_5"
+echo "$MAC_PRO_NAME_6,$MAC_MODE_6"
+echo "$MAC_PRO_NAME_7,$MAC_MODE_7"
+echo "$MAC_PRO_NAME_8,$MAC_MODE_8"
+
+
+exit 0

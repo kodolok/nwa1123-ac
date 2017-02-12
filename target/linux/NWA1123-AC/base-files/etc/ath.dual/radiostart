@@ -1,0 +1,496 @@
+#!/bin/sh
+
+RADIO_DIR="/tmp/.radio_conf_$1"
+
+apup_exit()
+{
+    # release the lock 
+    rm -f /tmp/lock.apup
+    exit $1
+}
+
+Check_HT()
+{
+    isht=`expr match $AP_CHMODE .*HT.*`
+
+    # if HT mode is not enabled, then return
+    if [ "${isht}" -eq 0 ]
+    then
+        return 0
+    fi
+
+    return 1
+}
+
+Create_WDS_Root() 
+{
+    APSSID="AP_SSID_$1"
+    SEC_PROFILE="AP_SEC_PROFILE_$1"
+    #RAD_PROFILE="AP_RAD_PROFILE_$1"
+    MAC_PROFILE="AP_MAC_PROFILE_$1"
+    STA_NUM="AP_STA_NUM_$1"
+    HIDESSID="AP_HIDESSID_$1"
+    IBSS="AP_IBSS_$1"
+    eval APSSID=\$$APSSID
+    eval SEC_PROFILE=\$$SEC_PROFILE
+    #eval RAD_PROFILE=\$$RAD_PROFILE
+    eval MAC_PROFILE=\$$MAC_PROFILE
+    eval STA_NUM=\$$STA_NUM
+    eval HIDESSID=\$$HIDESSID
+    eval IBSS=\$$IBSS
+    RAD_PROFILE="AP_RAD_PROFILE_$SEC_PROFILE"
+    eval RAD_PROFILE=\$$RAD_PROFILE
+
+    makeVAP ap-wds "$APSSID":$FIRST_IF $RF_STR $BEACON_INT
+    if [ $? != 0 ]; then
+        echo "Unable to create VAP!"
+        apup_exit
+    fi
+
+    # AP configuration
+    iwpriv $FIRST_IF maxsta ${STA_NUM}
+    iwpriv $FIRST_IF hide_ssid ${HIDESSID}
+    iwpriv $FIRST_IF ap_bridge ${IBSS}
+
+    #activateVAP $FIRST_IF br0 $AP_SECMODE_1 $AP_SEC_PROFILE_1 $WPS_ENABLE_1
+    if [ "${RAD_PROFILE}" = "" ]; then
+			RAD_PROFILE="1"
+		fi
+    activateVAP $FIRST_IF:$RADIO_ID br0 $1 $SEC_PROFILE $RAD_PROFILE $MAC_PROFILE
+}
+
+Set_Countrycode()
+{
+    countrycode=`sys_get_hwinfo | grep countrycode | cut -d= -f2`
+    iwpriv wifi"$1" setCountryID $countrycode
+}
+#####################################################################################
+##
+## "main" procedure
+##
+
+RADIO_ID=$1
+if [ "$RADIO_ID" = "1" ]; then
+    FIRST_IF="ath8"
+    SECOND_IF="ath9"
+    START_INDEX=8
+    BEACON_INT=$BEACON_INT_2
+    WDS_AP_PROFILE=$WDS_AP_PROFILE_2
+    STA_AP_PROFILE=$STA_AP_PROFILE_2
+    VAP_LIST=$VAP_LIST_2
+    AP_STARTMODE=$AP_STARTMODE_2
+    TXP_LEVEL=$TXP_LEVEL_2
+    AP_CHWIDTH=$AP_CHWIDTH_2
+    AP_PRIMARY_CH=$AP_PRIMARY_CH_2
+    AP_CHMODE=$AP_CHMODE_2
+    AP_PRIMARY_CH_EXT=$AP_PRIMARY_CH_EXT_2
+    AP_DISABLECOEXT=$AP_DISABLECOEXT_2
+else
+    FIRST_IF="ath0"
+    SECOND_IF="ath1"
+    START_INDEX=0
+    BEACON_INT=$BEACON_INT_1
+    WDS_AP_PROFILE=$WDS_AP_PROFILE_1
+    STA_AP_PROFILE=$STA_AP_PROFILE_1
+    VAP_LIST=$VAP_LIST_1
+    AP_STARTMODE=$AP_STARTMODE_1
+    TXP_LEVEL=$TXP_LEVEL_1
+    AP_CHWIDTH=$AP_CHWIDTH_1
+    AP_PRIMARY_CH=$AP_PRIMARY_CH_1
+    AP_CHMODE=$AP_CHMODE_1
+    AP_PRIMARY_CH_EXT=$AP_PRIMARY_CH_EXT_1
+    AP_DISABLECOEXT=$AP_DISABLECOEXT_1
+fi
+
+mkdir $RADIO_DIR
+Set_Countrycode $RADIO_ID
+
+##
+## Bring in the default environmental variables
+##
+
+#. /etc/ath/apcfg
+
+## Check for TKIP & HT
+Check_HT
+if [ $? != 0 ]; then
+    if [ "$AP_CHWIDTH" = "40" ]; then
+        if [ $AP_PRIMARY_CH = 11na -o $AP_PRIMARY_CH = 11ng ]; then
+            ## Auto Channel selection
+            RF_STR=$RADIO_ID:RF:$AP_PRIMARY_CH:$AP_CHMODE$AP_CHWIDTH
+        else
+            RF_STR=$RADIO_ID:RF:$AP_PRIMARY_CH:$AP_CHMODE$AP_CHWIDTH$AP_PRIMARY_CH_EXT
+        fi
+    else
+        RF_STR=$RADIO_ID:RF:$AP_PRIMARY_CH:$AP_CHMODE$AP_CHWIDTH
+    fi
+else
+    ## legacy mode
+    RF_STR=$RADIO_ID:RF:$AP_PRIMARY_CH:$AP_CHMODE
+fi
+
+
+WAN_IF=${WAN_IF:=eth0}
+LAN_IF=${LAN_IF:=eth1}
+
+HOSTAPD_VER=`hostapd -v 2>&1|grep hostapd|cut -f2 -d' '`
+
+#if [ "${AP_STARTMODE}" = "dual" ]; then
+#    if [ $NUMRADIO = 1 ]; then
+#        AP_STARTMODE=standard
+#    else
+#        AP_STARTMODE=multi
+#    fi
+#fi
+
+##
+## Now, process the modes
+##
+
+if [ "${AP_STARTMODE}" = "standard" ]; then
+    APSSID="AP_SSID_$STD_AP_PROFILE"
+    SEC_PROFILE="AP_SEC_PROFILE_$STD_AP_PROFILE"
+    #RAD_PROFILE="AP_RAD_PROFILE_$STD_AP_PROFILE"
+    MAC_PROFILE="AP_MAC_PROFILE_$STD_AP_PROFILE"
+    STA_NUM="AP_STA_NUM_$STD_AP_PROFILE"
+    HIDESSID="AP_HIDESSID_$STD_AP_PROFILE"
+    IBSS="AP_IBSS_$STD_AP_PROFILE"
+    eval APSSID=\$$APSSID
+    eval SEC_PROFILE=\$$SEC_PROFILE
+    #eval RAD_PROFILE=\$$RAD_PROFILE
+    eval MAC_PROFILE=\$$MAC_PROFILE
+    eval STA_NUM=\$$STA_NUM
+    eval HIDESSID=\$$HIDESSID
+    eval IBSS=\$$IBSS
+    RAD_PROFILE="AP_RAD_PROFILE_$SEC_PROFILE"
+    eval RAD_PROFILE=\$$RAD_PROFILE
+
+    makeVAP ap "$APSSID" $RF_STR $BEACON_INT
+    if [ $? != 0 ]; then
+        echo "Unable to create VAP!"
+        apup_exit
+    fi
+
+    # AP configuration
+    iwpriv $FIRST_IF maxsta ${STA_NUM}
+    iwpriv $FIRST_IF hide_ssid ${HIDESSID}
+    iwpriv $FIRST_IF ap_bridge ${IBSS}
+
+    #activateVAP $FIRST_IF br0 $AP_SECMODE_1 $AP_SEC_PROFILE_1 $WPS_ENABLE_1 $WPS_VAP_TIE_1
+    if [ "${RAD_PROFILE}" = "" ]; then
+			RAD_PROFILE="1"
+		fi
+    activateVAP $FIRST_IF:$RADIO_ID br0 $STD_AP_PROFILE $SEC_PROFILE $RAD_PROFILE $MAC_PROFILE
+
+    if [ "$APVLANMODE" = "1" ]; then
+        vconfig add $FIRST_IF 1
+        ifconfig $FIRST_IF.1 up
+        brctl delif br0 $FIRST_IF
+        brctl addif br0 $FIRST_IF.1
+    fi
+fi
+
+##
+## See the activateVAP script for details on arguments.  Other configuration
+## examples are as follows:
+##
+
+##
+## Root AP for WDS
+##
+if [ "${AP_STARTMODE}" = "rootap" ]; then
+    Create_WDS_Root $WDS_AP_PROFILE
+fi
+
+##
+## REPEATER
+##
+if [ "${AP_STARTMODE}" = "repeater" -o "${AP_STARTMODE}" = "repeater-ind" ]; then
+    APSSID="AP_SSID_$WDS_AP_PROFILE"
+    SEC_PROFILE="AP_SEC_PROFILE_$WDS_AP_PROFILE"
+    #RAD_PROFILE="AP_RAD_PROFILE_$WDS_AP_PROFILE"
+    MAC_PROFILE="AP_MAC_PROFILE_$WDS_AP_PROFILE"
+    STA_NUM="AP_STA_NUM_$WDS_AP_PROFILE"
+    HIDESSID="AP_HIDESSID_$WDS_AP_PROFILE"
+    IBSS="AP_IBSS_$WDS_AP_PROFILE"
+    eval APSSID=\$$APSSID
+    eval SEC_PROFILE=\$$SEC_PROFILE
+    #eval RAD_PROFILE=\$$RAD_PROFILE
+    eval MAC_PROFILE=\$$MAC_PROFILE
+    eval STA_NUM=\$$STA_NUM
+    eval HIDESSID=\$$HIDESSID
+    eval IBSS=\$$IBSS
+    RAD_PROFILE="AP_RAD_PROFILE_$SEC_PROFILE"
+    eval RAD_PROFILE=\$$RAD_PROFILE
+
+    if [ "${AP_STARTMODE}" = "repeater" ]; then
+        APMODE="ap-wds"
+        STAMODE="sta-wds"
+    else
+        APMODE="ap-wds-ind"
+        STAMODE="sta-wds-ind"
+    fi
+    makeVAP ${APMODE} "$APSSID":$FIRST_IF $RF_STR $BEACON_INT
+    if [ $? != 0 ]; then
+        echo "Unable to create VAP!"
+        apup_exit
+    fi
+    makeVAP ${STAMODE} "any":$SECOND_IF $RF_STR
+    if [ $? != 0 ]; then
+        echo "Unable to create VAP!"
+        apup_exit
+    fi
+
+    # AP configuration
+    iwpriv $FIRST_IF maxsta ${STA_NUM}
+    iwpriv $FIRST_IF hide_ssid ${HIDESSID}
+    iwpriv $FIRST_IF ap_bridge ${IBSS}
+
+		if [ "${RAD_PROFILE}" = "" ]; then
+			RAD_PROFILE="1"
+		fi
+    if [ "${AP_STARTMODE}" = "repeater-ind" ]; then
+        activateVAP $FIRST_IF:$RADIO_ID br0 $WDS_AP_PROFILE $SEC_PROFILE $RAD_PROFILE $MAC_PROFILE
+        activateVAP $SECOND_IF:$RADIO_ID br0 $WDS_AP_PROFILE $SEC_PROFILE
+    else
+        activateVAP $SECOND_IF:$RADIO_ID br0 $WDS_AP_PROFILE $SEC_PROFILE
+        activateVAP $FIRST_IF:$RADIO_ID br0 $WDS_AP_PROFILE $SEC_PROFILE $RAD_PROFILE $MAC_PROFILE
+    fi
+fi
+
+
+##
+## Extender STA - Zyxel Client Mode
+##
+if [ "${AP_STARTMODE}" = "client" ]; then
+    APSSID="AP_SSID_$STA_AP_PROFILE"
+    SEC_PROFILE="AP_SEC_PROFILE_$STA_AP_PROFILE"
+    #RAD_PROFILE="AP_RAD_PROFILE_$STA_AP_PROFILE"
+    MAC_PROFILE="AP_MAC_PROFILE_$STA_AP_PROFILE"
+    eval APSSID=\$$APSSID
+    eval SEC_PROFILE=\$$SEC_PROFILE
+    #eval RAD_PROFILE=\$$RAD_PROFILE
+    eval MAC_PROFILE=\$$MAC_PROFILE
+    RAD_PROFILE="AP_RAD_PROFILE_$SEC_PROFILE"
+    eval RAD_PROFILE=\$$RAD_PROFILE
+
+    makeVAP sta-ext "$APSSID":$FIRST_IF $RF_STR
+
+    activateVAP $FIRST_IF:$RADIO_ID br0 $STA_AP_PROFILE $SEC_PROFILE
+	ifconfig br0 up
+
+fi
+
+##
+## STATION FORWARDING
+##
+if [ "${AP_STARTMODE}" = "stafwd" ]; then
+    makeVAP sta-fwd "$AP_SSID_1":$FIRST_IF $RF_STR
+    if [ $? != 0 ]; then
+        echo "Unable to create VAP!"
+        apup_exit
+    fi
+
+    activateVAP $FIRST_IF:$RADIO_ID br0 $AP_SECMODE_1 $AP_SEC_PROFILE_1
+fi
+
+##
+## mBSSID case with all types of authentication
+## Note that WEP MUST be the first VAP
+## This is brute force, but effective.  Note that we set the becon interval
+## to 400
+##
+
+WEP_CONFIGURED=0
+
+##
+## MBSSID Mode
+##
+
+if [ "${AP_STARTMODE}" = "mbssid" ]; then
+    my_vaps=`echo "$VAP_LIST" | sed 's/,/ /g'`
+fi
+if [ "${AP_STARTMODE}" = "root-mbssid" ]; then
+    my_vaps=`echo "$VAP_LIST" | awk -F, '{print $1,$2,$3,$4}'`
+fi
+
+if [ "${AP_STARTMODE}" = "root-mbssid" -o "${AP_STARTMODE}" = "mbssid" ]; then
+    WEP_CONFIGURED=0
+
+    if [ "${AP_STARTMODE}" = "root-mbssid" ]; then 
+        ## Create WDS Root VAP first, i.e always be ath0 or ath8
+        Create_WDS_Root $WDS_AP_PROFILE
+        NUM_VAP=$(($START_INDEX+1))
+        NUM_STA_VAP=0
+    else
+        NUM_VAP=$START_INDEX
+        NUM_STA_VAP=0
+    fi
+    
+    for i in $my_vaps;
+    do
+    if echo "${i}" | grep -q '_'; then
+        continue
+    fi
+        ITER_SSID="AP_SSID_$i"
+        ITER_MODE="AP_MODE_$i"
+        ITER_SEC_PROFILE="AP_SEC_PROFILE_$i"
+        ITER_STA_NUM="AP_STA_NUM_$i"
+        ITER_HIDESSID="AP_HIDESSID_$i"
+        ITER_IBSS="AP_IBSS_$i"
+        eval ITER_SSID=\$$ITER_SSID
+        eval ITER_MODE=\$$ITER_MODE
+        eval ITER_SEC_PROFILE=\$$ITER_SEC_PROFILE
+        eval ITER_STA_NUM=\$$ITER_STA_NUM
+        eval ITER_HIDESSID=\$$ITER_HIDESSID
+        eval ITER_IBSS=\$$ITER_IBSS
+
+        SEC_MODE="SEC_MODE_$ITER_SEC_PROFILE"
+        eval SEC_MODE=\$$SEC_MODE
+        echo "SEC_MODE=${SEC_MODE}"
+        if [ "${SEC_MODE}" = "WEP" ]; then
+            if [ "${WEP_CONFIGURED}" = "1" ]; then
+                echo "Unable to create additional WEP VAP"
+                apup_exit 255
+            else
+                WEP_CONFIGURED=1
+            fi
+        fi
+        if [ "${ITER_MODE}" = "sta-wds" -o "${ITER_MODE}" = "sta" ]; then
+            # sta mode
+            if [ "${NUM_STA_VAP}" != 1 ]; then
+                makeVAP $ITER_MODE "$ITER_SSID":ath$NUM_VAP $RF_STR
+                iwconfig | grep -i ath$NUM_VAP > /dev/null
+                    if [ $? != 0 ]; then
+                        echo "Unable to create VAP!"
+                    apup_exit
+                fi
+                NUM_VAP=$(($NUM_VAP+1))
+                NUM_STA_VAP=1
+            else
+                echo "Maximum number of STA VAPs exceeded for multi vlan mode!!!"
+            fi
+        else
+            # ap mode
+            makeVAP $ITER_MODE "$ITER_SSID":ath$NUM_VAP $RF_STR $BEACON_INT
+            iwconfig | grep -i ath$NUM_VAP > /dev/null
+            if [ $? != 0 ]; then
+                echo "Unable to create VAP!"
+                apup_exit
+            fi
+
+            # AP configuration
+            iwpriv ath$NUM_VAP maxsta ${ITER_STA_NUM}
+            iwpriv ath$NUM_VAP hide_ssid ${ITER_HIDESSID}
+            iwpriv ath$NUM_VAP ap_bridge ${ITER_IBSS}
+
+            NUM_VAP=$(($NUM_VAP+1))
+        fi
+    done
+
+
+    #
+    # Now, activate the VAPs
+    #
+    if [ "${AP_STARTMODE}" = "root-mbssid" ]; then 
+        ## WDS Root VAP has been activated
+        VAP_NUM=$(($START_INDEX+1))
+        NUM_STA_VAP=0
+    else
+        VAP_NUM=$START_INDEX
+        NUM_STA_VAP=0
+    fi
+    
+    for i in $my_vaps;
+    do
+        if echo "${i}" | grep -q '_'; then
+            continue
+        fi
+        ITER_SSID="AP_SSID_$i"
+        ITER_SEC_PROFILE="AP_SEC_PROFILE_$i"
+        #ITER_RAD_PROFILE="AP_RAD_PROFILE_$i"
+        ITER_MAC_PROFILE="AP_MAC_PROFILE_$i"
+        ITER_QOS="AP_QOS_$i"
+        eval ITER_SSID=\$$ITER_SSID
+        eval ITER_SEC_PROFILE=\$$ITER_SEC_PROFILE
+        #eval ITER_RAD_PROFILE=\$$ITER_RAD_PROFILE
+        eval ITER_MAC_PROFILE=\$$ITER_MAC_PROFILE
+        eval ITER_QOS=\$$ITER_QOS
+        ITER_RAD_PROFILE="AP_RAD_PROFILE_$ITER_SEC_PROFILE"
+        eval ITER_RAD_PROFILE=\$$ITER_RAD_PROFILE
+        if [ "${ITER_MODE}" = "sta-wds" -o "${ITER_MODE}" = "sta" ]; then
+            if [ "${NUM_STA_VAP}" != 1 ]; then
+                activateVAP ath$VAP_NUM:$RADIO_ID br0 $i $ITER_SEC_PROFILE
+                patchVAP WMM ath$VAP_NUM 1 ${ITER_QOS}
+                VAP_NUM=$(($VAP_NUM+1))
+                NUM_STA_VAP=1
+            fi
+        else
+        		if [ "${ITER_RAD_PROFILE}" = "" ]; then
+        			ITER_RAD_PROFILE="1"
+        		fi
+            activateVAP ath$VAP_NUM:$RADIO_ID br0 $i $ITER_SEC_PROFILE $ITER_RAD_PROFILE $ITER_MAC_PROFILE
+            patchVAP WMM ath$VAP_NUM 0 ${ITER_QOS}
+            VAP_NUM=$(($VAP_NUM+1))
+        fi
+    done
+
+    sh /etc/scripts/vlan_setvlan $RADIO_ID
+    sh /etc/scripts/acl_setrule
+fi
+
+##
+## IBSS MODE
+##
+if [ "${AP_STARTMODE}" = "adhoc" ]; then
+    makeVAP adhoc "$IBSS_SSID" $RF_STR
+    if [ $? != 0 ]; then
+        echo "Unable to create VAP!"
+        apup_exit
+    fi
+
+    activateVAP $FIRST_IF:$RADIO_ID br0 $AP_SECMODE $AP_SEC_PROFILE
+fi
+
+
+##
+## Set TX-Power Level
+##
+iwconfig $FIRST_IF txpower 100
+if [ "x$TXP_LEVEL" != "x0" ]; then
+    sleep 5
+    TMP_STR=`iwlist $FIRST_IF txpower | grep 'Current'`
+    TXP_VAL=`expr "${TMP_STR}" : '.*Power[=:]\([0-9]*\)'`
+    TXP_VAL=$((TXP_VAL-TXP_LEVEL))
+    iwconfig $FIRST_IF txpower $TXP_VAL
+fi
+##
+## Enable statistics for AC mode
+##
+if [ "$RADIO_ID" = "1" ]; then
+    iwpriv wifi1 enable_ol_stats 1
+fi
+
+
+## Disable stbc for 802.11N wifi certification 
+##
+iwpriv "wifi$RADIO_ID" txstbc 0
+iwpriv "wifi$RADIO_ID" rxstbc 0
+
+##
+## Disable DCS
+##
+iwpriv "wifi$RADIO_ID" dcs_enable 0
+
+##
+## Set LED Suppression
+##
+iwpriv "wifi$RADIO_ID" led_ctrl $LED_CTRL_STATUS
+
+##
+## Configure coexistence
+##
+if [ "${AP_STARTMODE}" = "mbssid" -o "${AP_STARTMODE}" = "root-mbssid" ]; then
+    sleep 3
+    iwpriv $FIRST_IF disablecoext $AP_DISABLECOEXT
+fi

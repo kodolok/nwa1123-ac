@@ -1,0 +1,40 @@
+User Applications,Version,Module,Modification,File Path,Format,File Source,License
+dni-cal,1.0-003,DNI,Copyright,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,DNI
+dni-chkpwd,1.0-003,DNI,Copyright,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,DNI
+dni-cli,1.0-009,DNI,Copyright,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,DNI
+dni-config,2.0-005,DNI,Yes,package/delta/dni-config,Source,DNI
+dni-mtd,1.0-004,DNI,Yes,package/delta/dni-mtd,Source,DNI
+dni-ntpclient,1.0-009,DNI,Yes,package/delta/dni-ntpclient,Source,DNI
+dni-smtpclient,1.0-004,DNI,Yes,package/delta/dni-smtpclient,Source,DNI
+dni-transwd,1.0-003,DNI,Copyright,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,DNI
+dni-watchdogd,1.0-003,DNI,Copyright,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,DNI
+dni-wide-dhcpv6,1.0-005,DNI,Yes,package/delta/dni-wide-dhcpv6,Source,DNI
+dni-zdp,1.0-005,DNI,Copyright,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,DNI
+qca-art,9.2.0_U11.14-002,Qualcomm Atheros,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,Qualcomm Atheros
+qca-artlna,1.0-003,Qualcomm Atheros,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,Qualcomm Atheros
+qca-enet,007,Qualcomm Atheros,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,Qualcomm Atheros
+qca-hostap,010,Qualcomm Atheros,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,http://www.qca.qualcomm.com
+qca-wifi,022,Qualcomm Atheros,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,Qualcomm Atheros
+ssmtp,2.64-005,GPL,Yes,package/mail/ssmtp,Source,http://packages.debian.org/ssmtp
+lldpd,0.7.7-002,GPL,Yes,package/network/services/lldpd,Source,https://github.com/vincentbernat/lldpd/wiki
+mini_httpd,1.19-005,GPL,Yes,package/network/services/mini_httpd,Source,http://www.acme.com/software/mini_httpd/
+vsftpd,2.3.4-001,GPL,Yes,package/network/services/vsftpd,Source,http://vsftpd.beasts.org/
+ebtables,2.0.10-4-001,GPL,Yes,package/network/utils/ebtables,Source,http://ebtables.sourceforge.net/
+iptables,007,GPL,Yes,package/network/utils/iptables,Source,http://netfilter.org/
+wireless-tools,29-005,GPL,Yes,package/network/utils/wireless-tools,Source,http://hplabs.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html
+sysstat,6.0.1-004,GPL,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,http://perso.wanadoo.fr/sebastien.godard/
+busybox,012,GPL,Yes,package/utils/busybox,Source,http://busybox.net/
+net-snmp,5.7.1-014,GPL,Yes,target/linux/NWA1123-AC/prebuilt/ipkg,Binary,http://www.net-snmp.org/
+
+Library,Version,Module,Modification,File Path,Format,File Source
+ocf-crypto-headers,20110720-001,GPL,Yes,package/libs/ocf-crypto-headers,Source,http://ocf-linux.sourceforge.net/
+openssl,1.0.2h-001,GPL,Yes,package/libs/openssl,Source,http://www.openssl.org/
+
+Kernel,Module,Modification,File Path,Format,File Source,Licence
+linux-2.6.31,GPL,Yes,target/linux/linuxsrc-qualcomm,Source,https://www.kernel.org/,
+
+Boot Code,Version,Module,Modification,File Path,Format,File Source,License
+uboot-ar934x,003,qualcomm,Copyright,target/linux/NWA1123-AC/prebuilt,Binary,qualcomm,
+
+Toolchain,Module,Modification,File Path,Format,File Source,Licence
+toolchain-mips_gcc-4.3.3_uClibc-0.9.30.1.tar.gz,qualcomm,Yes,toolchain/qualcomm,Binary,qualcomm

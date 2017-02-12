@@ -1,0 +1,850 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=10"/>
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>.::Welcome to the Web-Based Configurator::.</title>
+<link href="css/expert.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="js/baseJS.js"></script>
+<script type="text/javascript" src="js/uimake.js"></script>
+<script type="text/javascript">
+  var region = "~`webget_factory_region`~";
+  var countryCode = "~`/etc/scripts/sys_get_countrycode 1`~";
+  var siteSurveyWin;
+  var submitlock = 0;
+  function toggleCountryCode() {
+    var toggleConfig = "~~COUNTRY~";
+    if (toggleConfig != "0") {
+      NN_showByClass("showCountryCode");
+      NN_enableByClass("showCountryCode");
+    } else {
+      NN_hideByClass("showCountryCode");
+      NN_disableByClass("showCountryCode");
+    }
+  }
+  function addRemoveChannelWidthOptions (w_mode) {
+    var sel = NN_getById("seChannelWidth"), 
+    lastIndex = sel.options.length - 1,
+    lastOpt = sel.options[lastIndex], 
+    newOpt;
+    if (w_mode == "11ACVHT") {
+      if (lastOpt.value != "80") {
+        newOpt = document.createElement("option");
+        newOpt.value = "80";
+        newOpt.text = "20/40/80MHZ";
+        try {
+          sel.add(newOpt, ++lastIndex);
+        } catch (ex) {
+          sel.add(newOpt, sel.options[++lastIndex]);
+        }
+      }
+    } else {
+      if (lastOpt.value == "80") {
+        sel.remove(lastIndex);
+      }
+    }
+  }
+  function removeChannelWidthByCountry () {
+    var sel = NN_getById("seChannelWidth"), 
+    lastIndex = sel.options.length - 1,
+    lastOpt = sel.options[lastIndex];
+
+    if (lastOpt.value == "80") {
+      if (countryCode == "804" || countryCode == "643"){
+        sel.remove(lastIndex);
+      }
+      if (countryCode == "360") {
+        sel.remove(lastIndex);
+      }
+      lastIndex = sel.options.length - 1;
+      lastOpt = sel.options[lastIndex];
+    }
+    if (lastOpt.value == "40" && countryCode == "360") {
+      sel.remove(lastIndex);
+    }
+  }
+  function toggleAdvDiv() {
+    if (NN_getById("imgToggle").src.match(/i_close/i)) {
+      NN_getById("imgToggle").src = "images/plus.gif";
+      NN_getById("advDiv").style.display = "none";
+    } else {
+      NN_getById("imgToggle").src = "images/i_close.gif";
+      NN_getById("advDiv").style.display = "block";
+    }
+  }
+  function siteSurveyOpenWin() {
+    if (~~WLAN_UP_2~ == 1)
+      siteSurveyWin = window.open('site_survey_waiting','','scrollbars=yes,width=770,height=430');
+  }
+  function siteSurveyCloseWin() {
+    if (siteSurveyWin)
+      siteSurveyWin.close();
+  }
+  function siteSurveySubmit(ssid) {
+    siteSurveyCloseWin();
+    var opMode = NN_val(NN_getById("seOperMode"));
+    if (opMode != "client") {
+      return false;
+    }
+    NN_getById("buWlanApply").disabled = true;
+    NN_getById("buWlanCancel").disabled = true;
+    NN_val(NN_getById("AP_SSID_~~STA_AP_PROFILE_2~"), ssid);
+    document.formSiteSurvey.submit();
+    return true;
+  }
+  function setWlanUp() {
+    var isChecked = NN_val(NN_getById("cWLAN_UP"));
+    NN_val(NN_getById("WLAN_UP_2"), (isChecked == true ? 1: 0));
+  }
+  function onWlanUpClick() {
+    setWlanUp();
+  }
+  function setAmpdu() {
+    var isChecked = NN_val(NN_getById("cAMPDUENABLE"));
+    NN_val(NN_getById("AMPDUENABLE_2"), (isChecked == true ? 1: 0));
+  }
+  function onAmpduClick() {
+    setAmpdu();
+  }
+  function setShortGi() {
+    var isChecked = NN_val(NN_getById("cSHORTGI"));
+    NN_val(NN_getById("SHORTGI_2"), (isChecked == true ? 1: 0));
+  }
+  function onShortGiClick() {
+    setShortGi();
+  }
+  function genChannelList() {
+    var channelArr;
+    var channelWidth = NN_val(NN_getById("seChannelWidth"));
+
+    if (channelWidth == "80") {
+      channelArr = ~`sys_get_channel5g_list 80`~;
+    } else if (channelWidth == "40") {
+      channelArr = ~`sys_get_channel5g_list 40`~;
+    } else {
+      channelArr = ~`sys_get_channel5g_list 20`~;
+    }
+    return channelArr;
+  }
+  function initChannelList() {
+    var channelArr = genChannelList();
+    var sel = NN_getById('AP_PRIMARY_CH_2'),
+        opt, channel, optVal;
+
+    opt = document.createElement('option');
+    opt.text = 'Auto';
+    opt.value = '11na';
+
+    try {
+      sel.add(opt, null);
+    } catch (ex) {
+      sel.add(opt, sel.options[null]);
+    }
+
+    for (var i = 0, max = channelArr.length; i < max; i++) {
+      opt = document.createElement('option')
+      channel = channelArr[i];
+      optVal = parseInt(channel, 10);
+      opt.text = "" + optVal;
+      opt.value = "" + optVal;
+
+      try {
+        sel.add(opt, null);
+      } catch (ex) {
+        sel.add(opt, sel.options[null]);
+      }
+    }
+
+    NN_val(NN_getById('AP_PRIMARY_CH_2'), "~~AP_PRIMARY_CH_2~");
+  }
+  function removeSelOpts(selObj) {
+    var optsList = selObj.getElementsByTagName("OPTION");
+    while(optsList.length > 0) {
+      selObj.remove(optsList);
+    }
+  }
+  function onChannelWidthChange () {
+    var currCountryCode = NN_val(NN_getById("selCountryCode"));
+
+    if (currCountryCode != countryCode) {
+      onCountryCodeChange();
+    } else {
+      removeSelOpts(NN_getById("AP_PRIMARY_CH_2"));
+      initChannelList();
+    }
+  }
+  function onCountryCodeChange() {
+    var currCountryCode = NN_val(NN_getById("selCountryCode"));
+    var objChannelSel = NN_getById("AP_PRIMARY_CH_2");
+
+    removeSelOpts(objChannelSel);
+    if (currCountryCode != countryCode) {
+      var optAuto = document.createElement("option");
+      optAuto.text = "Auto";
+      optAuto.value = "11na";
+      objChannelSel.add(optAuto);
+    } else {
+      initChannelList();
+    }
+  }
+  function init() {
+    initWirelessMode();
+    initOperMode();
+    initCountryCode();
+    initChannelList();
+    initSsidProfileTable();
+    toggleCountryCode();
+    setWlanUp();
+    setAmpdu();
+    setShortGi();
+    initAdvSettingsOptions();
+    if (NN_val(NN_getById("seOperMode")) == "client") {
+      NN_showByClass("show_survey", "inline");
+    }
+    NN_disableByClass("en_reset_secprof");
+  }
+  function initWirelessMode() {
+    var w_mode = "~~AP_CHMODE_2~";
+    var puren = "~~PUREN_2~";
+    var seObj; 
+    if (w_mode == "11NAHT") {
+      if (puren == "1") {
+        seObj = NN_getById("se11n");
+        seObj.selected = true;
+      } else {
+        seObj = NN_getById("se11an");
+        seObj.selected = true;
+      }
+    }
+    addRemoveChannelWidthOptions(w_mode);
+    removeChannelWidthByCountry();
+  }
+  function onWirelessModeChange() {
+    var opMode = NN_val(NN_getById("seOperMode"));
+    var wMode = NN_val(NN_getById("seWirelessMode"));
+    addRemoveChannelWidthOptions(wMode);
+    changeAdvSettingsOptions(opMode, wMode);
+    removeChannelWidthByCountry();
+  }
+  function initAdvSettingsOptions() {
+    var opMode = "~~AP_STARTMODE_2~";
+    var wMode = "~~AP_CHMODE_2~";
+    changeAdvSettingsOptions(opMode, wMode);
+  }
+  function changeAdvSettingsOptions(opMode, wMode) {
+    if (opMode != "client") {
+      if (wMode == "11A") {
+        NN_showByClass("show_adv_bg");
+        NN_enableByClass("en_adv_bg");
+        NN_hideByClass("show_adv_bgn");
+        NN_disableByClass("en_adv_bgn");
+      } else {
+        NN_hideByClass("show_adv_bg");
+        NN_disableByClass("en_adv_bg");
+        NN_showByClass("show_adv_bgn");
+        NN_enableByClass("en_adv_bgn");
+      }
+    } else {
+      NN_hideByClass("show_adv_bg");
+      NN_disableByClass("en_adv_bg");
+      NN_hideByClass("show_adv_bgn");
+      NN_disableByClass("en_adv_bgn");
+    }
+  }
+  function initOperMode() {
+    NN_hideByClass("hide_all");
+    NN_disableByClass("dis_all");
+    var seObj = NN_getById("seOperMode");
+    var choice = seObj[seObj.selectedIndex].value;
+    if (choice == "mbssid") {
+      NN_showByClass("show_mbssid");
+      NN_showByClass("show_moressid", "table-row")
+      NN_enableByClass("en_mbssid");
+      NN_getById("vap1").checked = true;
+    } else if (choice == "client") {
+      NN_showByClass("show_client");
+      NN_enableByClass("en_client");
+      if ("~~AP_STARTMODE_2~" == "client")
+        NN_showByClass("show_survey", "inline");
+    } else if (choice == "root-mbssid") {
+      NN_showByClass("show_rootap");
+      NN_enableByClass("en_rootap");
+    } else if (choice == "repeater") {
+      NN_showByClass("show_repeater");
+      NN_enableByClass("en_repeater");
+    } else {
+      NN_hideByClass("hide_all");
+    }
+  }
+  function onOperModeChange() {
+    var opMode = NN_val(NN_getById("seOperMode"));
+    var wMode = NN_val(NN_getById("seWirelessMode"));
+    initOperMode();
+    doVapListChange();
+    changeAdvSettingsOptions(opMode, wMode);
+  }
+  function initSsidProfileTable() {
+    var vapListObj = NN_getById("vap_list");
+    var vapListStr = vapListObj.value;
+    var vapObj;
+    var vapArray = vapListStr.split(",");
+    
+    var i=0;
+    for (i=1;i<=8;i++)
+    {
+      var vap = vapArray[i-1];
+      var vapSelId = "vap" + i;
+      var selIndex;
+      vapObj = NN_getById(vapSelId);
+      if (vap.charAt(0) == '_')
+      {
+        vapObj.checked = false;
+        selIndex = vap.substr(1, vap.length - 1);
+      }
+      else
+      {
+        vapObj.checked = true;
+        selIndex = vap.substr(0, vap.length);
+      }
+
+      var vapProfId = "vap_prof" + i;
+      vapObj = NN_getById(vapProfId);
+      vapObj.selectedIndex = parseInt(selIndex)-1;
+    }
+  }
+  function doVapListChange() {
+    var vapListObj = NN_getById("vap_list");
+    var vapSelId;
+    var vapProfId;
+    var vapObj;
+    vapListObj.value ="";
+    
+    var i=0;
+    for (i=1;i<=8;i++)
+    {
+      vapSelId = "vap" + i;
+      vapObj = NN_getById(vapSelId);
+      if (!vapObj.checked)
+      {
+        vapListObj.value += "_"
+      }
+      vapProfId = "vap_prof" + i;
+      vapObj = NN_getById(vapProfId);
+      vapListObj.value += vapObj.value;
+      if ( i < 8 )
+      {
+        vapListObj.value += ","; 
+      }
+    }
+  }
+
+  function setPureN() {
+    var seObj = NN_getById("seWirelessMode");
+    var seMode = NN_getById("sePureN");
+
+    var choice = seObj[seObj.selectedIndex].text;
+    
+    if (choice == "802.11n") {
+      NN_val(seMode,"1");
+    } else {
+      NN_val(seMode,"0");
+    }
+  }
+  function setChannelExtMode() {
+    var channel = NN_val(NN_getById('AP_PRIMARY_CH_2'));
+    var mode = 'PLUS';
+    if ( (channel % 8) == 0) { 
+      mode = 'MINUS'; 
+    }
+    NN_val(NN_getById('AP_PRIMARY_CH_EXT_2'), mode);
+
+  }
+  function initCountryCode() {
+    NN_val(NN_getById("selCountryCode"), countryCode);
+  }
+  function checkClientSecProf () {
+    var opMode = NN_val(NN_getById("seOperMode"));
+    var isChecked = NN_val(NN_getById("cWLAN_UP"));
+    var clientSecProfIdx = "~~AP_SEC_PROFILE_34~";
+    var clientSecProfModeList = ["~~SEC_DESC_1~","~~SEC_DESC_2~","~~SEC_DESC_3~","~~SEC_DESC_4~","~~SEC_DESC_5~","~~SEC_DESC_6~","~~SEC_DESC_7~","~~SEC_DESC_8~"];
+    
+    if (isChecked == true && opMode =="client") {
+      if ((clientSecProfIdx > 0 && clientSecProfModeList[clientSecProfIdx-1] == "WPA2-MIX") ||
+         (clientSecProfIdx > 0 && clientSecProfModeList[clientSecProfIdx-1] == "WPA2-PSK-MIX")) {
+          var tmpStr = "SEC_DESC_"+(clientSecProfIdx);
+          document.getElementById('clientSecProfDesc').name = tmpStr;
+
+          tmpStr = "SEC_MODE_"+(clientSecProfIdx);
+          document.getElementById('clientSecProfMode').name = tmpStr;
+
+          tmpStr = "SEC_TYPE_"+(clientSecProfIdx);
+          document.getElementById('clientSecProfType').name = tmpStr;
+
+          tmpStr = "SEC_WPA_"+(clientSecProfIdx);
+          document.getElementById('clientSecProfWpa').name = tmpStr;
+
+          document.getElementById('flgChangeClientSec').value = "1";
+          NN_enableByClass("en_reset_secprof");
+      }
+    }
+  }
+  function formWlanSubmit() {
+    var retVal = true;
+    var opMode = NN_val(NN_getById("seOperMode"));
+    var wMode = NN_val(NN_getById("seWirelessMode"));
+    var channel = NN_val(NN_getById('AP_PRIMARY_CH_2'));
+    var channelwidth = NN_val(NN_getById('seChannelWidth'));
+    var currCountryCode = NN_val(NN_getById("selCountryCode"));
+
+    if (submitlock ==1) {
+      return false;
+    } else {
+      submitlock = 1;
+    }
+
+    if (channel == "165" && channelwidth == "80") {
+      alert("Channel 165 cannot be used with 80MHz channel width.");    
+      return false;
+    }
+
+    if (currCountryCode != countryCode) {
+      document.getElementById("flgChangeCountry").value = "1";
+      if (currCountryCode == "360" || currCountryCode == "804" || currCountryCode == "643") {
+        var objChannelWidth = NN_getById("seChannelWidth");
+        if (NN_val(objChannelWidth) != "20") {
+          if (currCountryCode == "360") {
+            NN_val(objChannelWidth, "20");
+          }
+          if (currCountryCode == "804" || currCountryCode == "643") {
+            NN_val(objChannelWidth, "40");
+          }
+        }
+      }
+    }
+
+    siteSurveyCloseWin();
+
+    if (opMode != "client") {
+      if (opMode == "repeater") {
+        var rootApMac = NN_getById("ROOTAP_MAC_2");
+        if (!validate(NN_getById("ROOTAP_MAC_2"), V_MAC)) retVal = false;
+        if ((rootApMac.value).toUpperCase() == "FF:FF:FF:FF:FF:FF") {
+          rootApMac.className = rootApMac.className + " invalidinput";
+          retVal = false;
+        } 
+        if ((rootApMac.value).toUpperCase() == "~`get_if_hwaddr ath8`~") {
+          rootApMac.className = rootApMac.className + " invalidinput";
+          retVal = false;
+        }
+      }
+      if (!validate(NN_getById("BEACON_INT_2"), V_INT, 40, 1000)) retVal = false;
+      if (!validate(NN_getById("DTIM_INT_2"), V_INT, 1, 15)) retVal = false;
+      if (wMode == "11G") {
+        if (!validate(NN_getById("FRAGM_THRESHOLD_2"), V_INT, 256, 2346)) retVal = false;
+      }
+    } else {
+      checkClientSecProf();
+    }
+
+    if (!validate(NN_getById("RTS_THRESHOLD_2"), V_INT, 256, 2347)) retVal = false;
+
+    setPureN();
+    setChannelExtMode();
+    
+    if (!retVal) 
+      submitlock = 0;
+
+    return retVal;
+  }
+</script>
+</head>
+<body onload="init();" onunload="siteSurveyCloseWin();">
+<form method=POST onsubmit="return formWlanSubmit();">
+<input type="hidden" id="sePureN" name="PUREN_2">
+<input type="hidden" id="RATECTL_2" name="RATECTL_2" value="~~RATECTL_2~" class="en_adv_bgn">
+<input type="hidden" id="MANRATE_2" name="MANRATE_2" value="~~MANRATE_2~" class="en_adv_bgn">
+<input type="hidden" id="clientSecProfDesc" name="" value="None" class="en_reset_secprof">
+<input type="hidden" id="clientSecProfMode" name="" value="None" class="en_reset_secprof">
+<input type="hidden" id="clientSecProfType" name="" value="OPEN" class="en_reset_secprof">
+<input type="hidden" id="clientSecProfWpa" name="" value="0" class="en_reset_secprof">
+<input type="hidden" id="flgChangeClientSec" name="CHG_CLIENTSEC_2" value="0" />
+<input type="hidden" id="flgChangeCountry" name="COUNTRYCHANGE" value="0" />
+<div class="topgraph">
+</div>
+<div id="tabs">
+  <ul>
+    <li><a href="wlan_2dot4g" title="Wireless Settings - 2.4G"><span>Wireless Settings - 2.4G</span></a></li>
+    <li class="hightline"><a title="Wireless Settings - 5G"><span>Wireless Settings - 5G</span></a></li>
+    <li><a href="wlan_ssid" title="SSID"><span>SSID</span></a></li>
+    <li><a href="wlan_security" title="Security"><span>Security</span></a></li>
+    <li><a href="wlan_radius" title="RADIUS"><span>RADIUS</span></a></li>
+    <li><a href="wlan_l2iso" title="Layer-2 Isolation"><span>Layer-2 Isolation</span></a></li>
+    <li><a href="wlan_mf" title="MAC Filter"><span>MAC Filter</span></a></li>
+  </ul>
+  <br class="clearfloat"/>
+</div>
+<div class="table_top">
+</div>
+<div id="table">
+  <div class="data">
+    <div class="undownLineTitle">
+      Basic Settings
+    </div>
+    <div class="w_text">
+      <ul>
+        <li class="left_table">Wireless LAN Interface :</li>
+        <li class="right_table">
+          <input type="checkbox" id="cWLAN_UP" value="1" onclick="onWlanUpClick();" ~cWLAN_UP_2:1~ />Enabled
+          <input type="hidden" name="WLAN_UP_2" id="WLAN_UP_2" value="0" />
+        </li>
+      </ul>
+    </div>
+    <div class="w_text">
+      <ul>
+        <li class="left_table">Operation Mode :</li>
+        <li class="right_table">
+          <select name="AP_STARTMODE_2" id="seOperMode" style="width:120px" onchange="onOperModeChange();">
+            <option value="mbssid" ~sAP_STARTMODE_2:mbssid~>MBSSID</option>
+            <option value="client" ~sAP_STARTMODE_2:client~>Client</option>
+            <option value="root-mbssid" ~sAP_STARTMODE_2:root-mbssid~>Root AP</option>
+            <option value="repeater" ~sAP_STARTMODE_2:repeater~>Repeater</option>
+          </select>
+          <input type="button" value="Site Survey" class="hide_all show_survey" onclick="siteSurveyOpenWin();" />
+        </li>
+      </ul>
+    </div>
+    <div class="w_text hide_all show_mbssid show_rootap show_repeater">
+      <ul>
+        <li class="left_table">Wireless Mode :</li>
+        <li class="right_table">
+          <select id="seWirelessMode" name="AP_CHMODE_2" style="width:120px" class="dis_all en_mbssid en_rootap en_repeater" onchange="onWirelessModeChange();">
+            <option id="se11a" value="11A" ~sAP_CHMODE_2:11A~>802.11a</option>
+            <option id="se11an" value="11NAHT">802.11a/n</option>
+            <option id="se11n" value="11NAHT">802.11n</option>
+            <option id="se11ac" value="11ACVHT" ~sAP_CHMODE_2:11ACVHT~>802.11a/n/ac</option>
+          </select>
+        </li>
+      </ul>
+    </div>
+    <div class="w_text hide_all show_client">
+      <ul>
+        <li class="left_table">SSID Profile :</li>
+        <li class="right_table">
+          <select name="STA_AP_PROFILE_2" style="width:120px" class="dis_all en_client">
+            <option value=34 ~sSTA_AP_PROFILE_2:34~>~~AP_PRO_NAME_34~</option>
+          </select>
+        </li>
+      </ul>
+    </div>
+    <div class="w_text">
+      <ul>
+        <li class="left_table">Channel :</li>
+        <li class="right_table">
+          <select name="AP_PRIMARY_CH_2" id="AP_PRIMARY_CH_2" style="width:120px">
+          </select>
+          <input type="hidden" name="AP_PRIMARY_CH_EXT_2" id="AP_PRIMARY_CH_EXT_2" value="" /> 
+        </li>
+      </ul>
+    </div>
+    <div class="w_text show_adv_bgn">
+      <ul>
+        <li class="left_table">Channel Width :</li>
+        <li class="right_table">
+          <select name="AP_CHWIDTH_2" id="seChannelWidth" style="width:120px" class="en_adv_bgn" onchange="onChannelWidthChange();">
+            <option value="20" ~sAP_CHWIDTH_2:20~>20MHZ</option>
+            <option value="40" ~sAP_CHWIDTH_2:40~>20/40MHZ</option>
+            <option value="80" ~sAP_CHWIDTH_2:80~>20/40/80MHZ</option>
+          </select>
+        </li>
+      </ul>
+    </div>
+    <div class="hide_all show_mbssid show_rootap">
+      <input type="hidden" id="vap_list" name="VAP_LIST_2" value="~~VAP_LIST_2~" class="dis_all en_mbssid en_rootap">
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Select SSID Profile :</li>
+        </ul>
+      </div>
+      <div class="tableframe">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr class="top_font" align="center">
+            <td width="35"> # </td>
+            <td> Active </td>
+            <td> Profile </td>
+          </tr>
+          <tr class="table_font" align="center">
+            <td> 1 </td>
+            <td> <input type="checkbox" id="vap1" onclick="doVapListChange();" class="dis_all en_rootap"/> </td>
+            <td>
+              <select id="vap_prof1" onchange="doVapListChange();" class="dis_all en_mbssid en_rootap">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font" align="center">
+            <td> 2 </td>
+            <td> <input type="checkbox" id="vap2" onclick="doVapListChange();" class="dis_all en_mbssid en_rootap"/> </td>
+            <td>
+              <select id="vap_prof2" onchange="doVapListChange();" class="dis_all en_mbssid en_rootap">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font" align="center">
+            <td> 3 </td>
+            <td> <input type="checkbox" id="vap3" onclick="doVapListChange();" class="dis_all en_mbssid en_rootap"/> </td>
+            <td>
+              <select id="vap_prof3" onchange="doVapListChange();" class="dis_all en_mbssid en_rootap">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font" align="center">
+            <td> 4 </td>
+            <td> <input type="checkbox" id="vap4" onclick="doVapListChange();" class="dis_all en_mbssid en_rootap"/> </td>
+            <td>
+              <select id="vap_prof4" onchange="doVapListChange();" class="dis_all en_mbssid en_rootap">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font hide_all show_moressid" align="center">
+            <td> 5 </td>
+            <td> <input class="dis_all en_mbssid" type="checkbox" id="vap5" onclick="doVapListChange();"/> </td>
+            <td> <select class="dis_all en_mbssid" id="vap_prof5" onchange="doVapListChange();">
+              <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font hide_all show_moressid" align="center">
+            <td> 6 </td>
+            <td> <input class="dis_all en_mbssid" type="checkbox" id="vap6" onclick="doVapListChange();"/> </td>
+            <td>
+              <select class="dis_all en_mbssid" id="vap_prof6" onchange="doVapListChange();">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font hide_all show_moressid" align="center">
+            <td> 7 </td>
+            <td> <input class="dis_all en_mbssid" type="checkbox" id="vap7" onclick="doVapListChange();"/> </td>
+            <td>
+              <select class="dis_all en_mbssid" id="vap_prof7" onchange="doVapListChange();">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="table_font hide_all show_moressid" align="center">
+            <td> 8 </td>
+            <td> <input class="dis_all en_mbssid" type="checkbox" id="vap8" onclick="doVapListChange();"/> </td>
+            <td>
+              <select class="dis_all en_mbssid" id="vap_prof8" onchange="doVapListChange();">
+                <option value=1>~~AP_PRO_NAME_1~</option> <option value=2>~~AP_PRO_NAME_2~</option> <option value=3>~~AP_PRO_NAME_3~</option> <option value=4>~~AP_PRO_NAME_4~</option> <option value=5>~~AP_PRO_NAME_5~</option> <option value=6>~~AP_PRO_NAME_6~</option> <option value=7>~~AP_PRO_NAME_7~</option> <option value=8>~~AP_PRO_NAME_8~</option> <option value=9>~~AP_PRO_NAME_9~</option> <option value=10>~~AP_PRO_NAME_10~</option> <option value=11>~~AP_PRO_NAME_11~</option> <option value=12>~~AP_PRO_NAME_12~</option> <option value=13>~~AP_PRO_NAME_13~</option> <option value=14>~~AP_PRO_NAME_14~</option> <option value=15>~~AP_PRO_NAME_15~</option> <option value=16>~~AP_PRO_NAME_16~</option> <option value=17>~~AP_PRO_NAME_17~</option> <option value=18>~~AP_PRO_NAME_18~</option> <option value=19>~~AP_PRO_NAME_19~</option> <option value=20>~~AP_PRO_NAME_20~</option> <option value=21>~~AP_PRO_NAME_21~</option> <option value=22>~~AP_PRO_NAME_22~</option> <option value=23>~~AP_PRO_NAME_23~</option> <option value=24>~~AP_PRO_NAME_24~</option> <option value=25>~~AP_PRO_NAME_25~</option> <option value=26>~~AP_PRO_NAME_26~</option> <option value=27>~~AP_PRO_NAME_27~</option> <option value=28>~~AP_PRO_NAME_28~</option> <option value=29>~~AP_PRO_NAME_29~</option> <option value=30>~~AP_PRO_NAME_30~</option> <option value=31>~~AP_PRO_NAME_31~</option> <option value=32>~~AP_PRO_NAME_32~</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br class="clearfloat hide_all show_rootap show_repeater"/>
+    <div class="undownLineTitle hide_all show_rootap show_repeater">
+      Repeater Settings
+    </div>
+    <div class="w_text hide_all show_rootap show_repeater">
+      <ul>
+        <li class="left_table">Local MAC Address :</li>
+        <li class="right_table">
+          <input type="text" value="~`get_if_hwaddr ath8`~" size="20" disabled/>
+        </li>
+      </ul>
+    </div>
+    <div class="w_text hide_all show_rootap show_repeater">
+      <ul>
+        <li class="left_table">Repeater SSID Profile :</li>
+        <li class="right_table">
+          <select id="wds_prof8" name="WDS_AP_PROFILE_2" onchange="doVapListChange();" class="dis_all en_rootap en_repeater">
+            <option value=1 ~sWDS_AP_PROFILE_2:1~>~~AP_PRO_NAME_1~</option> <option value=2 ~sWDS_AP_PROFILE_2:2~>~~AP_PRO_NAME_2~</option>
+            <option value=3 ~sWDS_AP_PROFILE_2:3~>~~AP_PRO_NAME_3~</option> <option value=4 ~sWDS_AP_PROFILE_2:4~>~~AP_PRO_NAME_4~</option>
+            <option value=5 ~sWDS_AP_PROFILE_2:5~>~~AP_PRO_NAME_5~</option> <option value=6 ~sWDS_AP_PROFILE_2:6~>~~AP_PRO_NAME_6~</option>
+            <option value=7 ~sWDS_AP_PROFILE_2:7~>~~AP_PRO_NAME_7~</option> <option value=8 ~sWDS_AP_PROFILE_2:8~>~~AP_PRO_NAME_8~</option>
+            <option value=9 ~sWDS_AP_PROFILE_2:9~>~~AP_PRO_NAME_9~</option> <option value=10 ~sWDS_AP_PROFILE_2:10~>~~AP_PRO_NAME_10~</option>
+            <option value=11 ~sWDS_AP_PROFILE_2:11~>~~AP_PRO_NAME_11~</option> <option value=12 ~sWDS_AP_PROFILE_2:12~>~~AP_PRO_NAME_12~</option>
+            <option value=13 ~sWDS_AP_PROFILE_2:13~>~~AP_PRO_NAME_13~</option> <option value=14 ~sWDS_AP_PROFILE_2:14~>~~AP_PRO_NAME_14~</option>
+            <option value=15 ~sWDS_AP_PROFILE_2:15~>~~AP_PRO_NAME_15~</option> <option value=16 ~sWDS_AP_PROFILE_2:16~>~~AP_PRO_NAME_16~</option>
+            <option value=17 ~sWDS_AP_PROFILE_2:17~>~~AP_PRO_NAME_17~</option> <option value=18 ~sWDS_AP_PROFILE_2:18~>~~AP_PRO_NAME_18~</option>
+            <option value=19 ~sWDS_AP_PROFILE_2:19~>~~AP_PRO_NAME_19~</option> <option value=20 ~sWDS_AP_PROFILE_2:20~>~~AP_PRO_NAME_20~</option>
+            <option value=21 ~sWDS_AP_PROFILE_2:21~>~~AP_PRO_NAME_21~</option> <option value=22 ~sWDS_AP_PROFILE_2:22~>~~AP_PRO_NAME_22~</option>
+            <option value=23 ~sWDS_AP_PROFILE_2:23~>~~AP_PRO_NAME_23~</option> <option value=24 ~sWDS_AP_PROFILE_2:24~>~~AP_PRO_NAME_24~</option>
+            <option value=25 ~sWDS_AP_PROFILE_2:25~>~~AP_PRO_NAME_25~</option> <option value=26 ~sWDS_AP_PROFILE_2:26~>~~AP_PRO_NAME_26~</option>
+            <option value=27 ~sWDS_AP_PROFILE_2:27~>~~AP_PRO_NAME_27~</option> <option value=28 ~sWDS_AP_PROFILE_2:28~>~~AP_PRO_NAME_28~</option>
+            <option value=29 ~sWDS_AP_PROFILE_2:29~>~~AP_PRO_NAME_29~</option> <option value=30 ~sWDS_AP_PROFILE_2:30~>~~AP_PRO_NAME_30~</option>
+            <option value=31 ~sWDS_AP_PROFILE_2:31~>~~AP_PRO_NAME_31~</option> <option value=32 ~sWDS_AP_PROFILE_2:32~>~~AP_PRO_NAME_32~</option>
+          </select>
+        </li>
+      </ul>
+    </div>
+    <div class="hide_all show_repeater">
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Root MAC Address :</li>
+          <li class="right_table">
+            <input type="text" name="ROOTAP_MAC_2" id="ROOTAP_MAC_2" value="~~ROOTAP_MAC_2~" size="20" class="dis_all en_repeater"/>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <br class="clearfloat"/>
+    <div class="undownLineTitle" style="height:20px">
+      <a href="javascript: toggleAdvDiv();"><img id="imgToggle" src="images/plus.gif" alt="" /></a>
+      Advanced Settings
+    </div>
+    <div style="display: none;" id="advDiv">
+      <div class="w_text showCountryCode" id="divCountryCode">
+        <ul>
+          <li class="left_table">Country Code:</li>
+          <li class="right_table">
+            <select name="COUNTRYCODE" id="selCountryCode" onchange="onCountryCodeChange();">
+              <option value="442">Luxembourg</option>
+              <option value="124">Canada</option>
+              <option value="642">Romania</option>
+              <option value="792">Turkey</option>
+              <option value="724">Spain</option>
+              <option value="356">India</option>
+              <option value="608">Philippine</option>
+              <option value="250">France</option>
+              <option value="804">Ukraine</option>
+              <option value="156">China</option>
+              <option value="784">UAE</option>
+              <option value="756">Switzerland</option>
+              <option value="764">Thailand</option>
+              <option value="703">Slovak</option>
+              <option value="348">Hungary</option>
+              <option value="643">Russia</option>
+              <option value="616">Poland</option>
+              <option value="458">Malaysia</option>
+              <option value="380">Italy</option>
+              <option value="276">German</option>
+              <option value="158">Taiwan</option>
+              <option value="246">Finland</option>
+              <option value="702">Singapore</option>
+              <option value="344">Hong Kong</option>
+              <option value="578">Norway</option>
+              <option value="203">Czech</option>
+              <option value="300">Greece</option>
+              <option value="56">Belgium</option>
+              <option value="826">UK</option>
+              <option value="752">Sweden</option>
+              <option value="208">Denmark</option>
+              <option value="528">Netherland</option>
+              <option value="839">USA(DFS)</option>
+              <option value="840">USA(NO DFS)</option>
+              <option value="112">Belarus</option>
+              <option value="360">Indonesia</option>
+              <option value="412">Korea</option>
+              <option value="376">Israel</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text hide_all show_mbssid show_rootap show_repeater">
+        <ul>
+          <li class="left_table">Beacon Interval :</li>
+          <li class="right_table">
+            <input type="text" name="BEACON_INT_2"  id="BEACON_INT_2" value="~~BEACON_INT_2~" size="20" maxlength="4" class="dis_all en_mbssid en_rootap en_repeater" /> (40-1000 ms) </li>
+        </ul>
+      </div>
+      <div class="w_text hide_all show_mbssid show_rootap show_repeater">
+        <ul>
+          <li class="left_table">DTIM Interval :</li>
+          <li class="right_table">
+            <input type="text" name="DTIM_INT_2" id="DTIM_INT_2" value="~~DTIM_INT_2~" size="20" maxlength="2" class="dis_all en_mbssid en_rootap en_repeater"/> (1-15) </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Output Power :</li>
+          <li class="right_table">
+            <select name="TXP_LEVEL_2" style="width:120px">
+              <option value="0" ~sTXP_LEVEL_2:0~>Full</option>
+              <option value="3" ~sTXP_LEVEL_2:3~>50%</option>
+              <option value="6" ~sTXP_LEVEL_2:6~>25%</option>
+              <option value="9" ~sTXP_LEVEL_2:9~>12.5%</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Preamble Type :</li>
+          <li class="right_table">
+            <select name="PREAMBLETYPE_2" style="width:120px">
+              <option value="1" ~sPREAMBLETYPE_2:1~>Dynamic</option>
+              <option value="0" ~sPREAMBLETYPE_2:0~>Long</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">RTS/CTS Threshold :</li>
+          <li class="right_table">
+            <input type="text" name="RTS_THRESHOLD_2" id="RTS_THRESHOLD_2" value="~~RTS_THRESHOLD_2~" size="20" maxlength="4"/> (256-2347) </li>
+        </ul>
+      </div>
+      <div class="w_text show_adv_bg">
+        <ul>
+          <li class="left_table">Fragmentation :</li>
+          <li class="right_table">
+            <input type="text" name="FRAGM_THRESHOLD_2" id="FRAGM_THRESHOLD_2" value="~~FRAGM_THRESHOLD_2~" size="20" maxlength="4" class="dis_all en_adv_bg" /> (256-2346) </li>
+        </ul>
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">Extension Channel Protection Mode :</li>
+          <li class="right_table">
+            <select name="PROTECTION_MODE_2" style="width:120px">
+              <option value="0" ~sPROTECTION_MODE_2:0~>None</option>
+              <option value="1" ~sPROTECTION_MODE_2:1~>CTS to self</option>
+              <option value="2" ~sPROTECTION_MODE_2:2~>RTS-CTS</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+      <div class="w_text show_adv_bgn">
+        <ul>
+          <li class="left_table">A-MPDU Aggregation :</li>
+          <li class="right_table">
+            <input type="checkbox" id="cAMPDUENABLE" value="1" onclick="onAmpduClick();" ~cAMPDUENABLE_2:1~ />Enabled
+            <input type="hidden" name="AMPDUENABLE_2" id="AMPDUENABLE_2" value="0" class="dis_all en_adv_bgn" />
+          </li>
+        </ul>
+      </div>
+      <div class="w_text show_adv_bgn">
+        <ul>
+          <li class="left_table">Short GI :</li>
+          <li class="right_table">
+            <input type="checkbox" id="cSHORTGI" value="1" onclick="onShortGiClick();" ~cSHORTGI_2:1~/>Enabled
+            <input type="hidden" name="SHORTGI_2" id="SHORTGI_2" value="0" class="dis_all en_adv_bgn" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="table_button">
+    <center>
+      <input name="COMMIT" value="Apply" type="submit" id="buWlanApply" class="table_button_l" />
+      <input name="cancel" value="Cancel" type="button" id="buWlanCancel" onclick="document.location.replace('wlan_5g');" class="table_button_r"/>
+      <input name="EXECUTE" value="wlan_5g" type="hidden" />
+    </center>
+  </div>
+</div>
+</form>
+<form method="post" name="formSiteSurvey">
+<input type="hidden" name="AP_SSID_~~STA_AP_PROFILE_2~" id="AP_SSID_~~STA_AP_PROFILE_2~" value="" />
+<input type="hidden" name="EXECUTE" value="site_survey_5g" />
+<input name="COMMIT" value="Apply" type="hidden" />
+</form>
+</body>
+</html>
+

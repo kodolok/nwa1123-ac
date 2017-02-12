@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=10" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <title>.::Welcome to the Web-Based Configurator::.</title>
+  <link href="css/expert.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+
+    .input-pos {
+      margin-bottom: 2px;
+    }
+    .input-file {
+      width: 240px;
+      width: 250px\0;
+      width: 250px\9;
+      position: absolute;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .btn.disabled,
+    .btn[disabled] {
+      cursor: default;
+      background-image: none;
+      background-color: #e6e6e6;
+      opacity: 0.65;
+      filter: alpha(opacity=65);
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .input-file:hover .btn,
+    .input-pos:hover .btn {
+      color: #333333;
+      text-decoration: none;
+      background-color: #e6e6e6;
+      background-position: 0 -15px;
+      -webkit-transition: background-position 0.1s linear;
+      -moz-transition: background-position 0.1s linear;
+      -ms-transition: background-position 0.1s linear;
+      -o-transition: background-position 0.1s linear;
+      transition: background-position 0.1s linear;
+    }
+  </style>
+  <script type="text/javascript" src="../js/baseJS.js"></script>
+  <script type="text/javascript" src="../js/uimake.js"></script>
+  <script type="text/javascript">
+    var certs = ~`webget_cert_list`~;
+
+    function init() {
+      for (var i = 0; i < certs.length; i++) {
+        if (certs[i] != "") { 
+          var elOptNew = document.createElement('option');
+          elOptNew.text = certs[i].replace(/\s/g, String.fromCharCode(160));
+          elOptNew.value = certs[i];
+          var elSel = NN_getById('certlists');
+          try {
+            elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+          }
+          catch(ex) {
+            elSel.add(elOptNew); // IE only
+          }
+        }
+      }
+      if (certs.length > 1) {
+        document.getElementById("btnDelSubmit").removeAttribute("disabled");
+      } else {
+        document.getElementById("btnDelSubmit").setAttribute("disabled", "disabled");
+      }
+    }
+    function changeFilePath (path) {
+      var regax = /(\.cer|\.crt|\.pfx)$/i;
+      if (!regax.exec(path)) {
+        document.getElementById("txtFilePath").value = "";
+        document.getElementById("txtFile").value = "";
+        alert("File extension not supported.");
+      } else {
+        document.getElementById("txtFilePath").value = path;  
+      }
+
+      if (document.getElementById("txtFilePath").value != "") {
+        document.getElementById("applyUpload").removeAttribute("disabled");
+      } else {
+        document.getElementById("applyUpload").setAttribute("disabled", "disabled");
+      }
+    }
+  </script>
+</head>
+<body onload="init();">
+  <div class="topgraph"></div>
+  <div id="tabs">
+    <ul>
+      <li><a href="sys_http" title="WWW"><span>WWW</span></a></li>
+      <li class="hightline"><a title="Certificates"><span>Certificates</span></a></li>
+      <li><a href="sys_telnet" title="Telnet"><span>Telnet</span></a></li>
+      <li><a href="sys_snmp" title="SNMP"><span>SNMP</span></a></li>
+      <li><a href="sys_ftp" title="FTP"><span>FTP</span></a></li>
+      <li><a href="sys_https" title="HTTPS"><span>HTTPS</span></a></li>
+    </ul><br class="clearfloat" />
+  </div>
+  <div class="table_top"></div>
+  <div id="table">
+    <div class="data">
+      <div class="undownLineTitle">
+        Import Certificate
+      </div>
+      <div class="w_text">
+        <form enctype="multipart/form-data" method="post">
+          <div class="input-pos">
+            <div>Import Certificate:</div>
+            <input class="input-file" id="txtFile" name="certificate" type="file" size="30"  onchange="changeFilePath(this.value);" />
+            <div>
+              <input disabled="disabled" id="txtFilePath" size="28" type="text" />
+              <input type="button" value="Browse" id="fakeBtn" />
+            </div>
+          </div>
+          <input id="applyUpload" type="submit" value="Import" disabled="disabled" />
+        </form>
+      </div><br class="clearfloat" />
+      <div class="undownLineTitle">
+        Delete Certificates
+      </div>
+      <div class="w_text">
+        <ul>
+          <li class="left_table">You can delete a certificate:</li>
+          <form method="post">
+          <li class="right_table"><select size="1" name="certlists" id="certlists">
+          </select> <input type="submit" name="CERT_DELETE" value="Delete" id="btnDelSubmit" disabled="disabled" /></li>
+          </form>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

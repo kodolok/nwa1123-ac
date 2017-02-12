@@ -1,0 +1,197 @@
+#!/bin/sh
+####################################################################
+## patchVAP
+## 
+## This script is used to patch VAP. 
+##
+## EX. Patch WEP configuration when hostapd cannot handle the 
+## static WEP key settings.
+##
+## patchVAP <type> <vap> <Profile>
+##
+## Where
+##        type:  Patch type (e.g. WEP)
+##         vap:  Vap ID (e.g. ath0)
+##     Profile:  The index of Profile used.
+##
+####################################################################
+
+. /etc/ath/apcfg
+
+if [ "${3}" = "" ]; then
+    echo "patchVAP usage:"
+    echo "patchVAP WEP vap SecProfile"
+    echo "patchVAP MAC vap MacProfile"
+    echo "patchVAP WMM vap mode WMM_AC"
+    echo
+    echo "type: e.g. WEP, MAC, WMM"
+    echo "vapid: e.g. ath0"
+    echo "SecProfile: 1-8"
+    echo "MacProfile: 1-8"
+    echo "mode: {0|1}"
+    echo "WMM_AC: e.g. WMM_BESTEFFORT"
+    echo 
+    exit
+fi
+
+## patch WEP
+if [ "${1}" = "WEP" ]; then
+    SECMODE="SEC_MODE_$3"
+    KEY_MGMT="SEC_WEP_KEY_MGMT_$3"
+    eval SECMODE=\$$SECMODE
+    eval KEY_MGMT=\$$KEY_MGMT
+
+    if [ "${KEY_MGMT}" = "static" ]; then
+        #
+        # Insert the keys as required
+        #
+        WEPKEY_1="SEC_WEP_KEY1_$3"
+        WEPKEY_2="SEC_WEP_KEY2_$3"
+        WEPKEY_3="SEC_WEP_KEY3_$3"
+        WEPKEY_4="SEC_WEP_KEY4_$3"
+        AP_WEP_MODE="SEC_WEP_MODE_$3"
+        AP_PRIMARY_KEY="SEC_PRIMARY_KEY_$3"
+        eval WEPKEY_1=\$$WEPKEY_1
+        eval WEPKEY_2=\$$WEPKEY_2
+        eval WEPKEY_3=\$$WEPKEY_3
+        eval WEPKEY_4=\$$WEPKEY_4
+        eval AP_WEP_MODE=\$$AP_WEP_MODE
+        eval AP_PRIMARY_KEY=\$$AP_PRIMARY_KEY
+        
+        #if [ "${AP_WEP_MODE}" != "" -a "${AP_WEP_MODE}" != "1" ]; then
+        if [ "${AP_WEP_MODE}" != "" ]; then
+            iwpriv ${2} authmode ${AP_WEP_MODE}
+        fi
+        if [ "${WEPKEY_1}" != "" ]; then
+            cfg -h ${WEPKEY_1} 1
+            if [ $? = 1 ]; then
+                iwconfig ${2} enc ${WEPKEY_1} [1]
+            else
+                iwconfig ${2} enc s:${WEPKEY_1} [1]
+            fi
+        fi
+        if [ "${WEPKEY_2}" != "" ]; then
+            cfg -h ${WEPKEY_2} 1
+            if [ $? = 1 ]; then
+                iwconfig ${2} enc ${WEPKEY_2} [2]
+            else
+                iwconfig ${2} enc s:${WEPKEY_2} [2]
+            fi
+        fi
+        if [ "${WEPKEY_3}" != "" ]; then
+            cfg -h ${WEPKEY_3} 1
+            if [ $? = 1 ]; then
+                iwconfig ${2} enc ${WEPKEY_3} [3]
+            else
+                iwconfig ${2} enc s:${WEPKEY_3} [3]
+            fi
+        fi
+        if [ "${WEPKEY_4}" != "" ]; then
+            cfg -h ${WEPKEY_4} 1
+            if [ $? = 1 ]; then
+                iwconfig ${2} enc ${WEPKEY_4} [4]
+            else
+                iwconfig ${2} enc s:${WEPKEY_4} [4]
+            fi
+        fi
+        if [ "${AP_PRIMARY_KEY}" != "" ]; then
+            KEY_INDEX=$(($AP_PRIMARY_KEY+1))
+            iwconfig ${2} enc [${KEY_INDEX}]
+        fi
+    fi
+fi ## patch WEP
+
+## patch MAC_ACL
+if [ "${1}" = "MAC" ]; then
+    MACMODE="MAC_MODE_$3"
+    eval MACMODE=\$$MACMODE
+
+    iwpriv ${2} maccmd ${MACMODE}
+    
+    i=0
+    while [ "$i" != 128 ]
+    do
+        i=$(($i+1))
+        ITER_MAC="MAC_ACL${i}_$3"
+        eval ITER_MAC=\$$ITER_MAC
+        if [ "${ITER_MAC}" != "" ]; then
+            iwpriv ${2} addmac ${ITER_MAC}
+        fi
+    done
+fi ## patch MAC_ACL
+
+## patch WMM
+if [ "${1}" = "WMM" ]; then
+    APNAME=$2
+    APMODE=$3
+    WMMMODE=$4
+    
+    if [ $WMMMODE = "WMM" ]; then
+        iwpriv $APNAME wmm 1
+        aifs="3 7 2 2"
+        cwmin="5 5 4 3"
+        cwmax="10 10 5 4"
+        txop="0 0 94 47"
+    fi
+    if [ $WMMMODE = "WMM_VOICE" ]; then
+        iwpriv $APNAME wmm 1
+        aifs="2 2 2 2"
+        cwmin="3 3 3 3"
+        cwmax="4 4 4 4"
+        txop="47 47 47 47"
+    fi
+    if [ $WMMMODE = "WMM_VIDEO" ]; then
+        iwpriv $APNAME wmm 1
+        aifs="2 2 2 2"
+        cwmin="4 4 4 4"
+        cwmax="5 5 5 5"
+        txop="94 94 94 94"
+    fi
+    if [ $WMMMODE = "WMM_BACKGROUND" ]; then
+        iwpriv $APNAME wmm 1
+        aifs="7 7 7 7"
+        cwmin="5 5 5 5"
+        cwmax="10 10 10 10"
+        txop="0 0 0 0"
+    fi
+    if [ $WMMMODE = "WMM_BESTEFFORT" ]; then
+        iwpriv $APNAME wmm 1
+        aifs="3 3 3 3"
+        cwmin="5 5 5 5"
+        cwmax="10 10 10 10"
+        txop="0 0 0 0"
+    fi
+    if [ $WMMMODE = "None" ]; then
+        iwpriv $APNAME wmm 0
+        exit 0
+    fi
+    
+    AC=0
+    for i in $aifs;
+    do  
+        iwpriv $APNAME aifs $AC $APMODE $i
+        AC=$((AC+1))  
+    done 
+    
+    AC=0
+    for i in $cwmin;
+    do  
+        iwpriv $APNAME cwmin $AC $APMODE $i
+        AC=$((AC+1))  
+    done 
+    
+    AC=0
+    for i in $cwmax;
+    do  
+        iwpriv $APNAME cwmax $AC $APMODE $i
+        AC=$((AC+1))  
+    done 
+    
+    AC=0
+    for i in $txop;
+    do  
+        iwpriv $APNAME txoplimit $AC $APMODE $i
+        AC=$((AC+1))  
+    done 
+    
+fi ## patch WMM

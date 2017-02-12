@@ -1,0 +1,39 @@
+#!/bin/sh
+#########################################################################
+##  check serial number
+##  This file used to get serial number
+#########################################################################
+
+#dd if=/dev/mtdblock6 of=/tmp/mtdblock6 bs=64k count=1 2>/dev/null
+strings /dev/mtdblock6 > /tmp/mtdblock6
+if [ $? -eq 0 ]
+then
+SERIAL_NUM=`cat /tmp/mtdblock6 | grep 'serialnum' | awk '{print $1}'`
+
+if [ "${SERIAL_NUM}" = "" ]; then
+    dd if=/dev/mtdblock1 of=/tmp/boot-env bs=64k count=1 2>/dev/null
+    SERIAL_NUM=`cat /tmp/boot-env | grep 'serialnum'`
+    
+    if [ "${SERIAL_NUM}" != "" ]; then
+        COUNTRYCODE=`cat /tmp/boot-env | grep 'countrycode'`
+        ETH0MAC=`cat /tmp/boot-env | grep 'eth0mac'`
+        WIFI0MAC=`cat /tmp/boot-env | grep 'wifi0mac'`
+        WIFI1MAC=`cat /tmp/boot-env | grep 'wifi1mac'`
+        echo "${SERIAL_NUM} ${COUNTRYCODE} ${ETH0MAC} ${WIFI0MAC} ${WIFI1MAC}" > /tmp/mtdblock6
+#        dd if=/tmp/mtdblock6 of=/dev/mtdblock6 bs=64k count=1 2>/dev/null
+				mtd erase mtd6 >/dev/null 2>&1
+				mtd write /tmp/mtdblock6 mtd6 >/dev/null 2>&1
+    else
+        echo "serialnum=S110D9000001 countrycode=840 eth0mac=00:37:ff:00:00:01 wifi0mac=00:37:ff:00:00:02 wifi1mac=00:37:ff:00:00:03" > /tmp/mtdblock6
+#        dd if=/tmp/mtdblock6 of=/dev/mtdblock6 bs=64k count=1 2>/dev/null
+				mtd erase mtd6 >/dev/null 2>&1
+				mtd write /tmp/mtdblock6 mtd6 >/dev/null 2>&1
+    fi
+fi
+else
+	echo "****** Read MTD6 fail value=$? ******" >/dev/console
+	reboot
+	sleep 10
+	exit 99
+fi
+exit 0

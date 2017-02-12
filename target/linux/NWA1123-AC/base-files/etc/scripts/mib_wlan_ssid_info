@@ -1,0 +1,71 @@
+#!/bin/sh
+####################################################################
+## MIB script
+## 
+## This script is used to get the wlanSSIDInfo. 
+##
+## mib_wlan_ssid_info
+##
+####################################################################
+ERR_SUCCESS=0
+ERR_ILLEGAL_ARG=1
+ERR_NO_FILE=2
+
+##
+## SSID Info
+##
+
+my_vaps="_1 _2 _3 _4 _5 _6 _7 _8 _9 _10 _11 _12 _13 _14 _15 _16 _17 _18 _19 _20 _21 _22 _23 _24 _25 _26 _27 _28 _29 _30 _31 _32"
+for i in $my_vaps;
+do
+    if [ "${i}" = "''" ]; then
+        i=""
+    fi
+    ITER_AP_PRO_NAME="AP_PRO_NAME$i"
+    ITER_AP_SSID="AP_SSID$i"
+    #ITER_AP_MODE="AP_MODE$i"
+    ITER_AP_SEC_PROFILE="AP_SEC_PROFILE$i"
+    ITER_AP_RAD_PROFILE="AP_RAD_PROFILE$i"
+    ITER_AP_MAC_PROFILE="AP_MAC_PROFILE$i"
+    ITER_AP_QOS="AP_QOS$i"
+    #ITER_AP_VLAN="AP_VLAN$i"
+    ITER_AP_STA_NUM="AP_STA_NUM$i"
+    ITER_AP_HIDESSID="AP_HIDESSID$i"
+    ITER_AP_IBSS="AP_IBSS$i"
+
+    AP_PRO_NAME=`cfg -v $ITER_AP_PRO_NAME`
+    AP_SSID=`cfg -v $ITER_AP_SSID`
+    #AP_MODE=`cfg -v $ITER_AP_MODE`
+    AP_SEC_PROFILE=`cfg -v $ITER_AP_SEC_PROFILE`
+    AP_RAD_PROFILE=`cfg -v $ITER_AP_RAD_PROFILE`
+    AP_MAC_PROFILE=`cfg -v $ITER_AP_MAC_PROFILE`
+    AP_QOS_STR=`cfg -v $ITER_AP_QOS`
+    #AP_VLAN=`cfg -v $ITER_AP_VLAN`
+    AP_STA_NUM=`cfg -v $ITER_AP_STA_NUM`
+    AP_HIDESSID=`cfg -v $ITER_AP_HIDESSID`
+    AP_IBSS=`cfg -v $ITER_AP_IBSS`
+    
+    if [ "$AP_QOS_STR" = "None" ]; then
+        AP_QOS=255
+    elif [ "$AP_QOS_STR" = "WMM_BESTEFFORT" ]; then
+        AP_QOS=0
+    elif [ "$AP_QOS_STR" = "WMM_BACKGROUND" ]; then
+        AP_QOS=1
+    elif [ "$AP_QOS_STR" = "WMM_VIDEO" ]; then
+        AP_QOS=2
+    elif [ "$AP_QOS_STR" = "WMM_VOICE" ]; then
+        AP_QOS=3
+    elif [ "$AP_QOS_STR" = "WMM" ]; then
+        AP_QOS=4
+    fi
+    
+    if [ "$AP_IBSS" = "0" ]; then
+        AP_IBSS=1
+    elif [ "$AP_IBSS" = "1" ]; then
+        AP_IBSS=2
+    fi
+    
+    echo "$AP_PRO_NAME,$AP_SSID,$AP_SEC_PROFILE,$AP_RAD_PROFILE,$AP_MAC_PROFILE,$AP_QOS,$AP_STA_NUM,$AP_HIDESSID,$AP_IBSS"
+done
+
+exit 0

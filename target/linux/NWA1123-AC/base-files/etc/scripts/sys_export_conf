@@ -1,0 +1,21 @@
+#!/bin/sh
+####################################################################
+## SYSTEM script
+## 
+## This script is used to export the text cfg file. 
+##
+## sys_export_conf
+##
+####################################################################
+if [ "${1}" = "" ]; then
+    echo "Please specify the file."
+    exit 1
+fi
+CONF_FILE=$1
+VER_INFO=`cat /etc/firmware_info`
+MODEL_STRING=`cut -d _ -f 1 /etc/firmware_info`
+VER_STRING=`cut -d _ -f 2 /etc/firmware_info`
+echo -e "#Model Name:$MODEL_STRING" > $CONF_FILE
+echo -e "#Firmware Version:$VER_STRING" >> $CONF_FILE
+cfg -s >> $CONF_FILE
+
